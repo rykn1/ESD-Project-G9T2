@@ -5,7 +5,7 @@
 }
 
 body {
-	margin: 0;
+    margin: 0px;
 	font-family: Roboto, -apple-system, 'Helvetica Neue', 'Segoe UI', Arial, sans-serif;
 	background: #000000;
 }
@@ -42,6 +42,7 @@ body {
 	display: flex;
 	align-items: flex-start;
 	margin-top: 30px;
+    font-weight: bold;
 }
 
 .form-wrapper {
@@ -81,7 +82,7 @@ body {
 	font-family: inherit;
 	font-size: 16px;
 	letter-spacing: .5px;
-	color: #999;
+	color: #ffffff;
 	background-color: transparent;
 	border: none;
 	outline: none;
@@ -90,13 +91,15 @@ body {
 }
 
 .form-wrapper.is-active .switcher-login {
-	color: #ffffff;
+	color: #00ff15;
 	transform: translateX(90px);
+    font-weight: bold;
 }
 
 .form-wrapper.is-active .switcher-signup {
-	color: #fff;
+	color: #00ff15;
 	transform: translateX(-90px);
+    font-weight: bold;
 }
 
 .underline {
@@ -288,13 +291,28 @@ body {
 
 .btn-login {
 	color: #fbfdff;
-	background: #a7e245;
+	background: #000000;
 	transform: translateX(-30%);
 }
 
 .btn-signup {
-	color: #a7e245;
-	background: #fbfdff;
-	box-shadow: inset 0 0 0 2px #a7e245;
-	transform: translateX(30%);
+	color: #fbfdff;
+	background: #000000;
+	transform: translateX(-30%);
+}
+
+.btn-login,
+.btn-signup {
+    color: #fbfdff;
+    background: #000000;
+    padding: 10px 20px; 
+    border: none; 
+    cursor: pointer; 
+    transition: background-color 0.3s ease, transform 0.3s ease; 
+}
+
+.btn-login:hover,
+.btn-signup:hover {
+    background: #333333; 
+    transform: scale(1.05); 
 }
