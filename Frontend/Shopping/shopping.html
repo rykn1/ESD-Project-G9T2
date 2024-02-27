@@ -3,15 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shopping List</title>
+  <title>Travel Shop - Your Destination Essentials</title>
   <!-- Bootstrap CSS -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <!-- Font Awesome CSS -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <!-- External CSS -->
+  <link href="shopping.css" rel="stylesheet">
+  <!-- Animate CSS-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 </head>
 <body>
   <div id="app" class="container mt-5">
-    <h1>Shopping List</h1>
+    <div class="translucent-box mb-2">
+        <h1 class="text-center">Explore and Shop Your Travel Essentials</h1>
+    </div>
     <div class="row">
       <div class="col-md-7">
         <ul class="list-group">
@@ -28,23 +34,25 @@
         </ul>
       </div>
       <div class="col-md-5">
-        <h2>Shopping Cart</h2>
-        <div class="text-end my-3">
-            <h4>Total: ${{ getTotalPrice() }}</h4>
-            <button class="btn btn-success">Checkout</button>
-        </div>
-        <ul class="list-group">
-          <li class="list-group-item" v-for="(item, index) in cart" :key="index">
-            <div class="row">
-              <div class="col-md">Name: {{ item.name }}</div>
-              <div class="col-md">Quantity: {{ item.quantity }}</div>
-              <div class="col-md">${{ item.price }}</div>
-              <div class="col-md">
-                <button class="btn btn-link" @click="removeItem(index)"><i class="fas fa-times text-danger"></i></button>
-              </div>
+        <div class="translucent-box">
+            <h2 class="text-center">Your Travel Cart</h2>
+            <div class="text-end my-3">
+                <h4>Total: ${{ getTotalPrice() }}</h4>
+                <button class="btn btn-success">Proceed to Checkout</button>
             </div>
-          </li>
-        </ul>
+            <ul class="list-group">
+            <li class="list-group-item" v-for="(item, index) in cart" :key="index">
+                <div class="row">
+                <div class="col-md">Name: {{ item.name }}</div>
+                <div class="col-md">Quantity: {{ item.quantity }}</div>
+                <div class="col-md">${{ item.price }}</div>
+                <div class="col-md">
+                    <button class="btn btn-link" @click="removeItem(index)"><i class="fas fa-times text-danger"></i></button>
+                </div>
+                </div>
+            </li>
+            </ul>
+        </div>
       </div>
     </div>
   </div>

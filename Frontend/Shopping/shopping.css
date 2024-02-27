@@ -1,0 +1,77 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-size: cover;
+    background-repeat: no-repeat;
+    animation: slideshow 60s infinite; 
+    animation-timing-function: ease-in-out;
+  }
+  
+  @keyframes slideshow {
+    0%, 100% {
+      background-image: url('../images/holiday1.jpg');
+    }
+    20% {
+      background-image: url('../images/holiday2.jpg');
+    }
+    40% {
+      background-image: url('../images/holiday3.jpg');
+    }
+    60% {
+      background-image: url('../images/holiday4.jpg');
+    }
+    80% {
+      background-image: url('../images/holiday5.jpg');
+    }
+  }
+
+  /* Translucent box for visibility */
+  .translucent-box {
+    background-color: rgba(255, 255, 255, 0.7); /* Translucent white background */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3); /* Slight shadow effect */
+  }
+  
+  h1 {
+    color: #333;
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+  }
+  
+  h2 {
+    color: #333;
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  
+  .list-group-item {
+    background-color: #fff;
+    border-color: #ccc;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    padding: 15px;
+  }
+  
+  .form-control {
+    border-radius: 5px;
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+  }
+  
+  .btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+  }
+  
+  .btn-success:hover {
+    background-color: #218838;
+    border-color: #218838;
+  }
