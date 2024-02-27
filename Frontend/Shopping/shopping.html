@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopping List</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+  <div id="app" class="container mt-5">
+    <h1>Shopping List</h1>
+    <div class="row">
+      <div class="col-md-7">
+        <ul class="list-group">
+          <li class="list-group-item" v-for="item in items" :key="item.id">
+            <div class="row">
+              <div class="col-md-8">{{ item.name }}</div>
+              <div class="col-md-2">
+                <input type="number" min="1" v-model.number="item.quantity" class="form-control" placeholder="Quantity">
+              </div>
+              <div class="col-md-2 text-end">${{ item.price }}</div>
+            </div>
+            <button class="btn btn-primary btn-sm mt-2" @click="addItemToCart(item)">Add to Cart</button>
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-5">
+        <h2>Shopping Cart</h2>
+        <div class="text-end my-3">
+            <h4>Total: ${{ getTotalPrice() }}</h4>
+            <button class="btn btn-success">Checkout</button>
+        </div>
+        <ul class="list-group">
+          <li class="list-group-item" v-for="(item, index) in cart" :key="index">
+            <div class="row">
+              <div class="col-md">Name: {{ item.name }}</div>
+              <div class="col-md">Quantity: {{ item.quantity }}</div>
+              <div class="col-md">${{ item.price }}</div>
+              <div class="col-md">
+                <button class="btn btn-link" @click="removeItem(index)"><i class="fas fa-times text-danger"></i></button>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vue.js -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+  <!-- Font Awesome -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+        items: [
+          { id: 1, name: 'Item 1', price: 10, quantity: 1 },
+          { id: 2, name: 'Item 2', price: 20, quantity: 1 },
+          { id: 3, name: 'Item 3', price: 15, quantity: 1 },
+          { id: 4, name: 'Item 4', price: 25, quantity: 1 },
+          { id: 5, name: 'Item 5', price: 30, quantity: 1 },
+          { id: 6, name: 'Item 6', price: 12, quantity: 1 },
+          { id: 7, name: 'Item 7', price: 18, quantity: 1 },
+          { id: 8, name: 'Item 8', price: 22, quantity: 1 }
+        ],
+        cart: []
+      },
+      methods: {
+        addItemToCart(item) {
+          // Check if item already exists in cart
+          const existingItem = this.cart.find(cartItem => cartItem.id === item.id);
+          if (existingItem) {
+            existingItem.quantity += parseInt(item.quantity);
+          } else {
+            this.cart.push({...item});
+          }
+          // Reset quantity to 1
+          item.quantity = 1;
+        },
+        removeItem(index) {
+          this.cart.splice(index, 1);
+        },
+        getTotalPrice() {
+          return this.cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+        }
+      }
+    });
+  </script>
+</body>
+</html>
+
