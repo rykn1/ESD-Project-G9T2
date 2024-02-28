@@ -1,6 +1,6 @@
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import {getAuth, createUserWithEmailAndPassword, onAuthStateChanged, signOut} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import {getAuth, createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCM4fJjQqUmMt8BmQ3Qi7hKVkhRSmzdDkQ",
@@ -59,6 +59,24 @@ const signupEmailPassword = async () => {
     }
   }}
 
+  const loginEmailPassword = async () => { //Login user
+    const loginEmail = document.getElementById('login-email').value.trim();
+    const loginPassword = document.getElementById('login-password').value.trim();
+    if (loginEmail == '' || loginPassword == '') { //Check for blank input
+      showLogInError('blank'); 
+    } else {
+      // console.log(loginEmail,loginPassword)
+      try {
+      const loginCredential = await signInWithEmailAndPassword(auth, loginEmail, loginPassword)
+      // window.location.href = "../Home/home.html" //Redirect to homepage
+      }
+      catch(error) { // Username/password wrong
+        // console.log(error);
+        showLogInError('invalid')
+      }
+    }
+  }
+
 
 onAuthStateChanged(auth, (user) => {
   if (user) {
@@ -87,13 +105,28 @@ function showSignUpError(error) { //Error code function for signup
     
 }
 
+function showLogInError(error) { //Error code function for signin
+  var loginMsg = document.getElementById('signinMessage')
+  loginMsg.setAttribute('style','color:red')
+  if (error == 'blank') {
+    loginMsg.innerText = 'Please fill in the blanks!'
+  } else if (error == 'invalid') {
+    loginMsg.innerText = 'Wrong email or password!'
+  }
+}
+
 const switchers = [...document.querySelectorAll(".switcher")];
+
+
 document.getElementsByClassName('btn-signup')[0].addEventListener("click", function(event){
   event.preventDefault()
 });
 document.getElementsByClassName('btn-signup')[0].addEventListener('click',signupEmailPassword);
 
-
+document.getElementsByClassName('btn-login')[0].addEventListener("click", function(event){
+  event.preventDefault()
+});
+document.getElementsByClassName('btn-login')[0].addEventListener('click',loginEmailPassword);
 
 switchers.forEach((item) => {
   item.addEventListener("click", function () {
