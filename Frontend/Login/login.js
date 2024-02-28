@@ -1,6 +1,6 @@
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import {getAuth, createUserWithEmailAndPassword, onAuthStateChanged} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import {getAuth, createUserWithEmailAndPassword, onAuthStateChanged, signOut} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCM4fJjQqUmMt8BmQ3Qi7hKVkhRSmzdDkQ",
@@ -59,13 +59,14 @@ const signupEmailPassword = async () => {
     }
   }}
 
-// onAuthStateChanged(auth, (user) => {
-//   if (user) {
-//     const uid = user.uid;
-//     console.log(uid)
-//     window.location.replace('../Homepage/homepage.html')
-//   }
-// })
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    const uid = user.uid;
+    console.log(uid)
+    window.location.replace('../Homepage/homepage.html')
+  }
+})
   
 function showSignUpError(error) { //Error code function for signup
   console.log(error)
