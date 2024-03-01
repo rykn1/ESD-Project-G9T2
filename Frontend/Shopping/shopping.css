@@ -5,24 +5,6 @@ body {
     animation: slideshow 60s infinite; 
     animation-timing-function: ease-in-out;
   }
-  
-  @keyframes slideshow {
-    0%, 100% {
-      background-image: url('../images/holiday1.jpg');
-    }
-    20% {
-      background-image: url('../images/holiday2.jpg');
-    }
-    40% {
-      background-image: url('../images/holiday3.jpg');
-    }
-    60% {
-      background-image: url('../images/holiday4.jpg');
-    }
-    80% {
-      background-image: url('../images/holiday5.jpg');
-    }
-  }
 
   /* Translucent box for visibility */
   .translucent-box {
