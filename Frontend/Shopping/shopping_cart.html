@@ -25,7 +25,7 @@
     </ul>
     <div class="text-center mt-4">
       <h4>Total: ${{ getTotalPrice() }}</h4>
-      <form action="checkout.php" method="POST" id="checkout-form">
+      <form id="checkout-form">
         <input type="hidden" name="total" :value="getTotalPrice()">
         <button type="submit" class="btn btn-success btn-lg">Pay Now</button>
       </form>
