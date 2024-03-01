@@ -3,32 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Itinerary Planner</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <!-- Include Vue.js library -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <style>
+        #app {
+            margin: 50px auto;
+            max-width: 600px;
+        }
+    </style>
 </head>
 <body>
     <div id="app">
-        <h1>Itinerary Planner</h1>
+        <h1 class="text-center mb-4">Itinerary Planner, Powered by AI!</h1>
 
         <form @submit.prevent="planItinerary">
-            <label for="country">Select a country:</label>
-            <select id="country" v-model="country">
-                <option value="">Select</option>
-                <option v-for="country in countries" :value="country" :key="country">{{ country }}</option>>
-            </select><br><br>
-            How many days are you planning for? <input type="number" v-model.number="days"><br><br>
-            <input type="submit" value="Plan!">
+            <div class="form-group">
+                <label for="country">Select a country:</label>
+                <select id="country" class="form-control" v-model="country">
+                    <option value="">Select</option>
+                    <option v-for="country in countries" :value="country" :key="country">{{ country }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="days">How many days are you planning for?</label>
+                <input id="days" type="number" class="form-control" v-model.number="days">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Plan!</button>
         </form>
 
-        <br>
-        <table border="1" v-if="itinerary">
-            <tbody>
-                <tr>
-                    <th>Itinerary Planned In Table Form Goes Here...</th>
-                </tr>
-            </tbody>
-        </table>
+        <div class="mt-4" v-if="itinerary">
+            <h2>Itinerary Planned In Table Form Goes Here...</h2>
+            <!-- Can display AI generated itinerary here later on OR we can make a new page -->
+        </div>
+        <a href="../HomePage/homepage.html" class="btn btn-danger mt-4">Return to Home</a>
     </div>
 
     <script>
