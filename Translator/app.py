@@ -1,18 +1,17 @@
-from flask import Flask, render_template, request, redirect, jsonify
+from flask import Flask, render_template, request, redirect
 import requests
-import cv2
+from PIL import Image, ImageDraw, ImageFont
 import pytesseract
-
 
 app = Flask(__name__)
 
 # Function to perform text detection, translation, and text replacement
-# Function to perform text detection, translation, and text replacement
 def process_image(image_path, target_language):
     # Read image
-    img = cv2.imread(image_path)
+    img = Image.open(image_path)
     img_with_text = img.copy()  # Create a copy to overlay text with background
-
+    draw = ImageDraw.Draw(img_with_text)
+    
     # Define a threshold for confidence score
     threshold = 0.25
 
@@ -44,16 +43,17 @@ def process_image(image_path, target_language):
             box_coords.append((x, y, x + w, y + h))
 
             # Draw green box
-            cv2.rectangle(img_with_text, (x, y), (x + w, y + h), (0, 255, 0), 2)  # Green box
+            draw.rectangle([(x, y), (x + w, y + h)], outline="green")
 
             # Draw text in red inside the green box
-            cv2.putText(img_with_text, text, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2)
+            draw.text((x, y - 10), text, fill="red")
 
             extracted_text += text + "\n"  # Append extracted text
 
     # Save the processed image with bounding boxes
     processed_image_path = 'static/processed_image.jpg'
-    cv2.imwrite(processed_image_path, img_with_text)
+    img_with_text_rgb = img_with_text.convert('RGB')  # Convert to RGB mode
+    img_with_text_rgb.save(processed_image_path)
 
     # Translate the extracted text using RapidAPI Deep Translate API
     translated_text = translate_text(extracted_text, target_language)
@@ -63,12 +63,10 @@ def process_image(image_path, target_language):
 
     # Save the replaced image
     replaced_image_path = 'static/replaced_image.jpg'
-    cv2.imwrite(replaced_image_path, replaced_image)
+    replaced_image_rgb = replaced_image.convert('RGB')  # Convert to RGB mode
+    replaced_image_rgb.save(replaced_image_path)
 
     return translated_text, replaced_image_path
-
-
-
 
 # Function to translate text using RapidAPI Deep Translate API
 def translate_text(text, target_language):
@@ -99,10 +97,12 @@ def translate_text(text, target_language):
 def replace_text(image, box_coords, translated_text, text_color=(0, 0, 0), background_color=(255, 255, 255), transparency=0.5):
     # Create a copy of the image
     replaced_image = image.copy()
+    draw = ImageDraw.Draw(replaced_image)
 
-    # Define the thinner font face
-    font_face = cv2.FONT_HERSHEY_SIMPLEX  # You might need to change this font face
-
+    # Define the font face and size
+    font_path = "arial.ttf"  # Replace with the path to your font file
+    font_size = 16
+    font = ImageFont.truetype(font_path, font_size)
 
     # Iterate over the bounding box coordinates and the translated text
     for box, text in zip(box_coords, translated_text.split("\n")):
@@ -110,31 +110,25 @@ def replace_text(image, box_coords, translated_text, text_color=(0, 0, 0), backg
         x1, y1, x2, y2 = box
 
         # Draw a filled rectangle for semi-translucent background
-        overlay = replaced_image.copy()
-        cv2.rectangle(overlay, (x1, y1), (x2, y2), background_color, -1)
-        replaced_image = cv2.addWeighted(overlay, transparency, replaced_image, 1 - transparency, 0)
+        draw.rectangle([(x1, y1), (x2, y2)], fill=background_color)
 
-        # Calculate the maximum font scale to fit the text inside the bounding box
-        font_scale = 0.8
-        while True:
-            # Get the size of the text bounding box
-            (text_width, text_height), _ = cv2.getTextSize(text, font_face, font_scale, 2)
-            
-            # Check if the text fits inside the bounding box
-            if text_width < (x2 - x1) * 0.9 and text_height < (y2 - y1) * 0.9:
-                break  # Exit the loop if the text fits
-            else:
-                # Reduce the font scale
-                font_scale -= 0.05
+        # Calculate the maximum font size to fit the text inside the bounding box
+        while draw.textbbox((0, 0), text, font=font)[:2][0] > (x2 - x1) * 0.9 or draw.textbbox((0, 0), text, font=font)[:2][1] > (y2 - y1) * 0.9:
+            font_size -= 1
+            font = ImageFont.truetype(font_path, font_size)
 
         # Calculate the text position more centered within the bounding box
+        text_width, text_height = draw.textbbox((0, 0), text, font=font)[:2]
         text_x = x1 + (x2 - x1 - text_width) // 2
-        text_y = y1 + (y2 - y1 + text_height) // 2
+        text_y = y1 + (y2 - y1 - text_height) // 2
 
         # Draw the translated text on the image
-        cv2.putText(replaced_image, text, (text_x, text_y), font_face, font_scale, text_color, 2)
+        draw.text((text_x, text_y), text, fill=text_color, font=font)
 
     return replaced_image
+
+
+
 
 @app.route('/')
 def index():
@@ -175,8 +169,3 @@ def upload():
 
 if __name__ == '__main__':
     app.run(port=5003, debug=True)
-
-
-
-
-
