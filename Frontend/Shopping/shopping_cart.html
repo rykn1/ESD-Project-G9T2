@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopping Cart</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Vue.js -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+  <!-- Your shopping.js file -->
+  <script src="shopping.js"></script>
+  <!-- Stripe.js library -->
+  <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+  <div class="container mt-5" id="app">
+    <h1 class="text-center">Shopping Cart</h1>
+    <ul class="list-group">
+      <li class="list-group-item" v-for="(item, index) in cart" :key="index">
+        <div class="row">
+          <div class="col-md">{{ item.name }}</div>
+          <div class="col-md">Quantity: {{ item.quantity }}</div>
+          <div class="col-md">Price: ${{ item.price * item.quantity }}</div>
+        </div>
+      </li>
+    </ul>
+    <div class="text-center mt-4">
+      <h4>Total: ${{ getTotalPrice() }}</h4>
+      <form id="payment-form">
+        <div class="form-group">
+          <label for="card-element">Credit or debit card</label>
+          <div id="card-element">
+            <!-- A Stripe Element will be inserted here. -->
+          </div>
+          <!-- Used to display form errors. -->
+          <div id="card-errors" role="alert"></div>
+        </div>
+        <button class="btn btn-success btn-lg" id="submit-payment-btn">Pay Now</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // Create a Stripe client
+    var stripe = Stripe('YOUR_STRIPE_PUBLIC_KEY');
+
+    // Create an instance of Elements
+    var elements = stripe.elements();
+
+    // Create an instance of the card Element
+    var card = elements.create('card');
+
+    // Add an instance of the card Element into the `card-element` div
+    card.mount('#card-element');
+
+    // Handle real-time validation errors from the card Element
+    card.addEventListener('change', function(event) {
+      var displayError = document.getElementById('card-errors');
+      if (event.error) {
+        displayError.textContent = event.error.message;
+      } else {
+        displayError.textContent = '';
+      }
+    });
+
+    // Handle form submission
+    var form = document.getElementById('payment-form');
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+      stripe.createToken(card).then(function(result) {
+        if (result.error) {
+          // Inform the user if there was an error
+          var errorElement = document.getElementById('card-errors');
+          errorElement.textContent = result.error.message;
+        } else {
+          // Send the token to your server
+          stripeTokenHandler(result.token);
+        }
+      });
+    });
+
+    // Submit the token to your server
+    function stripeTokenHandler(token) {
+      // Insert the token ID into the form so it gets submitted to the server
+      var form = document.getElementById('payment-form');
+      var hiddenInput = document.createElement('input');
+      hiddenInput.setAttribute('type', 'hidden');
+      hiddenInput.setAttribute('name', 'stripeToken');
+      hiddenInput.setAttribute('value', token.id);
+      form.appendChild(hiddenInput);
+
+      // Submit the form
+      form.submit();
+    }
+
+
+    new Vue({
+      el: '#app',
+      data: {
+        cart: [], // Define the cart data
+      },
+      methods: {
+        getTotalPrice() {
+          // Define the method to calculate total price
+          return this.cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+        },
+      },
+      created() {
+        // Fetch cart data from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const cartData = urlParams.get('cart');
+        if (cartData) {
+          this.cart = JSON.parse(cartData); // Set cart data from URL
+        }
+      },
+    });
+  </script>
+</body>
+</html>

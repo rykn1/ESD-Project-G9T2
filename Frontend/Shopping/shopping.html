@@ -38,7 +38,7 @@
             <h2 class="text-center">Your Travel Cart</h2>
             <div class="text-end my-3">
                 <h4>Total: ${{ getTotalPrice() }}</h4>
-                <button class="btn btn-success">Proceed to Checkout</button>
+                <a :href="'shopping_cart.html?cart=' + JSON.stringify(cart)" class="btn btn-success">Proceed to Checkout</a>
             </div>
             <ul class="list-group">
             <li class="list-group-item" v-for="(item, index) in cart" :key="index">
