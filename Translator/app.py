@@ -3,7 +3,7 @@ import requests
 from PIL import Image, ImageDraw, ImageFont
 import pytesseract
 
-app = Flask(__name__)
+app = Flask(__name__,template_folder='../frontend/templates')
 
 # Function to perform text detection, translation, and text replacement
 def process_image(image_path, target_language):
@@ -92,15 +92,16 @@ def translate_text(text, target_language):
         return ""
 
 
-# Function to replace text in an image using translated text and box coordinates
-# Function to replace text in an image using translated text and box coordinates
+
+from PIL import Image, ImageDraw, ImageFont
+
 def replace_text(image, box_coords, translated_text, text_color=(0, 0, 0), background_color=(255, 255, 255), transparency=0.5):
     # Create a copy of the image
     replaced_image = image.copy()
     draw = ImageDraw.Draw(replaced_image)
 
-    # Define the font face and size
-    font_path = "arial.ttf"  # Replace with the path to your font file
+    # Define the font face and starting font size
+    font_path = "Arial Unicode MS.ttf"  # Replace with the path to your font file
     font_size = 16
     font = ImageFont.truetype(font_path, font_size)
 
@@ -109,23 +110,27 @@ def replace_text(image, box_coords, translated_text, text_color=(0, 0, 0), backg
         # Unpack the coordinates
         x1, y1, x2, y2 = box
 
-        # Draw a filled rectangle for semi-translucent background
-        draw.rectangle([(x1, y1), (x2, y2)], fill=background_color)
-
         # Calculate the maximum font size to fit the text inside the bounding box
-        while draw.textbbox((0, 0), text, font=font)[:2][0] > (x2 - x1) * 0.9 or draw.textbbox((0, 0), text, font=font)[:2][1] > (y2 - y1) * 0.9:
-            font_size -= 1
+        while True:
+            # Create a new font with the current font size
             font = ImageFont.truetype(font_path, font_size)
+            text_width, text_height = draw.textbbox((0, 0), text, font=font)[:2]
+            if text_width < (x2 - x1) * 0.9 and text_height < (y2 - y1) * 0.9:
+                break
+            font_size -= 1
 
         # Calculate the text position more centered within the bounding box
-        text_width, text_height = draw.textbbox((0, 0), text, font=font)[:2]
-        text_x = x1 + (x2 - x1 - text_width) // 2
-        text_y = y1 + (y2 - y1 - text_height) // 2
+        text_x = x1 + ((x2 - x1) - text_width) // 4
+        text_y = y1 + ((y2 - y1) - text_height) // 4
+
+        # Draw a filled rectangle for semi-translucent background
+        draw.rectangle([(x1, y1), (x2, y2)], fill=background_color)
 
         # Draw the translated text on the image
         draw.text((text_x, text_y), text, fill=text_color, font=font)
 
     return replaced_image
+
 
 
 
@@ -142,7 +147,7 @@ def index():
     response = requests.get(url, headers=headers)
     language_data = response.json() if response.status_code == 200 else {'languages': []}
 
-    return render_template('index.html', language_data=language_data)
+    return render_template('index.html', language_data=language_data, template_folder='../frontend/templates')
 
 
 @app.route('/upload', methods=['POST'])
@@ -165,7 +170,7 @@ def upload():
         # Process the uploaded image with the selected target language
         translated_text, replaced_image_path = process_image(image_path, target_language)
         
-        return render_template('result.html', replaced_image=replaced_image_path, translated_text=translated_text)
+        return render_template('result.html', replaced_image=replaced_image_path, translated_text=translated_text, template_folder='../frontend/templates')
 
 if __name__ == '__main__':
     app.run(port=5003, debug=True)
