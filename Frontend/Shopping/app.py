@@ -7,109 +7,109 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
-class Book(db.Model):
-    __tablename__ = 'book'
+class Item(db.Model):
+    __tablename__ = 'items'
 
-    isbn13 = db.Column(db.String(13), primary_key=True)
-    title = db.Column(db.String(64), nullable=False)
+    id = db.Column(db.integer, primary_key=True)
+    name = db.Column(db.String(64), nullable=False)
     price = db.Column(db.Float(precision=2), nullable=False)
-    availability = db.Column(db.Integer)
+    quantity = db.Column(db.Integer)
 
-    def __init__(self, isbn13, title, price, availability):
-        self.isbn13 = isbn13
-        self.title = title
+    def __init__(self, id, name, price, quantity):
+        self.id = id
+        self.name = name
         self.price = price
-        self.availability = availability
+        self.quantity = quantity
 
     def json(self):
-        return {"isbn13": self.isbn13, "title": self.title, "price": self.price, "availability": self.availability}
+        return {"id": self.id, "name": self.name, "price": self.price, "quantity": self.quantity}
 
 
 
-@app.route("/book")
+@app.route("/items")
 def get_all():
-    booklist = db.session.scalars(db.select(Book)).all()
+    itemList = db.session.scalars(db.select(Item)).all()
 
-    if len(booklist):
+    if len(itemList):
         return jsonify(
             {
                 "code": 200,
                 "data": {
-                    "book": [book.json() for book in booklist]
+                    "item": [item.json() for item in itemList]
                 }
             }
         )
     return jsonify(
         {
             "code": 404,
-            "message": "There are no book."
+            "message": "There are no items."
         }
     ), 404
 
 
-@app.route("/book/<string:isbn13>")
-def find_by_isbn13(isbn13):
-    book = db.session.scalars(
-    	db.select(Book).filter_by(isbn13=isbn13).limit(1)).first()
+# @app.route("/book/<string:isbn13>")
+# def find_by_isbn13(isbn13):
+#     book = db.session.scalars(
+#     	db.select(Book).filter_by(isbn13=isbn13).limit(1)).first()
 
-    if book:
-        return jsonify(
-            {
-                "code": 200,
-                "data": book.json()
-            }
-        )
-    return jsonify(
-        {
-            "code": 404,
-            "message": "Book not found."
-        }
-    ), 404
-
-
-@app.route("/book/<string:isbn13>", methods=['POST'])
-def create_book(isbn13):
-    if (db.session.scalars(
-      db.select(Book).filter_by(isbn13=isbn13).
-      limit(1)
-      ).first()
-      ):
-        return jsonify(
-            {
-                "code": 400,
-                "data": {
-                    "isbn13": isbn13
-                },
-                "message": "Book already exists."
-            }
-        ), 400
+#     if book:
+#         return jsonify(
+#             {
+#                 "code": 200,
+#                 "data": book.json()
+#             }
+#         )
+#     return jsonify(
+#         {
+#             "code": 404,
+#             "message": "Book not found."
+#         }
+#     ), 404
 
 
-    data = request.get_json()
-    book = Book(isbn13, **data)
+# @app.route("/book/<string:isbn13>", methods=['POST'])
+# def create_book(isbn13):
+#     if (db.session.scalars(
+#       db.select(Book).filter_by(isbn13=isbn13).
+#       limit(1)
+#       ).first()
+#       ):
+#         return jsonify(
+#             {
+#                 "code": 400,
+#                 "data": {
+#                     "isbn13": isbn13
+#                 },
+#                 "message": "Book already exists."
+#             }
+#         ), 400
 
 
-    try:
-        db.session.add(book)
-        db.session.commit()
-    except:
-        return jsonify(
-            {
-                "code": 500,
-                "data": {
-                    "isbn13": isbn13
-                },
-                "message": "An error occurred creating the book."
-            }
-        ), 500
+#     data = request.get_json()
+#     book = Book(isbn13, **data)
 
 
-    return jsonify(
-        {
-            "code": 201,
-            "data": book.json()
-        }
-    ), 201
+#     try:
+#         db.session.add(book)
+#         db.session.commit()
+#     except:
+#         return jsonify(
+#             {
+#                 "code": 500,
+#                 "data": {
+#                     "isbn13": isbn13
+#                 },
+#                 "message": "An error occurred creating the book."
+#             }
+#         ), 500
+
+
+#     return jsonify(
+#         {
+#             "code": 201,
+#             "data": book.json()
+#         }
+#     ), 201
 
 
 if __name__ == '__main__':
