@@ -32,7 +32,7 @@
         </form>
         <div class="mt-4" v-if="itinerary">
             <h2>Itinerary</h2>
-            <div v-for="(day, index) in itinerary" :key="index">
+            <div v-for="(day, index) in itinerary['Days']" :key="index">
                 <h3>Day {{ index + 1 }}</h3>
                 <ul>
                     <li v-for="activity in day.Activities" :key="activity">{{ activity }}</li>
