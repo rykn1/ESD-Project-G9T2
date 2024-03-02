@@ -1,4 +1,4 @@
-# pip install google-generativeai   if you haven't lol.
+# pip install google-generativeai  - if you haven't lol.
 
 from flask import Flask, request, jsonify
 import google.generativeai as genai
@@ -63,7 +63,7 @@ def plan_itinerary():
         return jsonify({'error': 'Missing country or days'})
 
     # Construct your prompt carefully 
-    prompt = f"""Generate a travel itinerary for {country} for {days} number of days in JSON format without backticks, where "Days" would be the key and "Activities" would be the list of activities to do on that specific day"""
+    prompt = f"""Generate a travel itinerary for {country} for {days} number of day(s) in JSON format without backticks, where "Days" would be the key and "Activities" would be the list of activities to do on that specific day"""
     # prompt_parts = [
     #   "Itinerary Parameters {country}",
     #   "Itinerary Generated ",
