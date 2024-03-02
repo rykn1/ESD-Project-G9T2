@@ -3,6 +3,7 @@
 from flask import Flask, request, jsonify
 import google.generativeai as genai
 from flask_cors import CORS
+import json
 
 app = Flask(__name__)
 CORS(app)
@@ -62,11 +63,14 @@ def plan_itinerary():
         return jsonify({'error': 'Missing country or days'})
 
     # Construct your prompt carefully 
-    prompt = f"""Generate a travel itinerary for {country} for {days} number of days in JSON format, where "Days" would be the key and "Activities" would be the list of activities to do on that specific day"""
+    prompt = f"""Generate a travel itinerary for {country} for {days} number of days in JSON format without backticks, where "Days" would be the key and "Activities" would be the list of activities to do on that specific day"""
+    # prompt = f"""Generate a travel itinerary for {country} for {days} number of days in this JSON format: 'Day 1':['activity1':'...','activity2':'...'], 'Day 2':['activity1':'...','activity2':'...']"""
 
     try:
         response = model.generate_content(prompt)
         itinerary_json = response.text
+        temp = json.loads(itinerary_json)
+        print(temp)
         return jsonify(itinerary_json) 
     except Exception as e:  
         print(f"Error generating itinerary: {e}") 

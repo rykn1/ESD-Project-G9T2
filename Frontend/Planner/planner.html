@@ -90,14 +90,15 @@
                         console.log(response)
                         if (response.ok) {
                             this.itinerary = await response.json();
+                            
                         } else {
                             console.log('test2')
                             console.error("Error fetching itinerary:", response.statusText);
-                            alert("An error occurred while fetching your itinerary. Please try again.1");
+                            alert("An error occurred while fetching your itinerary. Please try again.");
                         }
                     } catch (error) {
                         console.error("Error fetching itinerary:", error);
-                        alert("An error occurred while fetching your itinerary. Please try again.2");
+                        alert("An error occurred while fetching your itinerary. Please try again.");
                     }
                 }
             }
