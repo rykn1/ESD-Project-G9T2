@@ -2,7 +2,6 @@
 
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import exchangeratesapi
 import requests
 
 app = Flask(__name__)
@@ -13,7 +12,6 @@ api_key = ""  # Get this from https://exchangeratesapi.io/ , create an account t
 def get_exchange_rate():
     from_currency = request.args.get('from')
     to_currency = request.args.get('to')
-    # amount = float(request.args.get('amount', 1.0)) 
 
     try:
 
@@ -28,8 +26,6 @@ def get_exchange_rate():
             return jsonify({
                 'from': from_currency,
                 'to': to_currency,
-                # 'amount': amount,
-                # 'rate': rate, 
                 'result': result
             })
         else:
