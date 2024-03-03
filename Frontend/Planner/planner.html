@@ -54,6 +54,19 @@
                 </table>
             </div>
             <div class="mt-4">
+                <h3>Weather</h3>
+                <div v-if="weather">
+                  <p><strong>Temperature:</strong> {{ weather.temperature }}°C</p>
+                  <p><strong>Conditions:</strong> {{ weather.description }}</p>
+                </div>
+                <div v-else-if="isWeatherLoading">
+                  <img style="width:50px" src="../Images/loading_icon.gif" alt="Loading...">
+                </div>
+                <div v-else-if="weatherError">
+                  Error fetching weather: {{ weatherError }}
+                </div>
+            </div>
+            <div class="mt-4">
                 <h3>Currency Conversion</h3>
                 <h5>SGD to {{ itinerary.CountryCurrency.CurrencySymbol }}</h5>
                 <div class="table-responsive"> 
@@ -117,6 +130,9 @@
                     currencyRate: null,
                     currencyError: null, 
                     isLoading: false,
+                    isWeatherLoading: false,
+                    weatherError: null,
+                    weather: null,
             },
             methods: {
                 async planItinerary() {
@@ -146,6 +162,26 @@
                         alert("An error occurred while fetching your itinerary. Please try again.");
                     } finally {
                         this.isLoading = false; 
+                    }
+
+                    // For checking weather
+                    try {
+                        this.isWeatherLoading = true;
+                        const weatherResponse = await fetch('http://127.0.0.1:5003/weather', { 
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ country: this.country })
+                        });
+                        if (weatherResponse.ok) {
+                            this.weather = await weatherResponse.json();
+                        } else {
+                            console.log(test3)
+                            this.weatherError = 'Error fetching weather (Server issue)';
+                        }
+                    } catch (error) {
+                        this.weatherError = 'Error fetching weather (Connection issue)';
+                    } finally {
+                        this.isWeatherLoading = false;
                     }
 
                     // For checking currency conversion
