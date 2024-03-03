@@ -30,7 +30,8 @@
             </div>
             <button type="submit" class="btn btn-primary">Plan!</button>
         </form>
-        <div class="mt-4" v-if="itinerary">
+        <div v-if="itinerary" class="mt-4"> 
+            <!-- For Itinerary -->
             <h2>Itinerary</h2>
             <div v-for="(day, index) in itinerary['Days']" :key="index">
                 <h3>Day {{ index + 1 }}</h3>
@@ -38,7 +39,21 @@
                     <li v-for="activity in day.Activities" :key="activity">{{ activity }}</li>
                 </ul>
             </div>
+            <!-- For Currency -->
+            <div class="mt-4">
+              <h3>Currency Conversion: SGD to {{ itinerary.CountryCurrency.CurrencySymbol }}</h3>
+              <div v-if="currencyRate">
+                1 SGD = {{ currencyRate }} {{ itinerary.CountryCurrency }} 
+             </div>
+              <div v-else-if="currencyError">
+                  Error fetching currency rate: {{ currencyError }}
+              </div>
+              <div v-else>
+                  Loading...
+              </div>
+            </div>
         </div>
+          
         <a href="../HomePage/homepage.html" class="btn btn-danger mt-4">Return to Home</a>
     </div>
 
@@ -72,7 +87,9 @@
                     'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States of America', 'Uruguay', 'Uzbekistan',
                     'Vanuatu', 'Venezuela', 'Vietnam',
                     'Yemen',
-                    'Zambia', 'Zimbabwe'] 
+                    'Zambia', 'Zimbabwe'],
+                    currencyRate: null,
+                    currencyError: null, 
             },
             methods: {
                 async planItinerary() {
@@ -81,8 +98,8 @@
                         return;
                     }
                     try {
-                        console.log('test1')
-                        const response = await fetch('http://127.0.0.1:5000/plan', { 
+                        console.log('Itinerary request sent to Gemini AI')
+                        const response = await fetch('http://127.0.0.1:5001/plan', { 
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({ country: this.country, days: this.days })
@@ -99,6 +116,21 @@
                     } catch (error) {
                         console.error("Error fetching itinerary:", error);
                         alert("An error occurred while fetching your itinerary. Please try again.");
+                    }
+
+                    // For checking currency conversion
+                    try {
+                        const destCurrency = this.itinerary.CountryCurrency.CurrencySymbol; 
+                        const response = await fetch(`http://127.0.0.1:5002/exchange?from=SGD&to=${destCurrency}&amount=1`);
+
+                        if (response.ok) {
+                            const data = await response.json();
+                            this.currencyRate = data.result;
+                        } else {
+                            this.currencyError = 'Error fetching currency rate (Server issue)';
+                        }
+                    } catch (error) {
+                        this.currencyError = 'Error fetching currency rate (Connection issue)';
                     }
                 }
             }

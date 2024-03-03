@@ -50,17 +50,16 @@ def plan_itinerary():
     if not country or not days:
         return jsonify({'error': 'Missing country or days'})
 
-    prompt = f"""Generate a travel itinerary for {country} for {days} number of day(s) in JSON format without backticks, where "Days" would be the key and "Activities" would be the list of activities to do on that specific day"""
+    prompt = f"""Generate a travel itinerary for {country} for {days} number of day(s) in JSON format without backticks, where "Days" would be the key and "Activities" would be the list of activities to do on that specific day. Also generate "CountryCurrency" as the key and "CurrencySymbol" would be the 3 letter currency symbol of the country selected."""
 
     try:
         response = model.generate_content(prompt)
         itinerary_json = response.text
-        temp = json.loads(itinerary_json)
-        print(temp)
-        return temp
-    except Exception as e:  
-        print(f"Error generating itinerary: {e}") 
+        itinerary = json.loads(itinerary_json) 
+        return jsonify(itinerary)
+    except Exception as e:
+        print(f"Error generating itinerary: {e}")
         return jsonify({'error': 'An error occurred while generating the itinerary.'}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True) 
+    app.run(debug=True, port=5001) 
