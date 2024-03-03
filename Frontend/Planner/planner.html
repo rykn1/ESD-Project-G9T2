@@ -30,30 +30,52 @@
             </div>
             <button type="submit" class="btn btn-primary">Plan!</button>
         </form>
-        <div v-if="itinerary" class="mt-4"> 
-            <!-- For Itinerary -->
+        <div v-if="itinerary" class="mt-4">
             <h2>Itinerary</h2>
-            <div v-for="(day, index) in itinerary['Days']" :key="index">
-                <h3>Day {{ index + 1 }}</h3>
-                <ul>
-                    <li v-for="activity in day.Activities" :key="activity">{{ activity }}</li>
-                </ul>
+            <div class="table-responsive"> <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Day</th>
+                            <th>Activities</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(day, index) in itinerary['Days']" :key="index">
+                            <td>Day {{ index + 1 }}</td>
+                            <td>
+                                <ul>
+                                    <li v-for="activity in day.Activities" :key="activity">
+                                        {{ activity }}
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <!-- For Currency -->
+        
             <div class="mt-4">
-              <h3>Currency Conversion: SGD to {{ itinerary.CountryCurrency.CurrencySymbol }}</h3>
-              <div v-if="currencyRate">
-                1 SGD = {{ currencyRate }} {{ itinerary.CountryCurrency.CurrencySymbol }} 
-             </div>
-              <div v-else-if="currencyError">
-                  Error fetching currency rate: {{ currencyError }}
-              </div>
-              <div v-else>
-                  Loading...
-              </div>
+                <h3>Currency Conversion</h3>
+                <h5>SGD to {{ itinerary.CountryCurrency.CurrencySymbol }}</h5>
+                <div class="table-responsive"> 
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr> 
+                                <td v-if="currencyRate">
+                                    1 SGD = {{ currencyRate }} {{ itinerary.CountryCurrency.CurrencySymbol }}
+                                 </td> 
+                                <td v-else-if="currencyError">
+                                    Error fetching currency rate: {{ currencyError }}
+                                </td>
+                                <td v-else> 
+                                    <img style="width:50px" src="../Images/loading_icon.gif" alt="Loading...">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-          
         <a href="../HomePage/homepage.html" class="btn btn-danger mt-4">Return to Home</a>
     </div>
 
