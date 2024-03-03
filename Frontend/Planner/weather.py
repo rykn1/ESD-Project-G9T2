@@ -21,9 +21,11 @@ def get_weather():
     try:
         response = requests.get(api_url) 
         weather_data = response.json()
+        temperature_c = round(weather_data['main']['temp']-273.15,1)
+        print(weather_data)
         return jsonify({
-            'temperature': weather_data.main.temp,
-            'description': weather_data.weather[0].description
+            'temperature': temperature_c,
+            'description': weather_data['weather'][0]['description']
         })
     
     except requests.exceptions.RequestException as e:

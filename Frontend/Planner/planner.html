@@ -53,38 +53,55 @@
                     </tbody>
                 </table>
             </div>
-            <div class="mt-4">
-                <h3>Weather</h3>
-                <div v-if="weather">
-                  <p><strong>Temperature:</strong> {{ weather.temperature }}°C</p>
-                  <p><strong>Conditions:</strong> {{ weather.description }}</p>
-                </div>
-                <div v-else-if="isWeatherLoading">
-                  <img style="width:50px" src="../Images/loading_icon.gif" alt="Loading...">
-                </div>
-                <div v-else-if="weatherError">
-                  Error fetching weather: {{ weatherError }}
-                </div>
-            </div>
-            <div class="mt-4">
-                <h3>Currency Conversion</h3>
-                <h5>SGD to {{ itinerary.CountryCurrency.CurrencySymbol }}</h5>
-                <div class="table-responsive"> 
-                    <table class="table table-bordered">
-                        <tbody>
-                            <tr> 
+            <div class="container mt-4">
+                <div class="row">
+                  <div class="col-md-6"> 
+                    <div class="card">
+                      <div class="card-header">
+                        <h3>Weather</h3>
+                      </div>
+                      <div class="card-body p-3"> 
+                        <div v-if="weather">
+                          <p><strong>Temperature:</strong> {{ weather.temperature }}°C</p>
+                          <p><strong>Conditions:</strong> {{ weather.description }}</p>
+                        </div>
+                        <div v-else-if="isWeatherLoading" class="alert alert-warning text-center"> 
+                          <img style="width:50px" src="../Images/loading_icon.gif" alt="Loading...">
+                        </div>
+                        <div v-else-if="weatherError" class="alert alert-danger">
+                          Error fetching weather: {{ weatherError }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+            
+                  <div class="col-md-6 mt-4 mt-md-0"> 
+                    <div class="card">
+                      <div class="card-header">
+                        <h3>Currency Conversion</h3>
+                        <h5>SGD to {{ itinerary.CountryCurrency.CurrencySymbol }}</h5>
+                      </div>
+                      <div class="card-body p-3">
+                        <div class="table-responsive"> 
+                          <table class="table table-bordered table-striped table-hover">
+                            <tbody>
+                              <tr> 
                                 <td v-if="currencyRate">
-                                    1 SGD = {{ currencyRate }} {{ itinerary.CountryCurrency.CurrencySymbol }}
-                                 </td> 
-                                <td v-else-if="currencyError">
-                                    Error fetching currency rate: {{ currencyError }}
+                                  1 SGD = {{ currencyRate }} {{ itinerary.CountryCurrency.CurrencySymbol }}
+                                </td> 
+                                <td v-else-if="currencyError" class="alert alert-danger">
+                                  Error fetching currency rate: {{ currencyError }}
                                 </td>
-                                <td v-else> 
-                                    <img style="width:50px" src="../Images/loading_icon.gif" alt="Loading...">
+                                <td v-else class="text-center"> 
+                                  <img style="width:50px" src="../Images/loading_icon.gif" alt="Loading...">
                                 </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
             </div>
         </div>

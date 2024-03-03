@@ -25,7 +25,7 @@ def get_exchange_rate():
             print(from_currency,to_currency)
             fromCurr = response['rates'][from_currency]
             toCurr = response['rates'][to_currency]
-            result = round((1/fromCurr)/(1/toCurr),3)
+            result = round((1/fromCurr)/(1/toCurr),2)
             return jsonify({
                 'from': from_currency,
                 'to': to_currency,
