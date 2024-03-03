@@ -3,37 +3,33 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import exchangeratesapi
+import requests
 
 app = Flask(__name__)
 CORS(app)
 
 api_key = ""  # Get this from https://exchangeratesapi.io/ , create an account there. 250 Free Calls. 
-
 @app.route('/exchange', methods=['GET'])
 def get_exchange_rate():
     from_currency = request.args.get('from')
     to_currency = request.args.get('to')
-    amount = float(request.args.get('amount', 1.0)) 
+    # amount = float(request.args.get('amount', 1.0)) 
 
     try:
-        response = exchangeratesapi.get_json(
-            'https://api.exchangeratesapi.io/v1/convert?access_key=${api_key}&from=${from_currency}&to=${to_currency}&amount=${amount}'
-            # params={
-            #     'access_key': api_key,
-            #     'from': from_currency,
-            #     'to': to_currency,
-            #     'amount': amount
-            # }
-        )
 
+        response = requests.get('http://api.exchangeratesapi.io/v1/latest?access_key=b03e781c96bd6d8f723f9845a764a569&symbols=SGD,AFN')
+        response = response.json()
+        print(response['success'])
         if response['success']:
-            rate = response['info']['rate']
-            result = response['result']
+            print(from_currency,to_currency)
+            fromCurr = response['rates'][from_currency]
+            toCurr = response['rates'][to_currency]
+            result = (1/fromCurr)/(1/toCurr)
             return jsonify({
                 'from': from_currency,
                 'to': to_currency,
-                'amount': amount,
-                'rate': rate, 
+                # 'amount': amount,
+                # 'rate': rate, 
                 'result': result
             })
         else:
