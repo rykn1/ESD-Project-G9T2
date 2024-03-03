@@ -53,7 +53,6 @@
                     </tbody>
                 </table>
             </div>
-        
             <div class="mt-4">
                 <h3>Currency Conversion</h3>
                 <h5>SGD to {{ itinerary.CountryCurrency.CurrencySymbol }}</h5>
@@ -76,6 +75,11 @@
                 </div>
             </div>
         </div>
+        <div v-else-if="isLoading">
+            <img style="width:100px" class="mt-4" src="../Images/loading_icon.gif" alt="Loading...">
+        </div>
+        <div v-else>
+        </div> 
         <a href="../HomePage/homepage.html" class="btn btn-danger mt-4">Return to Home</a>
     </div>
 
@@ -112,6 +116,7 @@
                     'Zambia', 'Zimbabwe'],
                     currencyRate: null,
                     currencyError: null, 
+                    isLoading: false,
             },
             methods: {
                 async planItinerary() {
@@ -119,6 +124,7 @@
                         alert("Please select a country and number of days");
                         return;
                     }
+                    this.isLoading = true;
                     try {
                         console.log('Itinerary request sent to Gemini AI')
                         const response = await fetch('http://127.0.0.1:5001/plan', { 
@@ -138,6 +144,8 @@
                     } catch (error) {
                         console.error("Error fetching itinerary:", error);
                         alert("An error occurred while fetching your itinerary. Please try again.");
+                    } finally {
+                        this.isLoading = false; 
                     }
 
                     // For checking currency conversion
