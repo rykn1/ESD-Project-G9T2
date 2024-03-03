@@ -54,6 +54,7 @@ def plan_itinerary():
 
     try:
         response = model.generate_content(prompt)
+        print(response)
         itinerary_json = response.text
         itinerary = json.loads(itinerary_json) 
         return jsonify(itinerary)

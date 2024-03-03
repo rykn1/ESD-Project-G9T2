@@ -14,15 +14,18 @@ def get_exchange_rate():
     to_currency = request.args.get('to')
 
     try:
+        api_url = f'http://api.exchangeratesapi.io/v1/latest?access_key={api_key}&symbols=SGD,{to_currency}'
 
-        response = requests.get('http://api.exchangeratesapi.io/v1/latest?access_key=b03e781c96bd6d8f723f9845a764a569&symbols=SGD,AFN')
+        response = requests.get(api_url)
+
         response = response.json()
         print(response['success'])
+        print(response)
         if response['success']:
             print(from_currency,to_currency)
             fromCurr = response['rates'][from_currency]
             toCurr = response['rates'][to_currency]
-            result = (1/fromCurr)/(1/toCurr)
+            result = round((1/fromCurr)/(1/toCurr),3)
             return jsonify({
                 'from': from_currency,
                 'to': to_currency,

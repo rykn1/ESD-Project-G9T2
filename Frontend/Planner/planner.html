@@ -43,7 +43,7 @@
             <div class="mt-4">
               <h3>Currency Conversion: SGD to {{ itinerary.CountryCurrency.CurrencySymbol }}</h3>
               <div v-if="currencyRate">
-                1 SGD = {{ currencyRate }} {{ itinerary.CountryCurrency }} 
+                1 SGD = {{ currencyRate }} {{ itinerary.CountryCurrency.CurrencySymbol }} 
              </div>
               <div v-else-if="currencyError">
                   Error fetching currency rate: {{ currencyError }}
