@@ -32,4 +32,4 @@ def get_weather():
         return jsonify({'error': 'Error fetching weather data'}), 500 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5003)
+    app.run(debug=True, port=5004)
