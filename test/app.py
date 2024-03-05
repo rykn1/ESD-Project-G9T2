@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, abort
+from flask import Flask, render_template, request, redirect, abort, send_file
 import requests
 from PIL import Image, ImageDraw, ImageFont
 import os
@@ -130,6 +130,15 @@ def replace_text(image, box_coords, translated_text, text_color=(0, 0, 0), backg
         draw.text((text_x, text_y), text, fill=text_color, font=font)
 
     return replaced_image
+
+# to allow the translated image to be downloaded. (need to import send_file from flask)
+@app.route('/download')
+def download():
+    # Path to the replaced image file
+    replaced_image_path = 'static/replaced_image.jpg'
+
+    # Send the file for download
+    return send_file(replaced_image_path, as_attachment=True)
 
 @app.route('/')
 def index():
