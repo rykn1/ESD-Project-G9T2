@@ -166,7 +166,14 @@
                             body: JSON.stringify({ country: this.country, days: this.days })
                         });
                         if (response.ok) {
-                            this.itinerary = await response.json();
+                            response_data = await response.json()
+                            response_data = response_data['data']
+                            this.itinerary = response_data['itinerary'];
+                            this.weather = response_data['weather'];
+                            this.currencyRate = response_data['exchange'].result;
+                            // console.log(this.itinerary)
+                            // console.log(this.weather)
+                            // console.log(this.currencyRate)
                         } else {
                             alert("An error occurred while fetching your itinerary. Please try again.");
                         }
@@ -176,38 +183,39 @@
                         this.isLoading = false; 
                     }
                     
-                    try {
-                        this.isWeatherLoading = true;
-                        const weatherResponse = await fetch('http://localhost:5001/api/weather', { 
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ country: this.country })
-                        });
-                        if (weatherResponse.ok) {
-                            this.weather = await weatherResponse.json();
-                        } else {
-                            this.weatherError = 'Error fetching weather';
-                        }
-                    } catch (error) {
-                        this.weatherError = 'Error fetching weather';
-                    } finally {
-                        this.isWeatherLoading = false;
-                    }
+                    // try {
+                    //     this.isWeatherLoading = true;
+                    //     const weatherResponse = await fetch('http://localhost:5001/api/weather', { 
+                    //         method: 'POST',
+                    //         headers: { 'Content-Type': 'application/json' },
+                    //         body: JSON.stringify({ country: this.country })
+                    //     });
+                    //     if (weatherResponse.ok) {
+                    //         this.weather = await weatherResponse.json();
+                    //     } else {
+                    //         this.weatherError = 'Error fetching weather';
+                    //     }
+                    // } catch (error) {
+                    //     this.weatherError = 'Error fetching weather';
+                    // } finally {
+                    //     this.isWeatherLoading = false;
+                    // }
                     
-                    if (this.itinerary && this.itinerary.CountryCurrency) {
-                        try {
-                            const destCurrency = this.itinerary.CountryCurrency.CurrencySymbol; 
-                            const response = await fetch(`http://localhost:5001/api/exchange?from=SGD&to=${destCurrency}&amount=1`);
-                            if (response.ok) {
-                                const data = await response.json();
-                                this.currencyRate = data.result;
-                            } else {
-                                this.currencyError = 'Error fetching currency rate';
-                            }
-                        } catch (error) {
-                            this.currencyError = 'Error fetching currency rate';
-                        }
-                    }
+                    // if (this.itinerary && this.itinerary.CountryCurrency) {
+                    //     try {
+                    //         console.log(this.itinerary)
+                    //         const destCurrency = this.itinerary.CountryCurrency.CurrencySymbol; 
+                    //         const response = await fetch(`http://localhost:5001/api/exchange?from=SGD&to=${destCurrency}&amount=1`);
+                    //         if (response.ok) {
+                    //             const data = await response.json();
+                    //             this.currencyRate = data.result;
+                    //         } else {
+                    //             this.currencyError = 'Error fetching currency rate';
+                    //         }
+                    //     } catch (error) {
+                    //         this.currencyError = 'Error fetching currency rate';
+                    //     }
+                    // }
                 }
             }
         });
