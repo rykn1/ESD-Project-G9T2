@@ -143,13 +143,13 @@
                     'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States of America', 'Uruguay', 'Uzbekistan',
                     'Vanuatu', 'Venezuela', 'Vietnam',
                     'Yemen',
-                    'Zambia', 'Zimbabwe'],
-                    currencyRate: null,
-                    currencyError: null, 
-                    isLoading: false,
-                    isWeatherLoading: false,
-                    weatherError: null,
-                    weather: null,
+                    'Zambia', 'Zimbabwe'], 
+                currencyRate: null,
+                currencyError: null, 
+                isLoading: false,
+                isWeatherLoading: false,
+                weatherError: null,
+                weather: null,
             },
             methods: {
                 async planItinerary() {
@@ -158,62 +158,55 @@
                         return;
                     }
                     this.isLoading = true;
+                    
                     try {
-                        console.log('Itinerary request sent to Gemini AI')
-                        const response = await fetch('http://127.0.0.1:5001/plan', { 
+                        const response = await fetch('http://localhost:5001/api/plan', { 
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({ country: this.country, days: this.days })
                         });
-                        console.log(response)
                         if (response.ok) {
                             this.itinerary = await response.json();
-                            
                         } else {
-                            console.log('test2')
-                            console.error("Error fetching itinerary:", response.statusText);
                             alert("An error occurred while fetching your itinerary. Please try again.");
                         }
                     } catch (error) {
-                        console.error("Error fetching itinerary:", error);
                         alert("An error occurred while fetching your itinerary. Please try again.");
                     } finally {
                         this.isLoading = false; 
                     }
-
-                    // For checking weather
+                    
                     try {
                         this.isWeatherLoading = true;
-                        const weatherResponse = await fetch('http://127.0.0.1:5003/weather', { 
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ country: this.country })
+                        const weatherResponse = await fetch('http://localhost:5001/api/weather', { 
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ country: this.country })
                         });
                         if (weatherResponse.ok) {
                             this.weather = await weatherResponse.json();
                         } else {
-                            console.log(test3)
-                            this.weatherError = 'Error fetching weather (Server issue)';
+                            this.weatherError = 'Error fetching weather';
                         }
                     } catch (error) {
-                        this.weatherError = 'Error fetching weather (Connection issue)';
+                        this.weatherError = 'Error fetching weather';
                     } finally {
                         this.isWeatherLoading = false;
                     }
-
-                    // For checking currency conversion
-                    try {
-                        const destCurrency = this.itinerary.CountryCurrency.CurrencySymbol; 
-                        const response = await fetch(`http://127.0.0.1:5002/exchange?from=SGD&to=${destCurrency}&amount=1`);
-
-                        if (response.ok) {
-                            const data = await response.json();
-                            this.currencyRate = data.result;
-                        } else {
-                            this.currencyError = 'Error fetching currency rate (Server issue)';
+                    
+                    if (this.itinerary && this.itinerary.CountryCurrency) {
+                        try {
+                            const destCurrency = this.itinerary.CountryCurrency.CurrencySymbol; 
+                            const response = await fetch(`http://localhost:5001/api/exchange?from=SGD&to=${destCurrency}&amount=1`);
+                            if (response.ok) {
+                                const data = await response.json();
+                                this.currencyRate = data.result;
+                            } else {
+                                this.currencyError = 'Error fetching currency rate';
+                            }
+                        } catch (error) {
+                            this.currencyError = 'Error fetching currency rate';
                         }
-                    } catch (error) {
-                        this.currencyError = 'Error fetching currency rate (Connection issue)';
                     }
                 }
             }
