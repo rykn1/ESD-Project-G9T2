@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OCR Translation</title>
+</head>
+<body>
+    <h1>OCR Translation</h1>
+    
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" accept="image/*">
+        <br>
+        <label for="target_language">Select Target Language:</label>
+        <select name="target_language" id="target_language">
+            <!-- Loop through the available languages obtained from the translation service -->
+            {% for language in language_data.languages %}
+                <option value="{{ language.language }}">{{ language.name }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <input type="submit" value="Upload and Translate">
+    </form>
+</body>
+</html>
