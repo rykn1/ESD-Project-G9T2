@@ -5,7 +5,8 @@ import traceback
 app = Flask(__name__)
 
 text_detection_service_url = "http://localhost:5001/detect_text"
-translation_service_url = "http://localhost:5002/translate_text"
+translation_service_url = "http://localhost:5002/get_languages"
+translation_decipher_url = "http://localhost:5002/translate_text"
 text_replacement_service_url = "http://localhost:5003/replace_text"
 
 def process_image(file, target_language):
@@ -27,7 +28,7 @@ def process_image(file, target_language):
 
             # Step 2: Translation
             payload = {'text': extracted_text, 'target_language': target_language}
-            response = requests.post(translation_service_url, json=payload)
+            response = requests.post(translation_decipher_url, json=payload)
             translated_text = response.json().get('translated_text', '') if response.ok else ''
             print('Translated Text:', translated_text)
 
@@ -52,7 +53,14 @@ def handle_error(error_msg):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    try:
+        # Fetch language data
+        response = requests.get(translation_service_url)
+        language_data = response.json() if response.ok else {'languages': []}
+
+        return render_template('index.html', language_data=language_data)
+    except Exception as e:
+        return handle_error(str(e))
 
 @app.route('/upload', methods=['POST'])
 def upload():
