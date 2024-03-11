@@ -182,40 +182,7 @@
                     } finally {
                         this.isLoading = false; 
                     }
-                    
-                    // try {
-                    //     this.isWeatherLoading = true;
-                    //     const weatherResponse = await fetch('http://localhost:5001/api/weather', { 
-                    //         method: 'POST',
-                    //         headers: { 'Content-Type': 'application/json' },
-                    //         body: JSON.stringify({ country: this.country })
-                    //     });
-                    //     if (weatherResponse.ok) {
-                    //         this.weather = await weatherResponse.json();
-                    //     } else {
-                    //         this.weatherError = 'Error fetching weather';
-                    //     }
-                    // } catch (error) {
-                    //     this.weatherError = 'Error fetching weather';
-                    // } finally {
-                    //     this.isWeatherLoading = false;
-                    // }
-                    
-                    // if (this.itinerary && this.itinerary.CountryCurrency) {
-                    //     try {
-                    //         console.log(this.itinerary)
-                    //         const destCurrency = this.itinerary.CountryCurrency.CurrencySymbol; 
-                    //         const response = await fetch(`http://localhost:5001/api/exchange?from=SGD&to=${destCurrency}&amount=1`);
-                    //         if (response.ok) {
-                    //             const data = await response.json();
-                    //             this.currencyRate = data.result;
-                    //         } else {
-                    //             this.currencyError = 'Error fetching currency rate';
-                    //         }
-                    //     } catch (error) {
-                    //         this.currencyError = 'Error fetching currency rate';
-                    //     }
-                    // }
+                  
                 }
             }
         });
