@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request 
+from flask import Flask, render_template, request, send_file
 import requests 
 import traceback 
 import os
@@ -83,7 +83,15 @@ def upload():
             return handle_error("Failed to process the image") 
  
     except Exception as e: 
-        return handle_error(str(e)) 
+        return handle_error(str(e))
+    
+@app.route('/download')
+def download():
+    # Path to the replaced image file
+    replaced_image_path = 'static/replaced_image.png'
+
+    # Send the file for download
+    return send_file(replaced_image_path, as_attachment=True) 
  
 if __name__ == '__main__': 
     app.run(port=5000, debug=True)
