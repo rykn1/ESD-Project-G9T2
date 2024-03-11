@@ -75,6 +75,7 @@ def upload():
         #print('File and target language ok')
  
         replaced_image_path, translated_text = process_image(file, target_language) 
+        
  
         if replaced_image_path: 
             return render_template('result.html', replaced_image=replaced_image_path, translated_text=translated_text) 
