@@ -12,5 +12,14 @@ def log_error():
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
+@app.errorhandler(400)
+def handle_bad_request_error(e):
+    return jsonify({'success': False, 'error': 'Bad request. Please check your input.'}), 400
+
+@app.errorhandler(500)
+def handle_internal_server_error(e):
+    return jsonify({'success': False, 'error': 'Internal server error.'}), 500
+
 if __name__ == '__main__':
     app.run(port=5004, debug=True)
+
