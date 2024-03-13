@@ -115,8 +115,24 @@ def delete_item(id):
 @app.route("/totalprice", methods=['GET'])
 def get_total_price():
     cart_items = Cart.query.all()
-    total_price = sum(item.price * item.quantity for item in cart_items)
-    return jsonify({"total_price": total_price}), 200
+    
+    if cart_items:
+        return jsonify (
+            {
+                "code": 200,
+                "data": {
+                    "totalprice": sum(item.price * item.quantity for item in cart_items)
+                }
+            }
+        )
+    return jsonify(
+        {
+            "code": 200,
+            "data": {
+                    "totalprice": 0
+                }
+        }
+    ), 404
 
 if __name__ == '__main__':
     app.run(port=5006, debug=True)

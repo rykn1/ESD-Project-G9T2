@@ -41,7 +41,7 @@
         <div class="translucent-box">
             <h2 class="text-center">Your Travel Cart</h2>
             <div class="text-end my-3">
-                <h4>Total: ${{ getTotalPrice() }}</h4>
+                <h4>Total: ${{ total_price }}</h4>
                 <a :href="'shopping_cart.html?cart=' + JSON.stringify(cart)" class="btn btn-success">Proceed to Checkout</a>
             </div>
             <ul class="list-group">
@@ -51,7 +51,7 @@
                 <div class="col-md">Quantity: {{ item.quantity }}</div>
                 <div class="col-md">${{ item.price }}</div>
                 <div class="col-md">
-                    <button class="btn btn-link" @click="removeItem(index)"><i class="fas fa-times text-danger"></i></button>
+                    <button class="btn btn-link" @click="removeItem(item)"><i class="fas fa-times text-danger"></i></button>
                 </div>
                 </div>
             </li>
@@ -74,6 +74,7 @@
         data: {
           items: [],
           cart: [],
+          total_price: null,
         },
         methods: {
           getAllItems() {
@@ -104,6 +105,7 @@
               });
               console.log(response.data);
               this.cart.push({...item})
+              await this.getTotalPrice()
             } catch (error) {
               console.error('Error adding item to cart:', error);
             }
@@ -111,8 +113,13 @@
           async removeItem(item) {
             try{
               const itemId= item.id
-              const response = await axios.delete(cart_url + "/${itemId}")
+              const response = await axios.delete(cart_url + "/" + itemId)
               console.log(response.data)
+              const index = this.cart.findIndex(cartItem => cartItem.id === itemId);
+              if (index !== -1) {
+                this.cart.splice(index, 1);
+              }
+              await this.getTotalPrice()
             } catch (error) {
               console.error('Error deleting item:', error)
             }
@@ -120,14 +127,21 @@
           async getTotalPrice() {
             try {
               const response = await axios.get(total_price_url);
-              console.log('Total price:', response.data.total_price);
+              console.log('Total price:', response.data.totalprice);
+              
+              this.total_price = response.data.data.totalprice;
+              console.log(this.total_price)
             } catch (error) {
               console.error('Error getting total price:', error);
+              
+              this.total_price = 0;
             }
+            
           }
         },
         created() {
           this.getAllItems();
+          this.getTotalPrice();
         }
   });
 
