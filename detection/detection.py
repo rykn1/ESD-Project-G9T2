@@ -9,7 +9,6 @@ app = Flask(__name__)
 os.environ['TESSDATA_PREFIX'] = 'C:\\Program Files\\Tesseract-OCR\\tessdata'
 
 # Function to perform text detection
-# Function to perform text detection
 def process_image(image_path):
     try:
         # Read image
