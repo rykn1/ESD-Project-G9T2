@@ -88,9 +88,10 @@ def add_items():
         }
     ), 201
 
-@app.route("/cart/<int:id>", methods=['DELETE'])
+@app.route("/cart/<string:id>", methods=['DELETE'])
 def delete_item(id):
     item = db.session.scalars(db.select(Cart).filter_by(id=id).limit(1)).first()
+    print(item)
     if item:
         db.session.delete(item)
         db.session.commit()
