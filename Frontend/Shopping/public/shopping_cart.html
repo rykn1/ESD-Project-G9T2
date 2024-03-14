@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopping Cart</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Vue.js -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+  <!-- Axios -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+</head>
+<body>
+  <div class="container mt-5" id="app">
+    <h1 class="text-center">Shopping Cart</h1>
+    <ul class="list-group">
+      <li class="list-group-item" v-for="(item, index) in cart" :key="index">
+        <div class="row">
+          <div class="col-md">{{ item.name }}</div>
+          <div class="col-md">Quantity: {{ item.quantity }}</div>
+          <div class="col-md">Price: ${{ item.price * item.quantity }}</div>
+        </div>
+      </li>
+    </ul>
+    <div class="text-center mt-4">
+      <h4>Total Payable: ${{ total_price }}</h4>
+      <form action="/create-checkout-session" method="post" id="checkout-form">
+        <input type="hidden" name="total" :value="getTotalPrice()">
+        <button type="submit" id="checkout-button" class="btn btn-success btn-lg">Pay Now</button>
+      </form>
+      
+      <div id="error-message" role="alert"></div>
+    </div>
+    <div class="text-center mt-3">
+        <a href="../shopping.html" class="btn btn-danger">Back to Shop</a>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- Vue.js instance -->
+  <script>
+    var cart_url = "http://127.0.0.1:5006/cart";
+    var total_price_url = "http://127.0.0.1:5006/totalprice"
+    new Vue({
+      el: '#app',
+      data: {
+        cart: [], // Define the cart data
+        total_price: null,
+        items: [],
+
+      },
+      methods: {
+        async getTotalPrice() {
+          try {
+            const response = await axios.get(total_price_url);
+            console.log('Total price:', response.data.totalprice);
+            
+            this.total_price = response.data.data.totalprice;
+            console.log(this.total_price)
+          } catch (error) {
+            console.error('Error getting total price:', error);
+            
+            this.total_price = 0;
+          }
+          
+        },
+        getAllItems() {
+          const response = 
+            fetch(cart_url)
+              .then(response => response.json())
+              .then(data => {
+                console.log(response);
+                if (data.code === 404) {
+                  // this.message = data.message
+                  console.log('error')
+                } else {
+                  this.items = data.data.item;
+                  console.log(data)
+                }
+              })
+              .catch(error => {
+                console.log(error);
+              })
+        },
+      },
+      created() {
+        // Fetch cart data from URL
+        this.getAllItems();
+        this.getTotalPrice()
+      },
+    });
+  </script>
+</body>
+</html>
+

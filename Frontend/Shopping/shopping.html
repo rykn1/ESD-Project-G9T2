@@ -42,7 +42,7 @@
             <h2 class="text-center">Your Travel Cart</h2>
             <div class="text-end my-3">
                 <h4>Total: ${{ total_price }}</h4>
-                <a :href="'shopping_cart.html?cart=' + JSON.stringify(cart)" class="btn btn-success">Proceed to Checkout</a>
+                <a href="http://localhost:5007/shopping_cart.html" class="btn btn-success">Proceed to Checkout</a>
             </div>
             <ul class="list-group">
             <li class="list-group-item" v-for="(item, index) in cart" :key="index">
@@ -97,6 +97,7 @@
           },
           async addItemToCart(item) {
             try {
+              
               const response = await axios.post(cart_url, {
                 id: item.id,
                 name: item.name,
@@ -109,13 +110,15 @@
             } catch (error) {
               console.error('Error adding item to cart:', error);
             }
+            
           },
           async removeItem(item) {
             try{
               const itemId= item.id
               const response = await axios.delete(cart_url + "/" + itemId)
-              console.log(response.data)
+              console.log(itemId)
               const index = this.cart.findIndex(cartItem => cartItem.id === itemId);
+              console.log(index)
               if (index !== -1) {
                 this.cart.splice(index, 1);
               }
@@ -127,15 +130,16 @@
           async getTotalPrice() {
             try {
               const response = await axios.get(total_price_url);
-              console.log('Total price:', response.data.totalprice);
+              console.log('Total price:', response.data.data.totalprice);
               
-              this.total_price = response.data.data.totalprice;
+              this.total_price = response.data.data.totalprice.toFixed(2);
               console.log(this.total_price)
             } catch (error) {
               console.error('Error getting total price:', error);
               
               this.total_price = 0;
             }
+            
             
           }
         },
