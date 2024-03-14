@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thank You!</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Vue.js -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+  <!-- Axios -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+</head>
+<body>
+  <div id="app" class="container mt-5">
+    <div class="jumbotron">
+      <h1 class="display-4">Thank You!</h1>
+      <p class="lead">Your payment was successful.</p>
+      <hr class="my-4">
+      <p>Thank you for your purchase.</p>
+      <a class="btn btn-primary btn-lg" href="/HomePage/homepage.html" role="button">Back to Home</a>
+    </div>
+  </div>
+  
+  <script>
+    var clear_cart_url = "http://127.0.0.1:5006/clear-cart";
+
+    new Vue({
+        el: '#app',
+        created(){
+            this.clearCart();
+        },
+        methods: {
+            async clearCart() {
+                try {
+                  const response = await fetch(clear_cart_url, {
+                    method: 'POST'
+                  });
+                  if (response.ok) {
+                    console.log('Cart cleared successfully.');
+                    
+                  } else {
+                    throw new Error('Failed to clear cart.');
+                  }
+                } catch (error) {
+                  console.error('Error clearing cart:', error);
+                }
+              }
+            
+        
+        }
+    })
+  </script>
+
+</body>
+</html>
+
+
+
