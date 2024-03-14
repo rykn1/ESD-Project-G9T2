@@ -134,6 +134,22 @@ def get_total_price():
                 }
         }
     ), 404
+    
+@app.route("/clear-cart", methods=["POST"])
+def clear_cart():
+    
+    try:
+        cart_items = Cart.query.all()
+        if cart_items:
+            for item in cart_items:
+                db.session.delete(item)
+                db.session.commit()
+        
+        return jsonify({'message': 'Cart cleared successfully.'}),200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+            
 
 if __name__ == '__main__':
     app.run(port=5006, debug=True)

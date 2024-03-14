@@ -5,7 +5,7 @@ import json
 
 import stripe
 
-app = Flask(__name__, static_url_path="",static_folder="public")
+app = Flask(__name__, static_url_path="",static_folder="templates")
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:@localhost:3306/cart'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_recycle": 299}
@@ -59,15 +59,18 @@ def create_checkout_session():
         checkout_session=stripe.checkout.Session.create(
             line_items=line_items,
             mode='payment',
-            success_url= 'http://localhost:5007/thanks.html',
-            cancel_url="http://localhost:5007/cancel.html",
-
+            success_url=url_for('thanks', _external=True) + '?session_id={CHECKOUT_SESSION_ID}',
+            
         )
         
     except Exception as e:
         return jsonify({'error': str(e)}), 500
     
     return redirect(checkout_session.url, code=303)
+
+@app.route('/thanks')
+def thanks():
+    return render_template('thanks.html')
 
 
 if __name__ == '__main__':
