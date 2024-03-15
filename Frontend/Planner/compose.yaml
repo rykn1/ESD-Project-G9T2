@@ -1,0 +1,8 @@
+version: "3.8"
+
+services:
+
+planner:
+    image: <dockerid>/planner:1.0
+    environment:
+      plannerURL: http://planner:5001/planner
