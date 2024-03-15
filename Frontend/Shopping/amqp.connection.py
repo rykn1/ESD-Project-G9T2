@@ -1,11 +1,13 @@
-# Establishing a connection to RabbitMQ
+import time
+import pika
 
-import time 
-import pika 
-from os import environ
+hostname = "localhost" # default hostname
+port = 5672            # default port
 
-hostname = environ.get('hostname')
-port = environ.get('port')
+# Instead of hardcoding the values, we can also get them from the environ as shown below
+# hostname = environ.get('hostname') #localhost
+# port = environ.get('port')         #5672 
+
 
 # function to create a connection to the broker
 def create_connection(max_retries=12, retry_interval=5):
