@@ -10,7 +10,7 @@ import requests
 from invokes import invoke_http
 import pika
 import json
-# import amqp_connection
+import amqp_connection
 from os import environ
 
 app = Flask(__name__)
@@ -29,29 +29,19 @@ payment_url = "http://localhost:5007/create-checkout-session"
 notification_url = "http://localhost:5008/notification"
 
 # maybe change to environ 
-exchange_name = "payment_handler"
-exchange_type = "direct"
+exchangename = "payment_handler"
+exchangetype = "topic"
 
 
-# connection = amqp_connection.create_connection() 
-# channel = connection.channel()
+connection = amqp_connection.create_connection() 
+channel = connection.channel()
 
 
 #if the exchange is not yet created, exit the program
-# if not amqp_connection.check_exchange(channel, exchangename, exchangetype):
-#     print("\nCreate the 'Exchange' before running this microservice. \nExiting the program.")
-#     sys.exit(0)  
+if not amqp_connection.check_exchange(channel, exchangename, exchangetype):
+    print("\nCreate the 'Exchange' before running this microservice. \nExiting the program.")
+    sys.exit(0)  
     # Exit with a success status
-
-
-
-
-# Using the function from invokes.py
-# This part need??
-# results = invoke_http(shopping_cart_url, method='GET')
-# print( type(results) )
-# print()
-# print( results )
 
 # Put this in whenever u want to call Cart Database , include the one at Line21 too
 class Cart(db.Model):

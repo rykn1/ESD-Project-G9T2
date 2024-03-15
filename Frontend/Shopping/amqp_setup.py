@@ -5,11 +5,12 @@ from os import environ
 # Binding key = 'notification'
 
 
-hostname = environ.get('hostname')
-port = environ.get('port')  
-exchange_name = "payment_handler"
-exchange_type = "direct"
+hostname = "localhost" # default hostname
+port = 5672            # default port 
+exchangename = "payment_handler"
+exchangetype = "topic"
 
+#to create a connection to the broker
 def create_connection(max_retries=12, retry_interval=5):
     print('amqp_setup:create_connection')
     
@@ -40,20 +41,18 @@ def create_connection(max_retries=12, retry_interval=5):
 
     if connection is None:
         raise Exception("amqp_setup: Unable to establish a connection to RabbitMQ after multiple attempts.")
-
+    
     return connection
 
-# Connection Pathway between Payment Handler and Notification 
 def create_channel(connection):
     print('amqp_setup:create_channel')
     channel = connection.channel()
     # Set up the exchange if the exchange doesn't exist
     print('amqp_setup:create exchange')
-    channel.exchange_declare(exchange=exchange_name, exchange_type=exchange_type, durable=True) # 'durable' makes the exchange survive broker restarts
+    channel.exchange_declare(exchange=exchangename, exchange_type=exchangetype, durable=True) # 'durable' makes the exchange survive broker restarts
     return channel
 
-
-# Creating Queue for Notification 
+#function to create queues
 def create_queues(channel):
     print('amqp_setup:create queues')
     create_notification_queue(channel)
@@ -63,11 +62,12 @@ def create_notification_queue(channel):
     notification_queue_name = 'Notification' 
     channel.queue_declare(queue=notification_queue_name, durable=True) # 'durable' makes the queue survive broker restarts
     #bind Error queue
-    channel.queue_bind(exchange=exchange_name, queue=notification_queue_name, routing_key='notification')
+    channel.queue_bind(exchange=exchangename, queue=notification_queue_name, routing_key='*.notification')
         # bind the queue to the exchange via the key
         # any routing_key with two words and ending with '.error' will be matched
 
-
-
-
+if __name__ == "__main__":  # execute this program only if it is run as a script (not by 'import')   
+    connection = create_connection()
+    channel = create_channel(connection)
+    create_queues(channel)
 
