@@ -4,50 +4,48 @@ from flask_cors import CORS
 import amqp_connection 
 import json 
 import pika
-from flask_mail import Mail , Message
 from flask import request
+from email.message import EmailMessage
+import ssl
+import smtplib
+
 
 app = Flask(__name__)
-mail = Mail(app)
+
 
 app.config['MAIL_SERVER'] = 'smtp.gmail.com' 
 app.config['MAIL_PORT'] = 587  # 
 app.config['MAIL_USE_TLS'] = True  # Enable TLS encryption
 app.config['MAIL_USERNAME'] = 'lim263654@gmail.com'  
-app.config['MAIL_PASSWORD'] = 'Warriors@240100'  
+app.config['MAIL_PASSWORD'] = 'mbei tegi teoi ejpw'  
 
-mail = Mail(app)
 
 # Creating send_email to send email (No use of API)
 
-@app.route('/')
-def index():
-    return 'Hello, World!'
+email_sender = 'lim263654@gmail.com'
+email_password = 'mzktuipjgxecxhvw'
+email_receiver = 'lim263654@gmail.com'
 
-def send_email(subject, recipient, body):
-    try:
-        msg = Message(subject, recipients=[recipient])
-        msg.body = body
-        mail.send(msg)
-        return True
-    except Exception as e:
-        print(f"Error sending email: {e}")
-        return False
+subject = "Try and Error"
+body = """
+Payment Successful 
+"""
 
-@app.route('/send-email', methods=['POST'])
-def send_email_route():
-    data = request.json
-    if not all(key in data for key in ['subject', 'recipient', 'body']):
-        return 'Missing required fields', 400
 
-    subject = data['subject']
-    recipient = data['recipient']
-    body = data['body']
+em = EmailMessage()
+em['From'] = email_sender
+em["To"] = email_receiver
+em["Subject"] = subject
+em.set_content(body)
 
-    if send_email(subject, recipient, body):
-        return 'Email sent successfully!'
-    else:
-        return 'Failed to send email', 500
+context = ssl.create_default_context()
+
+# Create server and ?? 
+with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as smtp:
+    smtp.login(email_sender, email_password)
+    smtp.sendmail(email_sender, email_receiver, em.as_string())
+    print("Email sent!")
+
 
 if __name__ == '__main__':
     app.run(port=5892, debug=True)
