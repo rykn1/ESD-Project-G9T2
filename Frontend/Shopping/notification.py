@@ -13,12 +13,6 @@ import smtplib
 app = Flask(__name__)
 
 
-app.config['MAIL_SERVER'] = 'smtp.gmail.com' 
-app.config['MAIL_PORT'] = 587  # 
-app.config['MAIL_USE_TLS'] = True  # Enable TLS encryption
-app.config['MAIL_USERNAME'] = 'lim263654@gmail.com'  
-app.config['MAIL_PASSWORD'] = 'mbei tegi teoi ejpw'  
-
 
 # Creating send_email to send email (No use of API)
 
