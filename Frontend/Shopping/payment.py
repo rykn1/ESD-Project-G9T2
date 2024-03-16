@@ -2,7 +2,7 @@ from flask import Flask, render_template, url_for, request, abort, redirect, jso
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import json
-
+import logging
 import stripe
 
 app = Flask(__name__, static_url_path="",static_folder="templates")
@@ -71,6 +71,24 @@ def create_checkout_session():
 @app.route('/thanks')
 def thanks():
     return render_template('thanks.html')
+
+@app.route('/get_emails', methods=['GET'])
+def get_emails():
+    customer_emails=[]
+    try:
+    # Retrieve list of charges from Stripe
+        charge_list = stripe.Charge.list(limit=10)  # Limit to 10 charges for example
+
+        # Extract customer email from each charge
+        for charge in charge_list.auto_paging_iter():
+            if charge.billing_details and charge.billing_details.email:
+                customer_emails.append(charge.billing_details.email)
+
+    except stripe.error.StripeError as e:
+        # Handle any errors
+        print(f"Error retrieving customer emails: {e}")
+
+    return customer_emails
 
 
 if __name__ == '__main__':
