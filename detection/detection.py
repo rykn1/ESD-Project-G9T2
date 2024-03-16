@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 import os
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFont
 import pytesseract
 
 app = Flask(__name__)
@@ -17,11 +17,10 @@ def process_image(image_path):
         draw = ImageDraw.Draw(img_with_text)
 
         # Define a threshold for confidence score
-        threshold = 0.25
+        threshold = 0.15
 
         # Perform text detection using Pytesseract
-        # Specify languages to detect both English and Arabic text
-        detections = pytesseract.image_to_data(img, lang='eng+ara+mal+jap', output_type=pytesseract.Output.DICT)
+        detections = pytesseract.image_to_data(img, lang='eng+ara+mal+spa+fra+ita+tur+de', output_type=pytesseract.Output.DICT)
 
         # Check if detections dictionary is empty or does not contain necessary keys
         if not detections or 'text' not in detections or 'conf' not in detections:
@@ -34,6 +33,10 @@ def process_image(image_path):
 
         # Initialize empty list for bounding box coordinates
         box_coords = []
+
+        # Load a font that supports Arabic characters
+        arabic_font_path = "../ocr_orchestrator/Arial Unicode MS.ttf"  # Replace with the path to your Arabic font file
+        arabic_font = ImageFont.truetype(arabic_font_path, size=14)  # Adjust the size as needed
 
         # Iterate over the detected text regions
         for i in range(len(detections['text'])):
@@ -54,7 +57,8 @@ def process_image(image_path):
                 draw.rectangle([(x, y), (x + w, y + h)], outline="green")
 
                 # Draw text in red inside the green box
-                draw.text((x, y - 10), text, fill="red")
+                # Specify the font parameter with the Arabic font
+                draw.text((x, y - 10), text, fill="red", font=arabic_font)
 
                 extracted_text += text + "\n"  # Append extracted text
 
@@ -91,7 +95,6 @@ def detect_text():
             return jsonify({'error': 'Failed to detect text'}), 500
     except Exception as e:
         return jsonify({'error': f'An error occurred: {str(e)}'}), 500
-
 
 if __name__ == '__main__':
     app.run(port=5001, debug=True)
