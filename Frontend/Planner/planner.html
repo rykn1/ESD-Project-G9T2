@@ -16,6 +16,13 @@
 <body>
     <div id="app" class="m-2">
         <h1 class="text-center mb-4">Itinerary Planner, Powered by AI!</h1>
+
+        <!-- to view Saved itineraries -->
+        <div class="text-center mb-3">
+          <button type="button" class="btn btn-info">View Saved Itineraries</button>
+        </div>
+
+
         <form @submit.prevent="planItinerary">
             <div class="form-group">
                 <label for="country">Select a country:</label>
@@ -110,7 +117,29 @@
         </div>
         <div v-else>
         </div> 
-        <a href="../HomePage/homepage.html" class="btn btn-danger mt-3">Return to Home</a>
+
+        <!-- appears only when itinerary is generated -->
+        <div v-if="itinerary" class="container my-4">
+          <div class="row justify-content-center mb-3">
+              <p class="text-center">Do you want to save this itinerary?</p>
+          </div>
+          <div class="row justify-content-center mb-3">
+              <div class="col-auto">
+                  <button type="button" class="btn btn-success">Yes</button>
+              </div>
+              <div class="col-auto">
+                  <button type="button" class="btn btn-secondary">No</button>
+              </div>
+          </div>
+        </div>
+
+        <div class="container my-4">
+          <div class="row">
+              <div class="col-12">
+                  <a href="../HomePage/homepage.html" class="btn btn-danger btn-block mt-3">Return to Home</a>
+              </div>
+          </div>
+        </div>
     </div>
 
     <script>
@@ -171,9 +200,6 @@
                             this.itinerary = response_data['itinerary'];
                             this.weather = response_data['weather'];
                             this.currencyRate = response_data['exchange'].result;
-                            // console.log(this.itinerary)
-                            // console.log(this.weather)
-                            // console.log(this.currencyRate)
                         } else {
                             alert("An error occurred while fetching your itinerary. Please try again.");
                         }
