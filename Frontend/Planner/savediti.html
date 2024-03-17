@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Saved Itineraries</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+</head>
+<body>
+    <div id="saved-itineraries-app" class="container mt-4">
+        <h1 class="text-center mb-4">Saved Itineraries</h1>
+
+        <div class="text-center mb-4">
+            <a href="planner.html" class="btn btn-danger">Return to AI Planner</a>
+        </div>
+
+        <div v-if="savedItineraries.length">
+            <div v-for="(itinerary, index) in savedItineraries" :key="index">
+                <button class="btn btn-info w-100 mb-2" type="button" data-toggle="collapse" :data-target="'#collapse' + index" aria-expanded="false" :aria-controls="'collapse' + index">
+                    {{ itinerary.dateOfItineraryGenerated }} - {{ itinerary.country }} - {{ itinerary.days.length }} Days
+                </button>
+
+                <div class="collapse" :id="'collapse' + index">
+                    <div class="card card-body">
+                        <p><strong>Date of Itinerary Generated:</strong> {{ itinerary.dateOfItineraryGenerated }}</p>
+                        <p><strong>Country:</strong> {{ itinerary.country }}</p>
+                        <p v-for="(day, dayIndex) in itinerary.days" :key="dayIndex">
+                            <strong>Day {{ dayIndex + 1 }}:</strong>
+                            <ul>
+                                <li v-for="activity in day.activities" :key="activity">{{ activity }}</li>
+                            </ul>
+                        </p>
+                        <p><strong>Weather:</strong> {{ itinerary.weather.description }}, {{ itinerary.weather.temperature }}°C</p>
+                        <p><strong>Currency Exchange:</strong> 1 {{ itinerary.currency.from }} = {{ itinerary.currency.rate }} {{ itinerary.currency.to }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div v-else class="text-center">
+            <h2 class="mt-5 text-muted">You do not have any saved itineraries</h2>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        new Vue({
+            el: '#saved-itineraries-app',
+            data: {
+                savedItineraries: [
+                    // we retrieve itineraries from DB here?
+                ]
+            }
+        });
+    </script>
+</body>
+</html>
+
+
