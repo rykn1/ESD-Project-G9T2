@@ -4,21 +4,19 @@ from flask_cors import CORS
 import amqp_connection 
 import json 
 import pika
-from flask import request
 from email.message import EmailMessage
 import ssl
 import smtplib
+import requests
 
 
 app = Flask(__name__)
 
 
-
-# Creating send_email to send email (No use of API)
+customer_email_url='http://127.0.0.1:5007/get_emails'
 
 email_sender = 'lim263654@gmail.com'
 email_password = 'mzktuipjgxecxhvw'
-email_receiver = 'lim263654@gmail.com'
 
 subject = "Try and Error"
 body = """
@@ -26,19 +24,42 @@ Payment Successful
 """
 
 
-em = EmailMessage()
-em['From'] = email_sender
-em["To"] = email_receiver
-em["Subject"] = subject
-em.set_content(body)
+@app.route('/')
+def send_email():
+    try:
+        # Make a GET request to retrieve customer emails
+        response = requests.get(customer_email_url)
+        #print ('response')
+        if response.status_code == 200:
+            customer_emails = response.json() 
+            #uncomment the print statement below to check what are the customer emails
+            #print (customer_emails)
+            if customer_emails:
+                # sending the email to the latest customer
+                email_receiver = customer_emails[0]
 
-context = ssl.create_default_context()
+                # Create EmailMessage object
+                em = EmailMessage()
+                em['From'] = email_sender
+                em["To"] = email_receiver
+                em["Subject"] = subject
+                em.set_content(body)
 
-# Create server and ?? 
-with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as smtp:
-    smtp.login(email_sender, email_password)
-    smtp.sendmail(email_sender, email_receiver, em.as_string())
-    print("Email sent!")
+                # Connect to SMTP server and send email
+                context = ssl.create_default_context()
+                with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as smtp:
+                    smtp.login(email_sender, email_password)
+                    smtp.sendmail(email_sender, email_receiver, em.as_string())
+                print("Email sent!")
+            else:
+                print("No customer emails found.")
+        else:
+            print("Failed to retrieve customer emails:", response.status_code)
+    except Exception as e:
+        print("Error:", e)
+    
+    # Return a valid response
+    return jsonify({'message': 'Email sent successfully'})
 
 
 if __name__ == '__main__':

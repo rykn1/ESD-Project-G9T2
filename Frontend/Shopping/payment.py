@@ -1,3 +1,5 @@
+#  pip install stripe
+
 from flask import Flask, render_template, url_for, request, abort, redirect, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
