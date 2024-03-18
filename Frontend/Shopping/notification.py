@@ -12,7 +12,7 @@ import requests
 
 app = Flask(__name__)
 
-
+#calling of this url has to be done in the composite microservice aka payment_handler
 customer_email_url='http://127.0.0.1:5007/get_emails'
 
 email_sender = 'lim263654@gmail.com'
