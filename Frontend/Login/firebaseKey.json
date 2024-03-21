@@ -2,7 +2,7 @@
   "type": "service_account",
   "project_id": "esdproj-c3b1c",
   "private_key_id": "",
-  "private_key": "-----BEGIN PRIVATE KEY-----(privateKey)-----END PRIVATE KEY-----\n",
+  "private_key": "-----BEGIN PRIVATE KEY-----()-----END PRIVATE KEY-----\n",
   "client_email": "firebase-adminsdk-ohv3a@esdproj-c3b1c.iam.gserviceaccount.com",
   "client_id": "109920265007630612804",
   "auth_uri": "https://accounts.google.com/o/oauth2/auth",
