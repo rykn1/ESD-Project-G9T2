@@ -11,7 +11,7 @@ from invokes import invoke_http
 import pika
 import json
 import amqp_connection
-from os import environ
+# from os import environ
 
 app = Flask(__name__)
 
@@ -25,18 +25,13 @@ CORS(app)
 
 shopping_cart_url = "http://localhost:5006/cart"
 payment_url = "http://localhost:5007/create-checkout-session"
-
 notification_url = "http://localhost:5008/notification"
 
-# maybe change to environ 
+# AMQP connection
 exchangename = "payment_handler"
 exchangetype = "topic"
-
-
 connection = amqp_connection.create_connection() 
 channel = connection.channel()
-
-
 #if the exchange is not yet created, exit the program
 if not amqp_connection.check_exchange(channel, exchangename, exchangetype):
     print("\nCreate the 'Exchange' before running this microservice. \nExiting the program.")
@@ -76,6 +71,7 @@ def valid_items():
             result = processPayment(results)         
             print("\nReceived cart items in JSON:", result)
             return jsonify(result), result["code"]
+        
 
     except Exception as e:
         # Unexpected error in code
@@ -95,14 +91,24 @@ def processPayment(items):
     print('\n-----Invoking payment microservice-----')
     result = invoke_http(payment_url, method='POST', json=items)
     print("payment_result:", result)
-
-# Inform the Payment Microservice to process the payment via http "POST"
-# AMQP to send message to Notification Microservice upon successful payment 
-# Notification Microservice to invoke and send email to user
-# 2. AMQP message sent to Notifcation(consumer) ; direct message type
-
-
-
+    
+    # Checking if the payemnt is successful (In the case of successful)
+    code = result["code"]
+    message = json.dumps(result)
+    
+    if code in range(200, 300):
+        print('\n\n-----Publishing the (order error) message with routing_key=payment.notification-----')
+        channel.basic_publish(exchange=exchangename, routing_key="payment.notification", 
+        body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
+        print("\nOrder published to RabbitMQ Exchange.\n")
+    
+    else:
+        return {
+            "code": 500,
+            "data": {"payment": result},
+            "message": "Order creation failure sent for error handling."
+        }
+        
 if __name__ == "__main__":
     print("This is flask " + os.path.basename(__file__) +
           " for placing an order...")
