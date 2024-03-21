@@ -72,7 +72,7 @@ def find_by_id(id):
 
 
 @app.route("/item/<int:id>", methods=['POST'])
-def create_book(id):
+def create_item(id):
     if (db.session.scalars(
       db.select(Item).filter_by(id=id).
       limit(1)
