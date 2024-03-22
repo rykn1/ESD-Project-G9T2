@@ -11,7 +11,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_recycle": 299}
 
 db = SQLAlchemy(app)
-
+#test
 CORS(app)
 
 class User(db.Model):
