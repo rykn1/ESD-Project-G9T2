@@ -26,7 +26,7 @@
     </ul>
     <div class="text-center mt-4">
       <h4>Total Payable: ${{ total_price }}</h4>
-      <form action="/create-checkout-session" method="post" id="checkout-form">
+      <form action="http://localhost:5007/create-checkout-session" method="post" id="checkout-form">
         <input type="hidden" name="total" :value="getTotalPrice()">
         <button type="submit" id="checkout-button" class="btn btn-success btn-lg">Pay Now</button>
       </form>

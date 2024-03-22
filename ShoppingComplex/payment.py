@@ -62,17 +62,19 @@ def create_checkout_session():
             line_items=line_items,
             mode='payment',
             success_url=url_for('thanks', _external=True) + '?session_id={CHECKOUT_SESSION_ID}',
-            
         )
-        
+        print ("test")
     except Exception as e:
         return jsonify({'error': str(e)}), 500
     
     return redirect(checkout_session.url, code=303)
 
+
 @app.route('/thanks')
 def thanks():
+    print("testest")
     return render_template('thanks.html')
+
 
 @app.route('/get_emails', methods=['GET'])
 def get_emails():
