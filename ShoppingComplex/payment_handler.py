@@ -26,6 +26,7 @@ CORS(app)
 shopping_cart_url = "http://localhost:5006/cart"
 payment_url = "http://localhost:5007/create-checkout-session"
 notification_url = "http://localhost:5008/notification"
+
 class Cart(db.Model):
     __tablename__ = 'cart'
 
@@ -55,7 +56,9 @@ if not amqp_connection.check_exchange(channel, exchangename, exchangetype):
     sys.exit(0)  
     # Exit with a success status
     
-    
+
+
+
 @app.route("/payment_handler")
 def valid_items():
     # Simple check of input format and data of the request are JSON
@@ -84,7 +87,8 @@ def valid_items():
             "code": 500,
             "message": "payment_handler.py internal error: " + ex_str
         }), 500
-      
+
+
 def processPayment(items):
     # 1. Send order info {cart items}
     # Invoking the paymemnt microservice
@@ -93,6 +97,8 @@ def processPayment(items):
     print("payment_result:", result)
     
     # Checking if the payemnt is successful (In the case of successful)
+    
+    # Whatever is inside here, shift it into the payment microservice
     code = result["code"]
     message = json.dumps(result)
     

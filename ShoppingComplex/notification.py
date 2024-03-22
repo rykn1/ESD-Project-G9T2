@@ -24,7 +24,7 @@ def receiveNotification(channel):
     try:
         # set up a consumer and start to wait for coming messages
         channel.basic_consume(queue=notification_queue_name, on_message_callback=callback, auto_ack=True)
-        print('notification: Consuming from queue:', notification_queue_name)
+        print('Notification: Consuming from queue:', notification_queue_name)
         channel.start_consuming()  # an implicit loop waiting to receive messages;
              #it doesn't exit by default. Use Ctrl+C in the command window to terminate it.
     
@@ -37,32 +37,27 @@ def receiveNotification(channel):
 
 # Is this necessary?   
 def callback(channel, method, properties, body): # required signature for the callback; no return
-    print("\notification: Received a payment log by " + __file__)
-    processPaymentLog(json.loads(body))
+    try:
+        order = json.loads(body)
+        processPaymentLog(order)  # Process log if needed
+        send_email()  # Now calling send_email directly here
+    except Exception as e:
+        print(f"Error processing message and sending email: {e}")
     print()
+    # print("\n notification: Received a payment log by " + __file__)
+    
 
 def processPaymentLog(order):
     print("notification: Recording an order log:")
     print(order)
 
-if __name__ == "__main__":  # execute this program only if it is run as a script (not by 'import')
-    print("notification: Getting Connection")
-    connection = amqp_connection.create_connection() #get the connection to the broker
-    print("notification: Connection established successfully")
-    channel = connection.channel()
-    receiveNotification(channel)
-    
-    
-
-
-
 # We need to export receiver, subject and body from payment handler
-subject = "Try and Error"
+subject = "Payment Email Confirmation"
 
 # This part will be retrieved from the shoppingcart.py
 
-body = """
-Payment Successful 
+msg = """
+Your payment is Successful! \u2714
 """
 
 @app.route('/')
@@ -70,7 +65,7 @@ def send_email():
     try:
         # Make a GET request to retrieve customer emails
         response = requests.get(customer_email_url)
-        #print ('response')
+        # print ('response')
         if response.status_code == 200:
             customer_emails = response.json() 
             #uncomment the print statement below to check what are the customer emails
@@ -84,7 +79,7 @@ def send_email():
                 em['From'] = email_sender
                 em["To"] = email_receiver
                 em["Subject"] = subject
-                em.set_content(body)
+                em.set_content(msg)
 
                 # Connect to SMTP server and send email
                 context = ssl.create_default_context()
@@ -104,7 +99,13 @@ def send_email():
 
 
 if __name__ == '__main__':
+    print("notification: Getting Connection")
+    connection = amqp_connection.create_connection() #get the connection to the broker
+    print("notification: Connection established successfully")
+    channel = connection.channel()
+    receiveNotification(channel)
     app.run(port=5892, debug=True)
+    
     
     
 

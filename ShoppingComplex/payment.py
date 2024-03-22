@@ -6,6 +6,10 @@ from flask_cors import CORS
 import json
 import logging
 import stripe
+import amqp_connection
+import os, sys
+import pika
+
 
 app = Flask(__name__, static_url_path="",static_folder="templates")
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:@localhost:3306/cart'
@@ -18,6 +22,18 @@ app.config['STRIPE_SECRET_KEY'] = 'rk_test_51OrELHATlCeKbEIxLxwiyGHRkrXW3Di18YfJ
 db = SQLAlchemy(app)
 
 CORS(app)
+
+# AMQP connection
+exchangename = "payment_handler"
+exchangetype = "topic"
+connection = amqp_connection.create_connection() 
+channel = connection.channel()
+#if the exchange is not yet created, exit the program
+if not amqp_connection.check_exchange(channel, exchangename, exchangetype):
+    print("\nCreate the 'Exchange' before running this microservice. \nExiting the program.")
+    sys.exit(0)  
+    # Exit with a success status
+    
 
 class Cart(db.Model):
     __tablename__ = 'cart'
@@ -72,7 +88,13 @@ def create_checkout_session():
 
 @app.route('/thanks')
 def thanks():
-    print("testest")
+    # print("testest")
+    message={"body":"test"}
+    msg=json.dumps(message)
+    print('\n\n-----Publishing the message routing_key=payment.notification-----')
+    channel.basic_publish(exchange=exchangename, routing_key="payment.notification", 
+    body=msg, properties=pika.BasicProperties(delivery_mode = 2)) 
+    print("\nPayment published to RabbitMQ Exchange.\n")
     return render_template('thanks.html')
 
 
