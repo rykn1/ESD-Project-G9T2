@@ -119,6 +119,9 @@
 
     
         <!-- appears only when itinerary is generated and showSaveOptions is true -->
+        <p hidden>
+        <input id="test" type="text">
+        </p>
         <div v-if="itinerary && showSaveOptions" class="container my-4">
           <div class="row justify-content-center mb-3">
               <p class="text-center">Do you want to save this itinerary?</p>
@@ -141,8 +144,34 @@
           </div>
         </div>
     </div>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+      import {getAuth, createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
+      const firebaseConfig = {
+        apiKey: "AIzaSyCM4fJjQqUmMt8BmQ3Qi7hKVkhRSmzdDkQ",
+        authDomain: "esdproj-c3b1c.firebaseapp.com",
+        projectId: "esdproj-c3b1c",
+        storageBucket: "esdproj-c3b1c.appspot.com",
+        messagingSenderId: "477463865668",
+        appId: "1:477463865668:web:ffcd62197c671fc679cf11"
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app)
+
+      onAuthStateChanged(auth, async (user) => {
+        if (user) {
+          const uid = user.uid
+          document.getElementById('test').value = uid
+        }
+      }) 
+      
+    </script>
     <script>
+      
+      
         new Vue({
             el: '#app',
             data: {
@@ -179,7 +208,8 @@
                 isWeatherLoading: false,
                 weatherError: null,
                 weather: null,
-                showSaveOptions: true
+                showSaveOptions: true,
+                uid:document.getElementById('test').value
             },
             methods: {
                 async planItinerary() {
@@ -196,13 +226,17 @@
                             body: JSON.stringify({ country: this.country, days: this.days })
                         });
                         if (response.ok) {
-                            response_data = await response.json()
-                            response_data = response_data['data']
-                            this.itinerary = response_data['itinerary'];
-                            this.weather = response_data['weather'];
-                            this.currencyRate = response_data['exchange'].result;
+                          console.log(response)
+
+                          response_data = await response.json()
+
+                          response_data = response_data['data']
+                          this.itinerary = response_data['itinerary'];
+                          this.weather = response_data['weather'];
+                          this.currencyRate = response_data['exchange'].result;
+
                         } else {
-                            alert("An error occurred while fetching your itinerary. Please try again.");
+                            alert("An error occurred while fetching your itinerary. Please try again.1");
                         }
                     } catch (error) {
                         alert("An error occurred while fetching your itinerary. Please try again.");
@@ -213,10 +247,13 @@
                 },
                 async update_body(){
                   try {
+                    body=JSON.stringify(this.itinerary) + "$"
+                    uid = document.getElementById('test').value
+                    console.log(uid)
                     const response = await fetch('http://localhost:5005/updatebody', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ id:uid, body: body})
+                        body: JSON.stringify({ id: uid, body: body})
                     });
                     if (response.ok) {
                         var response_data = await response.json()
@@ -231,6 +268,7 @@
                   }
                 },
 
+
               hideSaveOptions() {
                   this.showSaveOptions = false; 
                 }
@@ -239,5 +277,6 @@
             } 
         });
     </script>
+
 </body>
 </html>

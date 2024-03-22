@@ -32,6 +32,9 @@ class User(db.Model):
 cred = credentials.Certificate("./firebaseKey.json")
 firebase_admin.initialize_app(cred)
 
+# @app.route('/user', methods=['GET'])
+# def get_user():
+    
 
 @app.route('/user', methods=['POST'])
 def create_user():
@@ -85,14 +88,13 @@ def create_user():
 
 @app.route('/updatebody', methods=['POST'])
 def update_body():
-
     data = request.json
     id = data['id']
     user = db.session.scalars(
         db.select(User).filter_by(id=id).limit(1)).first()
     if user:
         try:
-            user.body = data['body']
+            user.body += data['body']
             db.session.commit()
         except:
             return jsonify(
@@ -104,6 +106,13 @@ def update_body():
                 "message": "An error occurred updating the database."
             }
         ), 500
+    else:
+        return jsonify(
+            {
+                "code": 404,
+                "message": "User not found"
+            }
+        )
     return jsonify(
         {
             "code": 204,
@@ -112,12 +121,12 @@ def update_body():
     )
 
 
-# @app.route('/email', methods=['POST'])
-# def get_email():
-#     data = request.json
-#     id = data['id']
-#     user = auth.get_user(id)
-#     return user.email
+@app.route('/email', methods=['POST'])
+def get_email():
+    data = request.json
+    id = data['id']
+    user = auth.get_user(id)
+    return user.email
 
 @app.route('/body', methods=['POST'])
 def get_body():
