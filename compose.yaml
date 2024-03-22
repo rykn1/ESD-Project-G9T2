@@ -3,28 +3,28 @@ services:
 
   planner:
     build: 
-      context: .
+      context: ./PlannerComplex
       dockerfile: planner.Dockerfile
     ports:
       - "5001:80"
 
   generative_ai:
     build: 
-      context: .
+      context: ./PlannerComplex
       dockerfile: generative_ai.Dockerfile
     ports:
       - "5002:80"
 
   currency_service:
     build: 
-      context: .
+      context: ./PlannerComplex
       dockerfile: currency_service.Dockerfile
     ports:
       - "5003:80"
 
   weather:
     build: 
-      context: .
+      context: ./PlannerComplex
       dockerfile: weather.Dockerfile
     ports:
       - "5004:80"
