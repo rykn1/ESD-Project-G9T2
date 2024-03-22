@@ -18,19 +18,20 @@
         <div v-if="savedItineraries.length">
             <div v-for="(itinerary, index) in savedItineraries" :key="index">
                 <button class="btn btn-info w-100 mb-2" type="button" data-toggle="collapse" :data-target="'#collapse' + index" aria-expanded="false" :aria-controls="'collapse' + index">
-                    <!-- {{ itinerary.dateOfItineraryGenerated }} - {{ itinerary.country }} - {{ itinerary.days.length }} --> {{ itinerary.Days.length }}Days
+                    <!-- {{ itinerary.dateOfItineraryGenerated }} --> {{ itinerary.country }} - {{ itinerary.Days.length }} Days
                 </button>
 
                 <div class="collapse" :id="'collapse' + index">
                     <div class="card card-body">
                         <!-- <p><strong>Date of Itinerary Generated:</strong> {{ itinerary.dateOfItineraryGenerated }}</p> -->
                         <p><strong>Country:</strong> {{ itinerary.country }}</p>
-                        <p v-for="(day, dayIndex) in itinerary.days" :key="dayIndex">
-                            <strong>Day {{ dayIndex + 1 }}:</strong>
+                        <div v-for="(day,index) in itinerary.Days" :key="index">
+                            <strong>Day {{ index + 1 }}:</strong>
+                            <!-- <p>{{day}}</p> -->
                             <ul>
-                                <li v-for="activity in day.activities" :key="activity">{{ activity }}</li>
+                                <li v-for="activity of day['Activities']" :key="activity">{{ activity }}</li>
                             </ul>
-                        </p>
+                        </div>
                         <!-- <p><strong>Weather:</strong> {{ itinerary.weather.description }}, {{ itinerary.weather.temperature }}°C</p>
                         <p><strong>Currency Exchange:</strong> 1 {{ itinerary.currency.from }} = {{ itinerary.currency.rate }} {{ itinerary.currency.to }}</p> -->
                     </div>
@@ -77,7 +78,7 @@
                     response_data = response_data['data'].split("$")
                     response_data.pop()
                     this.savedItineraries = response_data.map(item => JSON.parse(item))
-                    console.log(this.savedItineraries[0][['Days']])
+                    console.log(this.savedItineraries[0]['Days'])
                 }
             }
         });

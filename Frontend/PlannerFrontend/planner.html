@@ -248,7 +248,9 @@
                 },
                 async update_body(){
                   try {
-                    body=JSON.stringify(this.itinerary) + "$"
+                    body = this.itinerary
+                    body['country'] = this.country
+                    body=JSON.stringify(body) + "$"
                     uid = document.getElementById('test').value
                     console.log(uid)
                     const response = await fetch('http://localhost:5005/updatebody', {
