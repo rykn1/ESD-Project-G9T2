@@ -57,29 +57,32 @@ subject = "Payment Email Confirmation"
 # This part will be retrieved from the shoppingcart.py
 
 msg = """
-Your payment is Successful! \u2714
+<html>
+<head></head>
+<body>
+    <h1 style="color: green;">Your payment is Successful!&#x2714;</h1>
+    <p style="font-size: 16px;">Thank you for your payment. Your transaction has been completed, and a receipt for your purchase has been emailed to you.</p>
+
+</body>
+</html>
 """
 
 @app.route('/')
 def send_email():
     try:
-        # Make a GET request to retrieve customer emails
         response = requests.get(customer_email_url)
-        # print ('response')
         if response.status_code == 200:
-            customer_emails = response.json() 
-            #uncomment the print statement below to check what are the customer emails
-            #print (customer_emails)
+            customer_emails = response.json()
             if customer_emails:
-                # sending the email to the latest customer
                 email_receiver = customer_emails[0]
-
-                # Create EmailMessage object
                 em = EmailMessage()
                 em['From'] = email_sender
-                em["To"] = email_receiver
-                em["Subject"] = subject
-                em.set_content(msg)
+                em['To'] = email_receiver
+                em['Subject'] = subject
+                # em.set_content(msg)
+
+                em.set_content(msg)  # Set the plain text content
+                em.add_alternative(msg, subtype='html')  # Add the HTML content
 
                 # Connect to SMTP server and send email
                 context = ssl.create_default_context()
