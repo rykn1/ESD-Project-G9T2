@@ -21,7 +21,7 @@ function signout() {
     signOut(auth).then(() => {
         // signout Successful
         console.log('success')
-        window.location.replace('../Login/login.html')
+        window.location.replace('../../LoginService/login.html')
     }).catch((error) => {
         console.log(error)
     })
