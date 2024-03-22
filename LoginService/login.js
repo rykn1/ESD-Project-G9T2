@@ -34,23 +34,8 @@ const signupEmailPassword = async () => {
       const userCredential = await createUserWithEmailAndPassword(auth, signupEmail, signupPassword) //Create account in firebase authentication 
       // const db = getDatabase();
       const user = userCredential.user
-      // const reference = ref(db, 'users/' + user.uid)
-      // const testRef = ref(db,'testCompletion/' + user.uid)
-      // user.displayName = signupName  
       console.log(user)
-      // set(reference, { //Update realtime database with user info
-      //   username: signupName,
-      //   email:signupEmail,
-      //   image:'avatar1.jpg' //default avatar
-      //   })
-      // update(testRef, {totalScore:0}) //default score = 0
-
-      // document.getElementById('signinMessage').innerText="You have successfully signed up!" 
-      // document.getElementById('signinMessage').setAttribute("style","color:green")
-      // clearFields()
-      // main.classList.toggle("sign-up-mode") //Move screen back to login
-
-
+      
 
     }
     catch(error) {
@@ -58,6 +43,8 @@ const signupEmailPassword = async () => {
       showSignUpError(error.code); //Show error code
     }
   }}
+
+  
 
   const loginEmailPassword = async () => { //Login user
     const loginEmail = document.getElementById('login-email').value.trim();
@@ -80,9 +67,14 @@ const signupEmailPassword = async () => {
 
 onAuthStateChanged(auth, (user) => {
   if (user) {
+    fetch('http://localhost:5005/user', {
+        method: 'POST',
+        headers: { 'Content-Type':'application/json'},
+        body: JSON.stringify({id: user.uid, email: user.email})
+      });
     const uid = user.uid;
     console.log(uid)
-    window.location.replace('../Homepage/homepage.html')
+    window.location.replace('../Frontend/Homepage/homepage.html')
   }
 })
   
