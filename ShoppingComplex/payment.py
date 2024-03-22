@@ -60,30 +60,23 @@ stripe.api_key = app.config['STRIPE_SECRET_KEY']
 
 @app.route('/create-checkout-session', methods=['POST'])
 def create_checkout_session():
-
+    
     try:
+        line_items=request.get_json()
+        print ('pay', line_items)
         
-        cart_items = Cart.query.all()
-        line_items=[]
-        line_item={}
-        
-        for item in cart_items:
-            line_item ={
-                'price': item.id,
-                'quantity': item.quantity,
-            }
-            line_items.append(line_item)
-        print(line_items)
         checkout_session=stripe.checkout.Session.create(
             line_items=line_items,
             mode='payment',
             success_url=url_for('thanks', _external=True) + '?session_id={CHECKOUT_SESSION_ID}',
         )
+        print (checkout_session)
         print ("test")
     except Exception as e:
         return jsonify({'error': str(e)}), 500
     
-    return redirect(checkout_session.url, code=303)
+    return jsonify({'url': checkout_session.url})
+
 
 
 @app.route('/thanks')

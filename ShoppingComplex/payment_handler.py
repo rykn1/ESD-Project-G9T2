@@ -1,11 +1,7 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, redirect
 from flask_cors import CORS
-
 import os, sys
-
-from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
-from flask_cors import CORS
 import requests
 from invokes import invoke_http
 import pika
@@ -58,6 +54,34 @@ if not amqp_connection.check_exchange(channel, exchangename, exchangetype):
     
 
 
+@app.route("/paymentProcess", methods=["POST"])
+def payementProcess():
+    
+    cart_items= Cart.query.all()
+    try:
+        
+        cart_items = Cart.query.all()
+        line_items=[]
+        line_item={}
+        
+        for item in cart_items:
+            line_item ={
+                'price': item.id,
+                'quantity': item.quantity,
+            }
+            line_items.append(line_item)
+        print('hand:', line_items)
+        response = invoke_http(payment_url, method='POST', json=line_items)
+        if 'url' in response:
+            # Use the URL for client-side redirection or as needed
+            return redirect(response['url'])
+        else:
+            # Handle error or unexpected response
+            return jsonify({'error': 'Failed to create checkout session'}), 500
+         
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
 
 @app.route("/payment_handler")
 def valid_items():
