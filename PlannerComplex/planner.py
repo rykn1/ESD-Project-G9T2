@@ -14,7 +14,6 @@ def plan_itinerary():
 def processPlanRequest(data):
 
     geminiResult = requests.post('http://127.0.0.1:5002/plan', json=data)
-    print('test1')
     if geminiResult.status_code not in range(200,300):
         print("gemini error")
         return "gemini error"
