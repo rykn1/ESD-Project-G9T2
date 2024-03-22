@@ -136,10 +136,11 @@ def get_body():
         db.select(User).filter_by(id=id).limit(1)).first()
     
     if user:
+        print(user.json())
         return jsonify(
             {
                 "code": 200,
-                "data": user.json()
+                "data": user.json()['body']
             }
         )
     return jsonify(

@@ -19,7 +19,7 @@
 
         <!-- to view Saved itineraries -->
         <div class="text-center mb-3">
-          <a href="savediti.html" class="btn btn-info" role="button">View Saved Itineraries</a>
+          <div class="btn btn-info" role="button" @click="redirect_savediti">View Saved Itineraries</div>
         </div>
       
         <form @submit.prevent="planItinerary">
@@ -209,7 +209,8 @@
                 weatherError: null,
                 weather: null,
                 showSaveOptions: true,
-                uid:document.getElementById('test').value
+                uid:document.getElementById('test').value,
+                url: ''
             },
             methods: {
                 async planItinerary() {
@@ -268,8 +269,12 @@
                   }
                 },
 
-
-              hideSaveOptions() {
+                redirect_savediti() {
+                  this.url = 'savediti.html?id=' + document.getElementById('test').value
+                  window.location.href = this.url
+                },
+                
+                hideSaveOptions() {
                   this.showSaveOptions = false; 
                 }
 
