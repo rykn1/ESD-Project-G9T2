@@ -7,7 +7,7 @@ import requests
 app = Flask(__name__)
 CORS(app)
 
-api_key = ""  # Get this from https://exchangeratesapi.io/ , create an account there. 250 Free Calls. 
+api_key = "b03e781c96bd6d8f723f9845a764a569"  # Get this from https://exchangeratesapi.io/ , create an account there. 250 Free Calls. 
 @app.route('/exchange', methods=['GET'])
 def get_exchange_rate():
     from_currency = request.args.get('from')
