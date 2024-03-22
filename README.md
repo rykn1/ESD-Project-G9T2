@@ -39,7 +39,8 @@ To ensure the program runs, kindly add on the following API keys to it's destina
 # Service Explanations & Guide
 
 ## Login Service
-### Firebase Service
+### 1. Firebase Service
+- Microservice that uses Firebase to perform authentication
 
 ## Planner Complex Microservice
 ### 1. planner.py 
