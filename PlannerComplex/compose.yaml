@@ -1,8 +1,30 @@
-version: "3.8"
-
+version: '3.8'
 services:
 
-planner:
-    image: <dockerid>/planner:1.0
-    environment:
-      plannerURL: http://planner:5001/planner
+  planner:
+    build: 
+      context: .
+      dockerfile: planner.Dockerfile
+    ports:
+      - "5001:80"
+
+  generative_ai:
+    build: 
+      context: .
+      dockerfile: generative_ai.Dockerfile
+    ports:
+      - "5002:80"
+
+  currency_service:
+    build: 
+      context: .
+      dockerfile: currency_service.Dockerfile
+    ports:
+      - "5003:80"
+
+  weather:
+    build: 
+      context: .
+      dockerfile: weather.Dockerfile
+    ports:
+      - "5004:80"
