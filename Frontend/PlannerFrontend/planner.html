@@ -213,7 +213,7 @@
                 },
                 async update_body(){
                   try {
-                    const response = await fetch('http://localhost:5001/updatebody', {
+                    const response = await fetch('http://localhost:5005/updatebody', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ id:uid, body: body})
