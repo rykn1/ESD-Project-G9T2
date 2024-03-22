@@ -26,19 +26,6 @@ CORS(app)
 shopping_cart_url = "http://localhost:5006/cart"
 payment_url = "http://localhost:5007/create-checkout-session"
 notification_url = "http://localhost:5008/notification"
-
-# AMQP connection
-exchangename = "payment_handler"
-exchangetype = "topic"
-connection = amqp_connection.create_connection() 
-channel = connection.channel()
-#if the exchange is not yet created, exit the program
-if not amqp_connection.check_exchange(channel, exchangename, exchangetype):
-    print("\nCreate the 'Exchange' before running this microservice. \nExiting the program.")
-    sys.exit(0)  
-    # Exit with a success status
-
-# Put this in whenever u want to call Cart Database , include the one at Line21 too
 class Cart(db.Model):
     __tablename__ = 'cart'
 
@@ -56,6 +43,19 @@ class Cart(db.Model):
     def json(self):
         return {"id": self.id, "name": self.name, "price": self.price, "quantity": self.quantity}
 
+
+# AMQP connection
+exchangename = "payment_handler"
+exchangetype = "topic"
+connection = amqp_connection.create_connection() 
+channel = connection.channel()
+#if the exchange is not yet created, exit the program
+if not amqp_connection.check_exchange(channel, exchangename, exchangetype):
+    print("\nCreate the 'Exchange' before running this microservice. \nExiting the program.")
+    sys.exit(0)  
+    # Exit with a success status
+    
+    
 @app.route("/payment_handler")
 def valid_items():
     # Simple check of input format and data of the request are JSON
@@ -97,17 +97,21 @@ def processPayment(items):
     message = json.dumps(result)
     
     if code in range(200, 300):
-        print('\n\n-----Publishing the (order error) message with routing_key=payment.notification-----')
+        print('\n\n-----Publishing the message routing_key=payment.notification-----')
         channel.basic_publish(exchange=exchangename, routing_key="payment.notification", 
         body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
-        print("\nOrder published to RabbitMQ Exchange.\n")
+        print("\nPayment published to RabbitMQ Exchange.\n")
     
     else:
         return {
             "code": 500,
             "data": {"payment": result},
-            "message": "Order creation failure sent for error handling."
+            "message": "Payment Failed to process. Please try again."
         }
+
+
+
+
         
 if __name__ == "__main__":
     print("This is flask " + os.path.basename(__file__) +

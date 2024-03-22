@@ -33,7 +33,9 @@ def receiveNotification(channel):
 
     except KeyboardInterrupt:
         print("notification: Program interrupted by user.") 
-        
+
+
+# Is this necessary?   
 def callback(channel, method, properties, body): # required signature for the callback; no return
     print("\notification: Received a payment log by " + __file__)
     processPaymentLog(json.loads(body))

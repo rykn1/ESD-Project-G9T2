@@ -52,10 +52,17 @@ def create_channel(connection):
     channel.exchange_declare(exchange=exchangename, exchange_type=exchangetype, durable=True) # 'durable' makes the exchange survive broker restarts
     return channel
 
+
+
+
 #function to create queues
 def create_queues(channel):
     print('amqp_setup:create queues')
     create_notification_queue(channel)
+
+
+
+
 
 def create_notification_queue(channel):
     print('amqp_setup:create_notification_queue')
