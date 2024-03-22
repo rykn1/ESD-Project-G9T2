@@ -64,24 +64,24 @@ async function get_body(uid) {
     }
 }
 
-async function update_body(uid,body) {
-    try {
-        const response = await fetch('http://localhost:5001/updatebody', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id:uid, body: body})
-        });
-        if (response.ok) {
-            var response_data = await response.json()
-            console.log(response_data)
-            response_data = response_data['data']
-            return(response_data)
-        }
-    } catch (error) {
-        console.log(error)
-        alert('error')
-    }
-}
+// async function update_body(uid,body) {
+//     try {
+//         const response = await fetch('http://localhost:5001/updatebody', {
+//             method: 'POST',
+//             headers: { 'Content-Type': 'application/json' },
+//             body: JSON.stringify({ id:uid, body: body})
+//         });
+//         if (response.ok) {
+//             var response_data = await response.json()
+//             console.log(response_data)
+//             response_data = response_data['data']
+//             return(response_data)
+//         }
+//     } catch (error) {
+//         console.log(error)
+//         alert('error')
+//     }
+// }
 
 
 async function create_user(uid,email) {
