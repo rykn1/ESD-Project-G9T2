@@ -15,6 +15,11 @@ A 1 stop solution for all travellers. Travel with ease and like the breeze.
 Before you begin, ensure you have met the following requirements:
 - Required software (e.g. Docker).
     - Pytesseract OCR
+        - FULL VIDEO GUIDE: https://www.youtube.com/watch?v=Rb93uLXiTwA&ab_channel=AllroundZone 
+
+        ### Step by Step guide
+        - Tesseract installer for Windows: https://www.youtube.com/watch?v=Rb93uLXiTwAab_channel=AllroundZone
+
 
 ## API Keys Required
 To ensure the program runs, kindly add on the following API keys to it's destinations
@@ -29,7 +34,7 @@ To ensure the program runs, kindly add on the following API keys to it's destina
 
 ### TranslationComplex
 - **translation.py**: 342731d95amsh83e40184d15719ep11f5ffjsna8e3ab0bffc3
-                    : 6f0e682c93msh5bcf8629d32f86bp1a79dbjsn822131d7d32d (alternative key)
+- **translation.py (alternative key)**: 6f0e682c93msh5bcf8629d32f86bp1a79dbjsn822131d7d32d 
 
 
 # How to run 
