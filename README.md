@@ -27,7 +27,7 @@ To ensure the program runs, kindly add on the following API keys to it's destina
 - **filename.py**: API KEY
 
 ### TranslationComplex
-- **filename.py**: API KEY
+- **translation.py**: 342731d95amsh83e40184d15719ep11f5ffjsna8e3ab0bffc3
 
 
 # How to run 
@@ -55,6 +55,16 @@ To ensure the program runs, kindly add on the following API keys to it's destina
 ## Shopping Complex Microservice
 
 ## Translation Complex Microservice
+### 1. orchestrator.py 
+- Orchestrates the microservices within the Translation Complex Microservice.
+### 2. detect.py
+- Detects words in images using pytesseract OCR.
+### 4. translation.py
+- Retrieves extracted words and translates them using the Deep Translator API.
+### 3. text_replacement.py
+- Overlays the existing image with translated text using the Python Imaging Library (PIL).
+### 5. error.py
+- Displays error messages.
 
 
 
