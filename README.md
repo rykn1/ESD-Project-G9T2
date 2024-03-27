@@ -14,6 +14,7 @@ A 1 stop solution for all travellers. Travel with ease and like the breeze.
 # Prerequisites
 Before you begin, ensure you have met the following requirements:
 - Required software (e.g. Docker).
+    - Pytesseract OCR
 
 ## API Keys Required
 To ensure the program runs, kindly add on the following API keys to it's destinations
@@ -28,6 +29,7 @@ To ensure the program runs, kindly add on the following API keys to it's destina
 
 ### TranslationComplex
 - **translation.py**: 342731d95amsh83e40184d15719ep11f5ffjsna8e3ab0bffc3
+                    : 6f0e682c93msh5bcf8629d32f86bp1a79dbjsn822131d7d32d (alternative key)
 
 
 # How to run 
