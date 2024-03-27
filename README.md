@@ -58,7 +58,7 @@ To ensure the program runs, kindly add on the following API keys to it's destina
 ### 1. orchestrator.py 
 - Orchestrates the microservices within the Translation Complex Microservice.
 ### 2. detect.py
-- Detects words in images using pytesseract.
+- Detects words in images using pytesseract OCR.
 ### 4. translation.py
 - Retrieves extracted words and translates them using the Deep Translator API.
 ### 3. text_replacement.py
