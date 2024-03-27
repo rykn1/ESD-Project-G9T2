@@ -17,8 +17,16 @@ Before you begin, ensure you have met the following requirements:
     - Pytesseract OCR
         - FULL VIDEO GUIDE: https://www.youtube.com/watch?v=Rb93uLXiTwA&ab_channel=AllroundZone 
 
-        ### Step by Step guide
-        - Tesseract installer for Windows: https://www.youtube.com/watch?v=Rb93uLXiTwAab_channel=AllroundZone
+        ## Step-by-Step Guide
+        - Install Tesseract OCR:
+            - For Windows users, download Tesseract installer from [here](https://github.com/UB-Mannheim/tesseract/wiki).
+            - Follow the installation steps until you reach 'Select components to install'. Make sure to select all options, including 'Additional language data (download)'.
+            - Keep the Destination Folder as default and proceed with the installation.
+
+        - Configure Environment Variables:
+            - After installation, search for 'environment variables' and click on it.
+            - In the Environment Variables window, select 'Path' and click Edit.
+            - Click New and paste 'C:\Program Files\Tesseract-OCR' (assuming you chose the default installation path). Then click OK.
 
 
 ## API Keys Required
