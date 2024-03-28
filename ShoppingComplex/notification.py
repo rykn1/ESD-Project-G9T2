@@ -9,6 +9,7 @@ import ssl
 import smtplib
 import requests
 
+from payment_handler import retrieve_receipient
 
 app = Flask(__name__)
 
@@ -19,6 +20,8 @@ email_sender = 'lim263654@gmail.com'
 email_password = 'mzktuipjgxecxhvw'
 
 notification_queue_name = "Notification"
+
+email_receiver = retrieve_receipient()
 
 def receiveNotification(channel):
     try:
@@ -38,9 +41,10 @@ def receiveNotification(channel):
 # Is this necessary?   
 def callback(channel, method, properties, body): # required signature for the callback; no return
     try:
+        # print(body[0])
         order = json.loads(body)
         processPaymentLog(order)  # Process log if needed
-        send_email()  # Now calling send_email directly here
+        print(send_email(order['body'],order['email'],order['subject']))  # Now calling send_email directly here
     except Exception as e:
         print(f"Error processing message and sending email: {e}")
     print()
@@ -49,56 +53,50 @@ def callback(channel, method, properties, body): # required signature for the ca
 
 def processPaymentLog(order):
     print("notification: Recording an order log:")
-    print(order)
+    print(order['email'])
 
 # We need to export receiver, subject and body from payment handler
-subject = "Payment Email Confirmation"
+# subject = "Payment Email Confirmation"
 
 # This part will be retrieved from the shoppingcart.py
 
-msg = """
-<html>
-<head></head>
-<body>
-    <h1 style="color: green;">Your payment is Successful!&#x2714;</h1>
-    <p style="font-size: 16px;">Thank you for your payment. Your transaction has been completed, and a receipt for your purchase has been emailed to you.</p>
 
-</body>
-</html>
-"""
 
 @app.route('/')
-def send_email():
+def send_email(body,receipient,subject):
     try:
-        response = requests.get(customer_email_url)
-        if response.status_code == 200:
-            customer_emails = response.json()
-            if customer_emails:
-                email_receiver = customer_emails[0]
-                em = EmailMessage()
-                em['From'] = email_sender
-                em['To'] = email_receiver
-                em['Subject'] = subject
-                # em.set_content(msg)
+        # response = requests.get(customer_email_url)
+        # if response.status_code == 200:
+        #     customer_emails = response.json()
+        #     if customer_emails:
+                # email_receiver = customer_emails[0]     
+        print(receipient)        
+        em = EmailMessage()
+        em['From'] = email_sender
+        em['To'] = receipient
+        em['Subject'] = subject
+        # em.set_content(msg)
 
-                em.set_content(msg)  # Set the plain text content
-                em.add_alternative(msg, subtype='html')  # Add the HTML content
+        em.set_content(body)  # Set the plain text content
+        em.add_alternative(body, subtype='html')  # Add the HTML content
 
-                # Connect to SMTP server and send email
-                context = ssl.create_default_context()
-                with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as smtp:
-                    smtp.login(email_sender, email_password)
-                    smtp.sendmail(email_sender, email_receiver, em.as_string())
-                print("Email sent!")
-            else:
-                print("No customer emails found.")
-        else:
-            print("Failed to retrieve customer emails:", response.status_code)
+        # Connect to SMTP server and send email
+        context = ssl.create_default_context()
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as smtp:
+            smtp.login(email_sender, email_password)
+            smtp.sendmail(email_sender, receipient, em.as_string())
+        print("Email sent!")
+        return jsonify({'message': 'Email sent successfully'})
+            # else:
+            #     print("No customer emails found.")
+        # else:
+        #     print("Failed to retrieve customer emails:", response.status_code)
     except Exception as e:
         print("Error:", e)
+        
     
-    # Return a valid response
-    return jsonify({'message': 'Email sent successfully'})
+
+
 
 
 if __name__ == '__main__':

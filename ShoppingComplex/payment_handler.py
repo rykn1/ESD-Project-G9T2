@@ -7,6 +7,9 @@ from invokes import invoke_http
 import pika
 import json
 import amqp_connection
+
+from payment import get_emails
+
 # from os import environ
 
 app = Flask(__name__)
@@ -55,7 +58,19 @@ if not amqp_connection.check_exchange(channel, exchangename, exchangetype):
 @app.route('/publish')
 def publish():
     try:
-        message={"body":"test"}
+        email = retrieve_receipient()
+        message={"body":"""
+<html>
+<head></head>
+<body>
+    <h1 style="color: green;">Your payment is Successful!&#x2714;</h1>
+    <p style="font-size: 16px;">Thank you for your payment. Your transaction has been completed, and a receipt for your purchase has been emailed to you2.</p>
+
+</body>
+</html>
+""",
+                 "email":email,
+                 "subject":"Payment Email Confirmation1"}
         msg=json.dumps(message)
         print('\n\n-----Publishing the message routing_key=payment.notification-----')
         channel.basic_publish(exchange=exchangename, routing_key="payment.notification", 
@@ -64,6 +79,7 @@ def publish():
         return jsonify('success')
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
 
 @app.route("/paymentProcess", methods=["POST"])
 def paymentProcess():
@@ -92,6 +108,16 @@ def paymentProcess():
          
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+    
+    
+     
+def retrieve_receipient():
+    # email_receipient = get_emails()
+    # receipient = email_receipient[0]
+    # return receipient
+    receipient = requests.get('http://127.0.0.1:5007/get_emails')
+    print(receipient.json())
+    return receipient.json()[0]
     
 
         
