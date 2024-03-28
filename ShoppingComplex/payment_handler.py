@@ -74,6 +74,12 @@ def payementProcess():
         response = invoke_http(payment_url, method='POST', json=line_items)
         if 'url' in response:
             # Use the URL for client-side redirection or as needed
+            message={"body":"test"}
+            msg=json.dumps(message)
+            print('\n\n-----Publishing the message routing_key=payment.notification-----')
+            channel.basic_publish(exchange=exchangename, routing_key="payment.notification", 
+            body=msg, properties=pika.BasicProperties(delivery_mode = 2)) 
+            print("\nPayment published to RabbitMQ Exchange.\n")
             return redirect(response['url'])
         else:
             # Handle error or unexpected response

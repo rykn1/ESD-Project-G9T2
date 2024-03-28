@@ -69,6 +69,7 @@ def create_checkout_session():
             line_items=line_items,
             mode='payment',
             success_url=url_for('thanks', _external=True) + '?session_id={CHECKOUT_SESSION_ID}',
+            cancel_url=url_for('cancel', _external=True) + '?session_id={CHECKOUT_SESSION_ID}',
         )
         print (checkout_session)
         print ("test")
@@ -77,17 +78,15 @@ def create_checkout_session():
     
     return jsonify({'url': checkout_session.url})
 
-
+@app.route('/cancel')
+def cancel():
+    return render_template('cancel.html')
+    
 
 @app.route('/thanks')
 def thanks():
     # print("testest")
-    message={"body":"test"}
-    msg=json.dumps(message)
-    print('\n\n-----Publishing the message routing_key=payment.notification-----')
-    channel.basic_publish(exchange=exchangename, routing_key="payment.notification", 
-    body=msg, properties=pika.BasicProperties(delivery_mode = 2)) 
-    print("\nPayment published to RabbitMQ Exchange.\n")
+    
     return render_template('thanks.html')
 
 
@@ -102,11 +101,11 @@ def get_emails():
         for charge in charge_list.auto_paging_iter():
             if charge.billing_details and charge.billing_details.email:
                 customer_emails.append(charge.billing_details.email)
-
+    
     except stripe.error.StripeError as e:
         # Handle any errors
         print(f"Error retrieving customer emails: {e}")
-
+    print (customer_emails)
     return customer_emails
 
 
