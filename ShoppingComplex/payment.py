@@ -71,8 +71,8 @@ def create_checkout_session():
             success_url=url_for('thanks', _external=True) + '?session_id={CHECKOUT_SESSION_ID}',
             cancel_url=url_for('cancel', _external=True) + '?session_id={CHECKOUT_SESSION_ID}',
         )
-        print (checkout_session)
-        print ("test")
+        # print (checkout_session)
+        # print ("test")
     except Exception as e:
         return jsonify({'error': str(e)}), 500
     
@@ -105,7 +105,7 @@ def get_emails():
     except stripe.error.StripeError as e:
         # Handle any errors
         print(f"Error retrieving customer emails: {e}")
-    print (customer_emails)
+    # print (customer_emails)
     return customer_emails
 
 

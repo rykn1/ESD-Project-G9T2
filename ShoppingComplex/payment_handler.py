@@ -52,10 +52,21 @@ if not amqp_connection.check_exchange(channel, exchangename, exchangetype):
     sys.exit(0)  
     # Exit with a success status
     
-
+@app.route('/publish')
+def publish():
+    try:
+        message={"body":"test"}
+        msg=json.dumps(message)
+        print('\n\n-----Publishing the message routing_key=payment.notification-----')
+        channel.basic_publish(exchange=exchangename, routing_key="payment.notification", 
+        body=msg, properties=pika.BasicProperties(delivery_mode = 2)) 
+        print("\nPayment published to RabbitMQ Exchange.\n")
+        return jsonify('success')
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 @app.route("/paymentProcess", methods=["POST"])
-def payementProcess():
+def paymentProcess():
     
     cart_items= Cart.query.all()
     try:
@@ -73,13 +84,7 @@ def payementProcess():
         print('hand:', line_items)
         response = invoke_http(payment_url, method='POST', json=line_items)
         if 'url' in response:
-            # Use the URL for client-side redirection or as needed
-            message={"body":"test"}
-            msg=json.dumps(message)
-            print('\n\n-----Publishing the message routing_key=payment.notification-----')
-            channel.basic_publish(exchange=exchangename, routing_key="payment.notification", 
-            body=msg, properties=pika.BasicProperties(delivery_mode = 2)) 
-            print("\nPayment published to RabbitMQ Exchange.\n")
+            
             return redirect(response['url'])
         else:
             # Handle error or unexpected response
@@ -88,65 +93,6 @@ def payementProcess():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
     
-
-@app.route("/payment_handler")
-def valid_items():
-    # Simple check of input format and data of the request are JSON
-    results = invoke_http(shopping_cart_url, method='GET')
-    print( type(results) )
-    print()
-    print(results)
-   
-    try:
-        if results:
-            # do the actual work
-            # 1. Invoke the Payment Microservice
-            result = processPayment(results)         
-            print("\nReceived cart items in JSON:", result)
-            return jsonify(result), result["code"]
-        
-
-    except Exception as e:
-        # Unexpected error in code
-        exc_type, exc_obj, exc_tb = sys.exc_info()
-        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-        ex_str = str(e) + " at " + str(exc_type) + ": " + fname + ": line " + str(exc_tb.tb_lineno)
-        print(ex_str)
-
-        return jsonify({
-            "code": 500,
-            "message": "payment_handler.py internal error: " + ex_str
-        }), 500
-
-
-def processPayment(items):
-    # 1. Send order info {cart items}
-    # Invoking the paymemnt microservice
-    print('\n-----Invoking payment microservice-----')
-    result = invoke_http(payment_url, method='POST', json=items)
-    print("payment_result:", result)
-    
-    # Checking if the payemnt is successful (In the case of successful)
-    
-    # Whatever is inside here, shift it into the payment microservice
-    code = result["code"]
-    message = json.dumps(result)
-    
-    if code in range(200, 300):
-        print('\n\n-----Publishing the message routing_key=payment.notification-----')
-        channel.basic_publish(exchange=exchangename, routing_key="payment.notification", 
-        body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
-        print("\nPayment published to RabbitMQ Exchange.\n")
-    
-    else:
-        return {
-            "code": 500,
-            "data": {"payment": result},
-            "message": "Payment Failed to process. Please try again."
-        }
-
-
-
 
         
 if __name__ == "__main__":

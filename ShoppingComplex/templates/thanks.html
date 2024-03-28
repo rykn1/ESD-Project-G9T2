@@ -25,11 +25,15 @@
   
   <script>
     var clear_cart_url = "http://127.0.0.1:5006/clear-cart";
+    var publish_url="http://127.0.0.1:5909/publish"
 
     new Vue({
         el: '#app',
+       
         created(){
             this.clearCart();
+            this.publish()
+
         },
         methods: {
             async clearCart() {
@@ -46,7 +50,19 @@
                 } catch (error) {
                   console.error('Error clearing cart:', error);
                 }
+              },
+            async publish(){
+              try {
+                const response = await axios.get(publish_url); 
+                if (response.status === 200) {
+                  console.log('Message published successfully');
+                } else {
+                  console.error('Failed to publish message');
+                }
+              } catch (error) {
+                console.error('Error:', error);
               }
+            }
             
         
         }
