@@ -69,12 +69,27 @@
   var get_all_URL = "http://127.0.0.1:5005/item";
   var cart_url = "http://127.0.0.1:5006/cart";
   var total_price_url = "http://127.0.0.1:5006/totalprice"
+  var clear_cart_url = "http://127.0.0.1:5006/clear-cart"
     new Vue({
         el: '#app',
         data: {
           items: [],
           cart: [],
           total_price: null,
+        },
+        mounted() {
+          const clearCartFlag = sessionStorage.getItem('clearCart')
+          if (clearCartFlag==='true'){
+            axios.post(clear_cart_url)
+            .then(response => {
+              console.log(response.data.message);
+              this.getTotalPrice()
+            })
+            .catch(error=>{
+              console.error("Error clearing cart:", error);
+            })
+          }
+          
         },
         methods: {
           getAllItems() {
@@ -143,10 +158,12 @@
             
           }
         },
+        
         created() {
           this.getAllItems();
           this.getTotalPrice();
-        }
+        },
+        
   });
 
 </script>
