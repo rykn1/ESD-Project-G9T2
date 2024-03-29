@@ -3,10 +3,10 @@ from firebase_admin import credentials, auth
 from flask import Flask,request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
-
+from os import environ
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:8889/user_data'
+app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_recycle": 299}
 
@@ -29,7 +29,7 @@ class User(db.Model):
     def json(self):
         return {"id": self.id, "email": self.email, "body": self.body}
 
-cred = credentials.Certificate("./firebaseKey.json")
+cred = credentials.Certificate("firebaseKey.json")
 firebase_admin.initialize_app(cred)
 
 # @app.route('/user', methods=['GET'])
@@ -151,4 +151,4 @@ def get_body():
     )
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5010)
+    app.run(host="0.0.0.0",debug=True, port=5010)

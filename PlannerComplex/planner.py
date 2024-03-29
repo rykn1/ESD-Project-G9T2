@@ -2,6 +2,8 @@ from flask import Flask, request, jsonify
 import requests
 from flask_cors import CORS
 from os import environ
+# import pika
+# import amqp_connection
 app = Flask(__name__)
 CORS(app)
 
@@ -9,6 +11,11 @@ gemini_URL = environ.get('gemini_URL') or 'http://localhost:5002/plan'
 weather_URL = environ.get('weather_URL') or 'http://localhost:5004/weather'
 currency_URL = environ.get('currency_URL') or 'http://localhost:5003/exchange'
 
+# exchangename = "planner"
+# exchangetype = "topic"
+# connection = amqp_connection.create_connection()
+# channel = connection.channel()
+# if not amqp_connection.check_exchange(channel, exchangename, exchangetype):
 
 
 @app.route('/api/plan', methods=['POST'])

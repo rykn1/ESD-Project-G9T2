@@ -59,16 +59,17 @@ services:
     ports:
       - "5001:5001"
 
-  # firebase:
-  #   build:
-  #     context: ./LoginService/
-  #     dockerfile: firebase.Dockerfile
-  #   image: zimingwwu/firebase:1.0
-  #   restart: always
-  #   environment:
-  #     PYTHONUNBUFFERED: 1
-  #   ports:
-  #     - "5010:5010"
+  firebase:
+    build:
+      context: ./LoginService/
+      dockerfile: firebase.Dockerfile
+    image: zimingwwu/firebase:1.0
+    restart: always
+    environment:
+      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/user_data
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "5010:5010"
 
   rabbitmq:
     image: rabbitmq:3-management
