@@ -108,12 +108,16 @@ services:
       - notification
       - shoppingcart
     environment:
+      shopping_cart_url: http://shoppingcart:5006/cart
+      payment_url: http://payment:5007/create-checkout-session
+      notification_url: http://notification:5008/notification
+      recipient_url: http://payment:5007/get_emails
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/cart
       rabbit_host: rabbitmq
       rabbit_port: 5672 
       PYTHONUNBUFFERED: 1
     ports:
-      - "5909:5909"    
+      - "5909:5909"
 
   payment:
     build:

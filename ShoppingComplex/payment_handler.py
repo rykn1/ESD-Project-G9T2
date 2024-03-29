@@ -24,9 +24,10 @@ app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_recycle": 299}
 db = SQLAlchemy(app)
 CORS(app)
 
-shopping_cart_url = "http://shoppingcart:5006/cart"
-payment_url = "http://payment:5007/create-checkout-session"
-notification_url = "http://notification:5008/notification"
+shopping_cart_url = environ.get('shopping_cart_url') or "http://localhost:5006/cart"
+payment_url = environ.get('payment_url') or "http://localhost:5007/create-checkout-session"
+notification_url = environ.get('notification_url') or "http://localhost:5008/notification"
+recipient_url = environ.get('recipient_url') or "http://localhost:5007/get_emails"
 
 class Cart(db.Model):
     __tablename__ = 'cart'
@@ -54,13 +55,13 @@ channel = connection.channel()
 #if the exchange is not yet created, exit the program
 if not amqp_connection.check_exchange(channel, exchangename, exchangetype):
     print("\nCreate the 'Exchange' before running this microservice. \nExiting the program.")
-    sys.exit(0)  
+    sys.exit(0)
     # Exit with a success status
     
 @app.route('/publish')
 def publish():
     try:
-        email = retrieve_receipient()
+        email = retrieve_recipient()
         message={"body":"""
 <html>
 <head></head>
@@ -113,13 +114,13 @@ def paymentProcess():
     
     
      
-def retrieve_receipient():
+def retrieve_recipient():
     # email_receipient = get_emails()
     # receipient = email_receipient[0]
     # return receipient
-    receipient = requests.get('http://payment:5007/get_emails')
-    print(receipient.json())
-    return receipient.json()
+    recipient = requests.get('http://payment:5007/get_emails')
+    print(recipient.json())
+    return recipient.json()[0]
     
 
         

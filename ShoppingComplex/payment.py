@@ -106,7 +106,7 @@ def get_emails():
         # Handle any errors
         print(f"Error retrieving customer emails: {e}")
     # print (customer_emails)
-    return customer_emails[0]
+    return customer_emails
 
 
 if __name__ == '__main__':
