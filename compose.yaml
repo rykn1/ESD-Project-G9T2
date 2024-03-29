@@ -51,7 +51,10 @@ services:
       - generative_ai
       - currency_service
       - weather
+      - rabbitmq
     environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
       gemini_URL: http://generative_ai:5002/plan
       weather_URL: http://weather:5004/weather
       currency_URL: http://currency_service:5003/exchange

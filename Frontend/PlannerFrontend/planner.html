@@ -281,7 +281,28 @@
                 
                 hideSaveOptions() {
                   this.showSaveOptions = false; 
-                }
+                },
+                async sendEmail(){
+                  try {
+                    body = this.itinerary
+                    body['country'] = this.country
+                    body=JSON.stringify(body)
+                    const response = await fetch('http://localhost:5001/publish', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({body: body})
+                    });
+                    if (response.ok) {
+                        var response_data = await response.json()
+                        console.log(response_data)
+                        response_data = response_data['data']
+                        return(response_data)
+                    }
+                } catch (error) {
+                    console.log(error)
+                    alert('error')
+                  }
+                },
 
 
             } 
