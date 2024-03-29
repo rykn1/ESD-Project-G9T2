@@ -286,11 +286,13 @@
                   try {
                     body = this.itinerary
                     body['country'] = this.country
-                    body=JSON.stringify(body)
+                    body = JSON.stringify(body)
+                    uid = document.getElementById('test').value
+                    console.log(uid)
                     const response = await fetch('http://localhost:5001/publish', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({body: body})
+                        body: JSON.stringify({ id: uid, body: body})
                     });
                     if (response.ok) {
                         var response_data = await response.json()

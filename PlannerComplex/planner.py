@@ -5,6 +5,7 @@ import amqp_connection
 import sys
 from os import environ
 import pika
+import json
 app = Flask(__name__)
 CORS(app)
 gemini_URL = environ.get('gemini_URL') or 'http://localhost:5002/plan'
@@ -21,36 +22,43 @@ if not amqp_connection.check_exchange(channel, exchangename, exchangetype):
     sys.exit(0)
     # Exit with a success status
 
-@app.route('/publish')
+@app.route('/publish', methods=['POST'])
 def publish():
-    itinerary = request.get_json()
+    print('testtesttest')
+    itinerary = request.json
     print(itinerary)
+    #itinerary['Days'] -- list of days with key "Activities" : [activity1,2,3]
+    #itinerary["country"] -- country
+    id = itinerary['id']
+    print(id)
     try:
-        email = requests.get(email_URL)
+        email = requests.post(email_URL,json=itinerary)
+        print(email)
         if email.status_code not in range(200,300):
             print("email error")
             return "email error"
-        emailResult = emailResult.json()
+        print('testasda')
+        emailResult = email.text
         print(emailResult)
-        return(emailResult)
-#         message={"body":"""
-# <html>
-# <head></head>
-# <body>
-#     <h1 style="color: green;">Your payment is Successful!&#x2714;</h1>
-#     <p style="font-size: 16px;">Thank you for your payment. Your transaction has been completed, and a receipt for your purchase has been emailed to you2.</p>
 
-# </body>
-# </html>
-# """,
-#                  "email":email,
-#                  "subject":"Payment Email Confirmation1"}
-#         msg=json.dumps(message)
-#         print('\n\n-----Publishing the message routing_key=payment.notification-----')
-#         channel.basic_publish(exchange=exchangename, routing_key="payment.notification", 
-#         body=msg, properties=pika.BasicProperties(delivery_mode = 2)) 
-#         print("\nPayment published to RabbitMQ Exchange.\n")
-#         return jsonify('success')
+        message={"body":"""
+<html>
+<head></head>
+<body>
+    <h1 style="color: green;">Here is your itinerary!&#x2714;</h1>
+    <p style="font-size: 16px;">     </p>
+
+</body>
+</html>
+""",
+                 "email":emailResult,
+                 "subject":"Your itinerary"}
+        msg=json.dumps(message)
+        print('\n\n-----Publishing the message routing_key=itinerary.notification-----')
+        channel.basic_publish(exchange=exchangename, routing_key="itinerary.notification", 
+        body=msg, properties=pika.BasicProperties(delivery_mode = 2)) 
+        print("\nPayment published to RabbitMQ Exchange.\n")
+        return jsonify('success')
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
