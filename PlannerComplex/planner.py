@@ -40,19 +40,36 @@ def publish():
         print('testasda')
         emailResult = email.text
         print(emailResult)
+        itinerary_details = json.loads(itinerary['body'])
+        print(itinerary_details)
+        
+        message_body = f"""
+        <html>
+        <head></head>
+        <body>
+            <h1 style="color: green;">Here is your {len(itinerary_details['Days'])} Day itinerary to {itinerary_details['country']}!&#x2714;</h1>
+            <div style="font-size: 16px;">
+        """
+        
+        for day_number, day in enumerate(itinerary_details['Days'], start=1):
+            message_body += f"<h2>Day {day_number}</h2><ul>"
+            for activity in day['Activities']:
+                message_body += f"<li>{activity}</li>"
+            message_body += "</ul>"
+        
+        message_body += """
+            </div>
+        </body>
+        </html>
+        """
 
-        message={"body":"""
-<html>
-<head></head>
-<body>
-    <h1 style="color: green;">Here is your itinerary!&#x2714;</h1>
-    <p style="font-size: 16px;">     </p>
-
-</body>
-</html>
-""",
-                 "email":emailResult,
-                 "subject":"Your itinerary"}
+        message = {
+            "body": message_body,
+            "email": emailResult,  
+            "subject": "Your itinerary by TravelBuddy!"
+        }
+        print(message)
+        
         msg=json.dumps(message)
         print('\n\n-----Publishing the message routing_key=itinerary.notification-----')
         channel.basic_publish(exchange=exchangename, routing_key="itinerary.notification", 
