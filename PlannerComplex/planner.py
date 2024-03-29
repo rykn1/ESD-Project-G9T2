@@ -4,7 +4,7 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
-
+print('asd')
 @app.route('/api/plan', methods=['POST'])
 def plan_itinerary():
     data = request.json
@@ -46,4 +46,4 @@ def processPlanRequest(data):
     
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5001)
+    app.run(host='0.0.0.0',debug=True, port=5001)

@@ -1,30 +1,52 @@
 version: '3.8'
 services:
 
-  planner:
-    build: 
-      context: ./PlannerComplex
-      dockerfile: planner.Dockerfile
-    ports:
-      - "5001:80"
 
   generative_ai:
     build: 
-      context: ./PlannerComplex
+      context: ./PlannerComplex/
       dockerfile: generative_ai.Dockerfile
+    image: zimingwwu/ai:1.0
+    restart: always
+    environment:
+      PYTHONUNBUFFERED: 1
     ports:
-      - "5002:80"
+      - "5002:5002"
 
   currency_service:
     build: 
-      context: ./PlannerComplex
+      context: ./PlannerComplex/
       dockerfile: currency_service.Dockerfile
+    image: zimingwwu/currency:1.0
+    restart: always
+    environment:
+      PYTHONUNBUFFERED: 1
     ports:
-      - "5003:80"
+      - "5003:5003"
 
   weather:
     build: 
-      context: ./PlannerComplex
+      context: ./PlannerComplex/
       dockerfile: weather.Dockerfile
+    image: zimingwwu/weather:1.0
+    restart: always
+    environment:
+      PYTHONUNBUFFERED: 1    
     ports:
-      - "5004:80"
+      - "5004:5004"
+
+
+  planner:
+    build: 
+      context: ./PlannerComplex/
+      dockerfile: planner.Dockerfile
+    image: zimingwwu/planner:1.0
+    restart: always
+    depends_on:
+      - generative_ai
+      - currency_service
+      - weather
+    environment:
+      PYTHONUNBUFFERED: 1      
+    ports:
+      - "5001:5001"

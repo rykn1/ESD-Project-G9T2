@@ -4,7 +4,7 @@ from flask import Flask, request, jsonify
 import google.generativeai as genai
 from flask_cors import CORS
 import json
-
+print("casdasdasd")
 app = Flask(__name__)
 CORS(app)
 
@@ -63,4 +63,4 @@ def plan_itinerary():
         return jsonify({'error': 'An error occurred while generating the itinerary.'}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5002) 
+    app.run(host='0.0.0.0',debug=True, port=5002) 

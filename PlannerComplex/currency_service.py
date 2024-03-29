@@ -1,5 +1,5 @@
 # pip install exchangeratesapi    -> If not done yet
-
+print("test")
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import requests
@@ -40,4 +40,4 @@ def get_exchange_rate():
         return jsonify({'error': str(e)}), 500
     
 if __name__ == '__main__':
-    app.run(debug=True, port=5003)
+    app.run(host='0.0.0.0',debug=True, port=5003)
