@@ -52,6 +52,9 @@ services:
       - currency_service
       - weather
     environment:
+      gemini_URL: http://generative_ai:5002/plan
+      weather_URL: http://weather:5004/weather
+      currency_URL: http://currency_service:5003/exchange
       PYTHONUNBUFFERED: 1      
     ports:
       - "5001:5001"
