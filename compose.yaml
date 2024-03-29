@@ -11,7 +11,7 @@ services:
     build: 
       context: ./PlannerComplex/
       dockerfile: generative_ai.Dockerfile
-    image: jinghang123/ai:1.0
+    image: choxa1/ai:1.0
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
@@ -22,7 +22,7 @@ services:
     build: 
       context: ./PlannerComplex/
       dockerfile: currency_service.Dockerfile
-    image: jinghang123/currency:1.0
+    image: choxa1/currency:1.0
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
@@ -33,7 +33,7 @@ services:
     build: 
       context: ./PlannerComplex/
       dockerfile: weather.Dockerfile
-    image: jinghang123/weather:1.0
+    image: choxa1/weather:1.0
     restart: always
     environment:
       PYTHONUNBUFFERED: 1    
@@ -45,7 +45,7 @@ services:
     build: 
       context: ./PlannerComplex/
       dockerfile: planner.Dockerfile
-    image: jinghang123/planner:1.0
+    image: choxa1/planner:1.0
     restart: always
     depends_on:
       - generative_ai
@@ -60,7 +60,7 @@ services:
   #   build:
   #     context: ./LoginService/
   #     dockerfile: firebase.Dockerfile
-  #   image: jinghang123/firebase:1.0
+  #   image: choxa1/firebase:1.0
   #   restart: always
   #   environment:
   #     PYTHONUNBUFFERED: 1
@@ -83,7 +83,7 @@ services:
     build:
       context: ./ShoppingComplex/
       dockerfile: notification.Dockerfile
-    image: jinghang123/notification:1.0
+    image: choxa1/notification:1.0
     restart: always
     depends_on:
       - rabbitmq
@@ -97,7 +97,7 @@ services:
     build:
       context: ./ShoppingComplex/
       dockerfile: payment_handler.Dockerfile
-    image: jinghang123/payment_handler:1.0
+    image: choxa1/payment_handler:1.0
     restart: always
     depends_on:
       - rabbitmq
@@ -115,7 +115,7 @@ services:
     build:
       context: ./ShoppingComplex/
       dockerfile: payment.Dockerfile
-    image: jinghang123/payment:1.0
+    image: choxa1/payment:1.0
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
@@ -126,7 +126,7 @@ services:
     build:
       context: ./ShoppingComplex/
       dockerfile: shopItems.Dockerfile
-    image: jinghang123/shopitems:1.0
+    image: choxa1/shopitems:1.0
     restart: always
     environment:
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/item
@@ -139,7 +139,7 @@ services:
     build:
       context: ./ShoppingComplex/
       dockerfile: shoppingcart.Dockerfile
-    image: jinghang123/shoppingcart:1.0
+    image: choxa1/shoppingcart:1.0
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
