@@ -5,7 +5,7 @@ from email.message import EmailMessage
 import ssl
 import smtplib
 
-from payment_handler import retrieve_receipient
+# from payment_handler import retrieve_receipient
 
 
 #calling of this url has to be done in the composite microservice aka payment_handler

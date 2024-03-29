@@ -1,4 +1,9 @@
 version: '3.8'
+
+volumes:
+  rabbitmq_data:
+
+
 services:
 
 
@@ -6,7 +11,7 @@ services:
     build: 
       context: ./PlannerComplex/
       dockerfile: generative_ai.Dockerfile
-    image: zimingwwu/ai:1.0
+    image: jinghang123/ai:1.0
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
@@ -17,7 +22,7 @@ services:
     build: 
       context: ./PlannerComplex/
       dockerfile: currency_service.Dockerfile
-    image: zimingwwu/currency:1.0
+    image: jinghang123/currency:1.0
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
@@ -28,7 +33,7 @@ services:
     build: 
       context: ./PlannerComplex/
       dockerfile: weather.Dockerfile
-    image: zimingwwu/weather:1.0
+    image: jinghang123/weather:1.0
     restart: always
     environment:
       PYTHONUNBUFFERED: 1    
@@ -40,7 +45,7 @@ services:
     build: 
       context: ./PlannerComplex/
       dockerfile: planner.Dockerfile
-    image: zimingwwu/planner:1.0
+    image: jinghang123/planner:1.0
     restart: always
     depends_on:
       - generative_ai
@@ -51,16 +56,16 @@ services:
     ports:
       - "5001:5001"
 
-  firebase:
-    build:
-      context: ./LoginService/
-      dockerfile: firebase.Dockerfile
-    image: zimingwwu/firebase:1.0
-    restart: always
-    environment:
-      PYTHONUNBUFFERED: 1
-    ports:
-      - "5010:5010"
+  # firebase:
+  #   build:
+  #     context: ./LoginService/
+  #     dockerfile: firebase.Dockerfile
+  #   image: jinghang123/firebase:1.0
+  #   restart: always
+  #   environment:
+  #     PYTHONUNBUFFERED: 1
+  #   ports:
+  #     - "5010:5010"
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -78,7 +83,7 @@ services:
     build:
       context: ./ShoppingComplex/
       dockerfile: notification.Dockerfile
-    image: zimingwwu/notification:1.0
+    image: jinghang123/notification:1.0
     restart: always
     depends_on:
       - rabbitmq
@@ -92,7 +97,7 @@ services:
     build:
       context: ./ShoppingComplex/
       dockerfile: payment_handler.Dockerfile
-    image: zimingwwu/payment_handler:1.0
+    image: jinghang123/payment_handler:1.0
     restart: always
     depends_on:
       - rabbitmq
@@ -110,7 +115,7 @@ services:
     build:
       context: ./ShoppingComplex/
       dockerfile: payment.Dockerfile
-    image: zimingwwu/payment:1.0
+    image: jinghang123/payment:1.0
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
@@ -121,7 +126,7 @@ services:
     build:
       context: ./ShoppingComplex/
       dockerfile: shopItems.Dockerfile
-    image: zimingwwu/shopItems:1.0
+    image: jinghang123/shopitems:1.0
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
@@ -133,7 +138,7 @@ services:
     build:
       context: ./ShoppingComplex/
       dockerfile: shoppingcart.Dockerfile
-    image: zimingwwu/shoppingcart:1.0
+    image: jinghang123/shoppingcart:1.0
     restart: always
     environment:
       PYTHONUNBUFFERED: 1

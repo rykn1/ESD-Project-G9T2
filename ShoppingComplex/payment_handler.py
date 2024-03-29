@@ -8,7 +8,7 @@ import pika
 import json
 import amqp_connection
 
-from payment import get_emails
+# from payment import get_emails
 
 # from os import environ
 
