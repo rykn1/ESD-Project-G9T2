@@ -118,6 +118,7 @@ services:
     image: choxa1/payment:1.0
     restart: always
     environment:
+      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/cart
       PYTHONUNBUFFERED: 1
     ports:
       - "5007:5007"
