@@ -6,7 +6,7 @@ services:
     build: 
       context: ./PlannerComplex/
       dockerfile: generative_ai.Dockerfile
-    image: zimingwwu/ai:1.0
+    image: choxa1/ai:1.0
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
@@ -17,7 +17,7 @@ services:
     build: 
       context: ./PlannerComplex/
       dockerfile: currency_service.Dockerfile
-    image: zimingwwu/currency:1.0
+    image: choxa1/currency:1.0
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
@@ -28,7 +28,7 @@ services:
     build: 
       context: ./PlannerComplex/
       dockerfile: weather.Dockerfile
-    image: zimingwwu/weather:1.0
+    image: choxa1/weather:1.0
     restart: always
     environment:
       PYTHONUNBUFFERED: 1    
@@ -40,7 +40,7 @@ services:
     build: 
       context: ./PlannerComplex/
       dockerfile: planner.Dockerfile
-    image: zimingwwu/planner:1.0
+    image: choxa1/planner:1.0
     restart: always
     depends_on:
       - generative_ai
