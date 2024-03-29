@@ -4,7 +4,6 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
-print('asd')
 @app.route('/api/plan', methods=['POST'])
 def plan_itinerary():
     print('testgh')

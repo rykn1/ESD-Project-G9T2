@@ -8,10 +8,11 @@ import logging
 import stripe
 # import amqp_connection
 import os, sys
-
+from os import environ
 
 app = Flask(__name__, static_url_path="",static_folder="templates")
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:@localhost:3306/cart'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:@localhost:3306/cart'
+app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_recycle": 299}
 app.config['STRIPE_PUBLIC_KEY'] = 'pk_test_51OrELHATlCeKbEIxdOhbVW5Vii3DbYkWUtdqLtf88Mg4ATq96PtsfQRqbwbJbNikvmwedig7BQtED7vDb9zvQlKQ00FD5yU6c0'
@@ -109,4 +110,4 @@ def get_emails():
 
 
 if __name__ == '__main__':
-    app.run(port=5007, debug=True)
+    app.run(host='0.0.0.0',port=5007, debug=True)

@@ -1,5 +1,4 @@
 # pip install exchangeratesapi    -> If not done yet
-print("test")
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import requests

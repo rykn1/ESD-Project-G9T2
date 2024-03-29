@@ -4,7 +4,6 @@ from flask import Flask, request, jsonify
 import google.generativeai as genai
 from flask_cors import CORS
 import json
-print("casdasdasd")
 app = Flask(__name__)
 CORS(app)
 
