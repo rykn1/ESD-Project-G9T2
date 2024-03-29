@@ -96,9 +96,15 @@ def update_body():
         db.select(User).filter_by(id=id).limit(1)).first()
     if user:
         try:
-            print("TESTTEST")
-            user.body += data['body']
-            db.session.commit()
+            if user.body == None:
+                user.body = data['body']
+                db.session.commit()
+            else:
+                user.body += data['body']
+                print('test1')
+                db.session.commit()
+                print('test2')
+
         except:
             return jsonify(
             {

@@ -68,7 +68,7 @@
                 const searchParams = new URLSearchParams(window.location.search)
                 this.id = searchParams.get('id')
                 console.log(this.id)
-                const response = await fetch("http://127.0.0.1:5005/body", {
+                const response = await fetch("http://127.0.0.1:5010/body", {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ id: this.id })
