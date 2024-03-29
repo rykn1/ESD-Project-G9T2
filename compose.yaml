@@ -71,6 +71,7 @@ services:
     ports:
       - "5010:5010"
 
+
   rabbitmq:
     image: rabbitmq:3-management
     hostname: esd-rabbit

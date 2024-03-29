@@ -253,7 +253,7 @@
                     body=JSON.stringify(body) + "$"
                     uid = document.getElementById('test').value
                     console.log(uid)
-                    const response = await fetch('http://localhost:5005/updatebody', {
+                    const response = await fetch('http://localhost:5010/updatebody', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ id: uid, body: body})

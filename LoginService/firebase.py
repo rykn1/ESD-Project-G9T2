@@ -7,6 +7,8 @@ from os import environ
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL')
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:@localhost:3306/user_data'
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_recycle": 299}
 
@@ -29,11 +31,10 @@ class User(db.Model):
     def json(self):
         return {"id": self.id, "email": self.email, "body": self.body}
 
-cred = credentials.Certificate("firebaseKey.json")
+cred = credentials.Certificate("./firebaseKey.json")
 firebase_admin.initialize_app(cred)
 
-# @app.route('/user', methods=['GET'])
-# def get_user():
+
     
 
 @app.route('/user', methods=['POST'])
@@ -88,12 +89,14 @@ def create_user():
 
 @app.route('/updatebody', methods=['POST'])
 def update_body():
+    print("URMUM")
     data = request.json
     id = data['id']
     user = db.session.scalars(
         db.select(User).filter_by(id=id).limit(1)).first()
     if user:
         try:
+            print("TESTTEST")
             user.body += data['body']
             db.session.commit()
         except:
