@@ -68,8 +68,9 @@ def create_checkout_session():
         checkout_session=stripe.checkout.Session.create(
             line_items=line_items,
             mode='payment',
-            success_url=url_for('thanks', _external=True) + '?session_id={CHECKOUT_SESSION_ID}',
-            cancel_url=url_for('cancel', _external=True) + '?session_id={CHECKOUT_SESSION_ID}',
+            # success_url=url_for('thanks', _external=True) + '?session_id={CHECKOUT_SESSION_ID}',
+            success_url="http://localhost/ESD-PROJECT-G9T2/ShoppingComplex/templates/thanks.html",
+            cancel_url="http://localhost/ESD-PROJECT-G9T2/ShoppingComplex/templates/cancel.html",
         )
         # print (checkout_session)
         # print ("test")
@@ -86,7 +87,6 @@ def cancel():
 @app.route('/thanks')
 def thanks():
     # print("testest")
-    
     return render_template('thanks.html')
 
 
@@ -106,7 +106,7 @@ def get_emails():
         # Handle any errors
         print(f"Error retrieving customer emails: {e}")
     # print (customer_emails)
-    return customer_emails
+    return customer_emails[0]
 
 
 if __name__ == '__main__':

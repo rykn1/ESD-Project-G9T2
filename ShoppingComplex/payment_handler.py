@@ -7,6 +7,7 @@ from invokes import invoke_http
 import pika
 import json
 import amqp_connection
+from os import environ
 
 # from payment import get_emails
 
@@ -16,7 +17,8 @@ app = Flask(__name__)
 
 # Connecting to 'Cart' Database
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/cart'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/cart'
+app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_recycle": 299}
 db = SQLAlchemy(app)
@@ -117,7 +119,7 @@ def retrieve_receipient():
     # return receipient
     receipient = requests.get('http://payment:5007/get_emails')
     print(receipient.json())
-    return receipient.json()[0]
+    return receipient.json()
     
 
         
