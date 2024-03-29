@@ -35,8 +35,8 @@ def process_image(file, target_language):
             print('Translated Text:', translated_text)
 
             # Step 3: Text Replacement
-            new_image_path = os.path.join("../ocr_orchestrator", image_path)
-            replacement_payload = {'image_path': new_image_path, 'translated_text': translated_text,
+            #new_image_path = os.path.join("../ocr_orchestrator", image_path)
+            replacement_payload = {'image_path': image_path, 'translated_text': translated_text,
                                    'bounding_boxes': bounding_boxes}
             response = requests.post(text_replacement_service_url, json=replacement_payload)
             print('Replacement Response:', response.content)

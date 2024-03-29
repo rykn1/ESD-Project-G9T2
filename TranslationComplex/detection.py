@@ -35,7 +35,7 @@ def process_image(image_path):
         box_coords = []
 
         # Load a font that supports Arabic characters
-        arabic_font_path = "../ocr_orchestrator/Arial Unicode MS.ttf"  # Replace with the path to your Arabic font file
+        arabic_font_path = "./Arial Unicode MS.ttf"  # Replace with the path to your Arabic font file
         arabic_font = ImageFont.truetype(arabic_font_path, size=14)  # Adjust the size as needed
 
         # Iterate over the detected text regions
@@ -80,7 +80,7 @@ def detect_text():
 
     try:
         # Save the uploaded image
-        image_path = '../ocr_orchestrator/static/uploaded_image.jpg'
+        image_path = './static/uploaded_image.jpg'
         file.save(image_path)
         print('Image path works')
 
@@ -88,7 +88,7 @@ def detect_text():
         extracted_text, img_with_text, box_coords, error_message = process_image(image_path)
 
         if extracted_text:
-            processed_image_path = '../ocr_orchestrator/static/processed_image.jpg'
+            processed_image_path = './static/processed_image.jpg'
             img_with_text.save(processed_image_path)  # Save the processed image with text overlay
             return jsonify({'extracted_text': extracted_text, 'processed_image_path': processed_image_path, 'box_coords': box_coords}), 200
         else:
