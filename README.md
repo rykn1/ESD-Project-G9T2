@@ -69,17 +69,21 @@ To ensure the program runs, kindly add on the following API keys to it's destina
 
 ## Shopping Complex Microservice
 
-## Translation Complex Microservice
-### 1. orchestrator.py 
-- Orchestrates the microservices within the Translation Complex Microservice.
-### 2. detect.py
-- Detects words in images using pytesseract OCR.
-### 4. translation.py
-- Retrieves extracted words and translates them using the Deep Translator API.
-### 3. text_replacement.py
-- Overlays the existing image with translated text using the Python Imaging Library (PIL).
-### 5. error.py
-- Displays error messages.
+
+### 1. shopItems.py
+- Extracting all of the items from the database
+- 
+### 2. shoppingcart.py
+- Displaying the selected items selected by the user
+- 
+### 3. payment_handler.py
+- Orchestrates the payment.py microservice 
+- Publish a message to the rabbimq queue for notification.py 
+### 4. payment.py
+-Invokes the STRIPE API where user will facilitate a payment process 
+
+### 5. notification.py
+- Upon consuming the message in rabbitmq queue, it sends an email to the user 
 
 
 
