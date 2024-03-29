@@ -106,7 +106,7 @@ services:
       - shoppingcart
     environment:
       rabbit_host: rabbitmq
-      rabbit_port: 5672
+      rabbit_port: 5672 
       PYTHONUNBUFFERED: 1
     ports:
       - "5909:5909"    
@@ -129,6 +129,7 @@ services:
     image: jinghang123/shopitems:1.0
     restart: always
     environment:
+      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/item
       PYTHONUNBUFFERED: 1
     ports:
       - "5005:5005"

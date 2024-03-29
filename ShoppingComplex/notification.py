@@ -18,7 +18,7 @@ email_password = 'mzktuipjgxecxhvw'
 
 notification_queue_name = "Notification"
 
-email_receiver = retrieve_receipient()
+# email_receiver = retrieve_receipient()
 
 def receiveNotification(channel):
     try:
