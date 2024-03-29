@@ -6,7 +6,7 @@ services:
     build: 
       context: ./PlannerComplex/
       dockerfile: generative_ai.Dockerfile
-    image: choxa1/ai:1.0
+    image: zimingwwu/ai:1.0
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
@@ -17,7 +17,7 @@ services:
     build: 
       context: ./PlannerComplex/
       dockerfile: currency_service.Dockerfile
-    image: choxa1/currency:1.0
+    image: zimingwwu/currency:1.0
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
@@ -28,7 +28,7 @@ services:
     build: 
       context: ./PlannerComplex/
       dockerfile: weather.Dockerfile
-    image: choxa1/weather:1.0
+    image: zimingwwu/weather:1.0
     restart: always
     environment:
       PYTHONUNBUFFERED: 1    
@@ -40,7 +40,7 @@ services:
     build: 
       context: ./PlannerComplex/
       dockerfile: planner.Dockerfile
-    image: choxa1/planner:1.0
+    image: zimingwwu/planner:1.0
     restart: always
     depends_on:
       - generative_ai
@@ -50,3 +50,93 @@ services:
       PYTHONUNBUFFERED: 1      
     ports:
       - "5001:5001"
+
+  firebase:
+    build:
+      context: ./LoginService/
+      dockerfile: firebase.Dockerfile
+    image: zimingwwu/firebase:1.0
+    restart: always
+    environment:
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "5010:5010"
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    hostname: esd-rabbit
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes: 
+      - ./rabbitmq.config:/etc/rabbitmq/rabbitmq.config
+      - ./rabbitmq_definitions.json:/etc/rabbitmq/rabbitmq_definitions.json
+      - rabbitmq_data:/var/lib/rabbitmq
+
+  notification:
+    build:
+      context: ./ShoppingComplex/
+      dockerfile: notification.Dockerfile
+    image: zimingwwu/notification:1.0
+    restart: always
+    depends_on:
+      - rabbitmq
+    environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
+      notification_queue_name: Notification
+      PYTHONUNBUFFERED: 1
+      
+  payment_handler:
+    build:
+      context: ./ShoppingComplex/
+      dockerfile: payment_handler.Dockerfile
+    image: zimingwwu/payment_handler:1.0
+    restart: always
+    depends_on:
+      - rabbitmq
+      - payment
+      - notification
+      - shoppingcart
+    environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "5909:5909"    
+
+  payment:
+    build:
+      context: ./ShoppingComplex/
+      dockerfile: payment.Dockerfile
+    image: zimingwwu/payment:1.0
+    restart: always
+    environment:
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "5007:5007"
+
+  shopItems:
+    build:
+      context: ./ShoppingComplex/
+      dockerfile: shopItems.Dockerfile
+    image: zimingwwu/shopItems:1.0
+    restart: always
+    environment:
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "5005:5005"
+
+
+  shoppingcart:
+    build:
+      context: ./ShoppingComplex/
+      dockerfile: shoppingcart.Dockerfile
+    image: zimingwwu/shoppingcart:1.0
+    restart: always
+    environment:
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "5006:5006"
+

@@ -22,9 +22,9 @@ app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_recycle": 299}
 db = SQLAlchemy(app)
 CORS(app)
 
-shopping_cart_url = "http://localhost:5006/cart"
-payment_url = "http://localhost:5007/create-checkout-session"
-notification_url = "http://localhost:5008/notification"
+shopping_cart_url = "http://shoppingcart:5006/cart"
+payment_url = "http://payment:5007/create-checkout-session"
+notification_url = "http://notification:5008/notification"
 
 class Cart(db.Model):
     __tablename__ = 'cart'
@@ -115,7 +115,7 @@ def retrieve_receipient():
     # email_receipient = get_emails()
     # receipient = email_receipient[0]
     # return receipient
-    receipient = requests.get('http://127.0.0.1:5007/get_emails')
+    receipient = requests.get('http://payment:5007/get_emails')
     print(receipient.json())
     return receipient.json()[0]
     

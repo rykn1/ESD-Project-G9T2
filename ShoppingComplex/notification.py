@@ -1,20 +1,17 @@
-from flask import Flask, request, jsonify
-from flask_sqlalchemy import SQLAlchemy
-from flask_cors import CORS
 import amqp_connection 
 import json 
 import pika
 from email.message import EmailMessage
 import ssl
 import smtplib
-import requests
 
 from payment_handler import retrieve_receipient
 
-app = Flask(__name__)
 
 #calling of this url has to be done in the composite microservice aka payment_handler
-customer_email_url='http://127.0.0.1:5007/get_emails'
+# customer_email_url='http://127.0.0.1:5007/get_emails'
+# customer_email_url='http://payment/get_emails'
+
 
 email_sender = 'lim263654@gmail.com'
 email_password = 'mzktuipjgxecxhvw'
@@ -62,7 +59,6 @@ def processPaymentLog(order):
 
 
 
-@app.route('/')
 def send_email(body,receipient,subject):
     try:
         # response = requests.get(customer_email_url)
@@ -86,7 +82,7 @@ def send_email(body,receipient,subject):
             smtp.login(email_sender, email_password)
             smtp.sendmail(email_sender, receipient, em.as_string())
         print("Email sent!")
-        return jsonify({'message': 'Email sent successfully'})
+        return ({'message': 'Email sent successfully'})
             # else:
             #     print("No customer emails found.")
         # else:
@@ -105,7 +101,6 @@ if __name__ == '__main__':
     print("notification: Connection established successfully")
     channel = connection.channel()
     receiveNotification(channel)
-    app.run(port=5892, debug=True)
     
     
     

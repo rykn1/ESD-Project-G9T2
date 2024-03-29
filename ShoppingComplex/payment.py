@@ -6,9 +6,8 @@ from flask_cors import CORS
 import json
 import logging
 import stripe
-import amqp_connection
+# import amqp_connection
 import os, sys
-import pika
 
 
 app = Flask(__name__, static_url_path="",static_folder="templates")
@@ -23,16 +22,16 @@ db = SQLAlchemy(app)
 
 CORS(app)
 
-# AMQP connection
-exchangename = "payment_handler"
-exchangetype = "topic"
-connection = amqp_connection.create_connection() 
-channel = connection.channel()
-#if the exchange is not yet created, exit the program
-if not amqp_connection.check_exchange(channel, exchangename, exchangetype):
-    print("\nCreate the 'Exchange' before running this microservice. \nExiting the program.")
-    sys.exit(0)  
-    # Exit with a success status
+# # AMQP connection
+# exchangename = "payment_handler"
+# exchangetype = "topic"
+# connection = amqp_connection.create_connection() 
+# channel = connection.channel()
+# #if the exchange is not yet created, exit the program
+# if not amqp_connection.check_exchange(channel, exchangename, exchangetype):
+#     print("\nCreate the 'Exchange' before running this microservice. \nExiting the program.")
+#     sys.exit(0)  
+#     # Exit with a success status
     
 
 class Cart(db.Model):
