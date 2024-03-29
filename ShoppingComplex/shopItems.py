@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from os import environ
-
+print('testtest')
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL') 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -50,7 +50,6 @@ def get_all():
             "message": "There are no items."
         }
     ), 404
-
 
 @app.route("/item/<int:id>")
 def find_by_id(id):
@@ -118,4 +117,4 @@ def create_item(id):
 
 
 if __name__ == '__main__':
-    app.run(port=5005, debug=True)
+    app.run(host='0.0.0.0',port=5005, debug=True)

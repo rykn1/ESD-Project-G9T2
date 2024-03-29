@@ -8,8 +8,6 @@
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <!-- Font Awesome CSS -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-  <!-- External CSS -->
-  <link href="shopping.css" rel="stylesheet">
   <!-- Animate CSS-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
   <!-- Vue.js -->
@@ -42,7 +40,7 @@
             <h2 class="text-center">Your Travel Cart</h2>
             <div class="text-end my-3">
                 <h4>Total: ${{ total_price }}</h4>
-                <a href="http://localhost:5007/shopping_cart.html" class="btn btn-success">Proceed to Checkout</a>
+                <a href="/ShoppingComplex/templates/shopping_cart.html" class="btn btn-success">Proceed to Checkout</a>
             </div>
             <ul class="list-group">
             <li class="list-group-item" v-for="(item, index) in cart" :key="index">
@@ -93,6 +91,7 @@
         },
         methods: {
           getAllItems() {
+            console.log('asdasd')
             const response = 
               fetch(get_all_URL)
                 .then(response => response.json())
