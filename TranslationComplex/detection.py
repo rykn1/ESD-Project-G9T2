@@ -77,11 +77,7 @@ def detect_text():
         return jsonify({'error': 'No selected file'}), 400
     try:
         # Save the uploaded image
-<<<<<<< Updated upstream
         image_path = "uploaded_image.jpg"
-=======
-        image_path = 'uploaded_image.jpg'
->>>>>>> Stashed changes
         file.save(image_path)
         print('Image path works')
 
