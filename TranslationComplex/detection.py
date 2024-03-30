@@ -35,7 +35,7 @@ def process_image(image_path):
         box_coords = []
 
         # Load a font that supports Arabic characters
-        arabic_font_path = "./Arial Unicode MS.ttf"  # Replace with the path to your Arabic font file
+        arabic_font_path = "./Arial_Unicode_MS.ttf"  # Replace with the path to your Arabic font file
         arabic_font = ImageFont.truetype(arabic_font_path, size=14)  # Adjust the size as needed
 
         # Iterate over the detected text regions

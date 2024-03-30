@@ -11,7 +11,7 @@ def replace_text(image, box_coords, translated_text, text_color=(0, 0, 0), backg
     draw = ImageDraw.Draw(replaced_image)
 
     # Define the font face and starting font size
-    font_path = "./Arial Unicode MS.ttf"  # Replace with the path to your font file
+    font_path = "./Arial_Unicode_MS.ttf"  # Replace with the path to your font file
     font_size = 16
     font = ImageFont.truetype(font_path, font_size)
 

@@ -5,5 +5,6 @@ RUN python -m pip install --no-cache-dir -r requirements.txt
 COPY templates ./templates/
 COPY static ./static/
 COPY tessdata ./tessdata/
+COPY Arial_Unicode_MS.TTF ./
 COPY ./orchestrator.py .
 CMD [ "python", "./orchestrator.py" ]
