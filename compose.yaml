@@ -12,7 +12,7 @@ services:
     build: 
       context: ./PlannerComplex/
       dockerfile: generative_ai.Dockerfile
-    image: chtan.2022/ai:1.0
+    image: choxa1/ai:1.0
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
@@ -23,7 +23,7 @@ services:
     build: 
       context: ./PlannerComplex/
       dockerfile: currency_service.Dockerfile
-    image: chtan.2022/currency:1.0
+    image: choxa1/currency:1.0
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
@@ -34,7 +34,7 @@ services:
     build: 
       context: ./PlannerComplex/
       dockerfile: weather.Dockerfile
-    image: chtan.2022/weather:1.0
+    image: choxa1/weather:1.0
     restart: always
     environment:
       PYTHONUNBUFFERED: 1    
@@ -46,7 +46,7 @@ services:
     build: 
       context: ./PlannerComplex/
       dockerfile: planner.Dockerfile
-    image: chtan.2022/planner:1.0
+    image: choxa1/planner:1.0
     restart: always
     depends_on:
       - generative_ai
@@ -70,7 +70,7 @@ services:
     build:
       context: ./LoginService/
       dockerfile: firebase.Dockerfile
-    image: chtan.2022/firebase:1.0
+    image: choxa1/firebase:1.0
     restart: always
     environment:
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/user_data
@@ -95,7 +95,7 @@ services:
     build:
       context: ./ShoppingComplex/
       dockerfile: notification.Dockerfile
-    image: chtan.2022/notification:1.0
+    image: choxa1/notification:1.0
     restart: always
     depends_on:
       - rabbitmq
@@ -109,7 +109,7 @@ services:
     build:
       context: ./ShoppingComplex/
       dockerfile: payment_handler.Dockerfile
-    image: chtan.2022/payment_handler:1.0
+    image: choxa1/payment_handler:1.0
     restart: always
     depends_on:
       - rabbitmq
@@ -132,7 +132,7 @@ services:
     build:
       context: ./ShoppingComplex/
       dockerfile: payment.Dockerfile
-    image: chtan.2022/payment:1.0
+    image: choxa1/payment:1.0
     restart: always
     environment:
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/cart
@@ -144,7 +144,7 @@ services:
     build:
       context: ./ShoppingComplex/
       dockerfile: shopItems.Dockerfile
-    image: chtan.2022/shopitems:1.0
+    image: choxa1/shopitems:1.0
     restart: always
     environment:
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/item
@@ -157,7 +157,7 @@ services:
     build:
       context: ./ShoppingComplex/
       dockerfile: shoppingcart.Dockerfile
-    image: chtan.2022/shoppingcart:1.0
+    image: choxa1/shoppingcart:1.0
     restart: always
     environment:
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/cart
@@ -169,7 +169,7 @@ services:
     build:
       context: ./TranslationComplex/
       dockerfile: detection.Dockerfile
-    image: chtan.2022/detection:1.0
+    image: choxa1/detection:1.0
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
@@ -182,7 +182,7 @@ services:
     build:
       context: ./TranslationComplex/
       dockerfile: error.Dockerfile
-    image: chtan.2022/error:1.0
+    image: choxa1/error:1.0
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
@@ -193,7 +193,7 @@ services:
     build:
       context: ./TranslationComplex/
       dockerfile: orchestrator.Dockerfile
-    image: chtan.2022/orchestrator:1.0
+    image: choxa1/orchestrator:1.0
     restart: always
     depends_on:
       - detection
@@ -216,7 +216,7 @@ services:
     build:
       context: ./TranslationComplex/
       dockerfile: text_replacement.Dockerfile
-    image: chtan.2022/text_replacement:1.0
+    image: choxa1/text_replacement:1.0
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
@@ -229,7 +229,7 @@ services:
     build:
       context: ./TranslationComplex/
       dockerfile: translation.Dockerfile
-    image: chtan.2022/translation:1.0
+    image: choxa1/translation:1.0
     restart: always
     environment:
       PYTHONUNBUFFERED: 1

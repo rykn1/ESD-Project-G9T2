@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, send_file, jsonify, redirect, url_for
+from flask import Flask, render_template, request, send_file, jsonify, redirect, url_for, send_from_directory
 import requests
 import traceback
 from os import environ
@@ -111,6 +111,10 @@ def download():
 def handle_error():
     error_message = request.args.get('error_msg', 'Unknown error occurred.')
     return render_template('error.html', error=error_message)
+
+@app.route('/images/<filename>')
+def serve_image(filename):
+    return send_from_directory('/data', filename)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0',port=5100, debug=True)
