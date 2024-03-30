@@ -21,6 +21,7 @@ def process_image(file, target_language):
         files = {'file': open(image_path, 'rb')}
         response = requests.post(text_detection_service_url, files=files)
         detection_result = response.json() if response.ok else None
+        print(response.json())
         print('Detection Result:', detection_result)
 
         if detection_result:
@@ -36,7 +37,7 @@ def process_image(file, target_language):
 
             # Step 3: Text Replacement
             #new_image_path = os.path.join("../ocr_orchestrator", image_path)
-            replacement_payload = {'image_path': image_path, 'translated_text': translated_text,
+            replacement_payload = {'image_path': 'static/uploaded_image.png', 'translated_text': translated_text,
                                    'bounding_boxes': bounding_boxes}
             response = requests.post(text_replacement_service_url, json=replacement_payload)
             print('Replacement Response:', response.content)
