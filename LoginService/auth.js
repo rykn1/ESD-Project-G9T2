@@ -20,7 +20,6 @@ const firebaseConfig = {
         const email = user.email;
         console.log(email)
         console.log(uid)
-        update_body(uid,"test")
     } else {
         window.location.replace("http://localhost/ESD-Project-G9T2/LoginService/login.html")
     }

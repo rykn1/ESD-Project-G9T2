@@ -9,14 +9,14 @@ A 1 stop solution for all travellers. Travel with ease and like the breeze.
 ## Features
 - Plan your Itineraries with AI, save itineraries to your account or send it to your email
 - Buy flexible travel products, payment via stripe & receipt emailed to you
-- Translate effortlessly by uploading image file
+- Translate effortlessly by uploading image file (For this simple service, kindly use the Sample Image located in the SampleImageTranslator), use it for the translation microservice
 - Login Account to store your information such as saved itineraries
 
 # Prerequisites
 Before you begin, ensure you have done up the following pre-requirements:
 
 ## Required software
-# Pytesseract OCR
+### Pytesseract OCR
         - FULL VIDEO GUIDE: https://www.youtube.com/watch?v=Rb93uLXiTwA&ab_channel=AllroundZone 
 
         ## Step-by-Step Guide
@@ -30,10 +30,8 @@ Before you begin, ensure you have done up the following pre-requirements:
             - In the Environment Variables window, select 'Path' and click Edit.
             - Click New and paste 'C:\Program Files\Tesseract-OCR' (assuming you chose the default installation path). Then click OK.
 
-## Pip Installation
-- pip install google-generativeai
-- pip install pillow
-- pip install pytesseract
+## Download Zipfile from Github / Uploaded Zipfile
+- Place it under www in WAMP folder, login page url should appear like: http://localhost/ESD-PROJECT-G9T2/LoginService/login.html
 
 ## Run following SQL code in phpmyadmin
 - PlannerComplex -> users.sql
