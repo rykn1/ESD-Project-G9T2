@@ -1,15 +1,15 @@
 from flask import Flask, render_template, request, send_file, jsonify, redirect, url_for
 import requests
 import traceback
-import os
+from os import environ
 
 app = Flask(__name__)
 
-text_detection_service_url = "http://localhost:5001/detect_text"
-translation_service_url = "http://localhost:5002/get_languages"
-translation_decipher_url = "http://localhost:5002/translate_text"
-text_replacement_service_url = "http://localhost:5003/replace_text"
-error_microservice_url = "http://localhost:5004/log_error"
+text_detection_service_url = environ.get('detect_url') or "http://localhost:5011/detect_text"
+translation_service_url = environ.get('translate_url') or "http://localhost:5012/get_languages"
+translation_decipher_url = environ.get('decipher_url') or "http://localhost:5012/translate_text"
+text_replacement_service_url = environ.get('replacement_url') or "http://localhost:5013/replace_text"
+error_microservice_url = environ.get('error_url') or "http://localhost:5014/log_error"
 
 def process_image(file, target_language):
     try:
@@ -103,4 +103,4 @@ def handle_error():
     return render_template('error.html', error=error_message)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0',port=5000, debug=True)
+    app.run(host='0.0.0.0',port=5100, debug=True)

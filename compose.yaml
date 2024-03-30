@@ -53,6 +53,7 @@ services:
       - weather
       - rabbitmq
       - firebase
+      - notification
     environment:
       rabbit_host: rabbitmq
       rabbit_port: 5672
@@ -163,3 +164,67 @@ services:
     ports:
       - "5006:5006"
 
+  detection:
+    build:
+      context: ./TranslationComplex/
+      dockerfile: detection.Dockerfile
+    image: zimingwwu/detection:1.0
+    restart: always
+    environment:
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "5011:5011"
+  
+  error:
+    build:
+      context: ./TranslationComplex/
+      dockerfile: error.Dockerfile
+    image: zimingwwu/error:1.0
+    restart: always
+    environment:
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "5014:5014"
+  
+  orchestrator:
+    build:
+      context: ./TranslationComplex/
+      dockerfile: orchestrator.Dockerfile
+    image: zimingwwu/orchestrator:1.0
+    restart: always
+    depends_on:
+      - detection
+      - error
+      - text_replacement
+      - translation
+    environment:
+      detect_url: http://detection:5011/detect_text
+      translate_url: http://translation:5012/get_languages
+      decipher_url: http://translation:5012/translate_text
+      replacement_url: http://text_replacement:5013/replace_text
+      error_url: http://error:5014/log_error
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "5100:5100"
+
+  text_replacement:
+    build:
+      context: ./TranslationComplex/
+      dockerfile: text_replacement.Dockerfile
+    image: zimingwwu/text_replacement:1.0
+    restart: always
+    environment:
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "5013:5013"
+  
+  translation:
+    build:
+      context: ./TranslationComplex/
+      dockerfile: translation.Dockerfile
+    image: zimingwwu/translation:1.0
+    restart: always
+    environment:
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "5012:5012"
