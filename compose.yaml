@@ -2,6 +2,7 @@ version: '3.8'
 
 volumes:
   rabbitmq_data:
+  my_volume:
 
 
 services:
@@ -11,7 +12,7 @@ services:
     build: 
       context: ./PlannerComplex/
       dockerfile: generative_ai.Dockerfile
-    image: zimingwwu/ai:1.0
+    image: chtan.2022/ai:1.0
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
@@ -22,7 +23,7 @@ services:
     build: 
       context: ./PlannerComplex/
       dockerfile: currency_service.Dockerfile
-    image: zimingwwu/currency:1.0
+    image: chtan.2022/currency:1.0
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
@@ -33,7 +34,7 @@ services:
     build: 
       context: ./PlannerComplex/
       dockerfile: weather.Dockerfile
-    image: zimingwwu/weather:1.0
+    image: chtan.2022/weather:1.0
     restart: always
     environment:
       PYTHONUNBUFFERED: 1    
@@ -45,7 +46,7 @@ services:
     build: 
       context: ./PlannerComplex/
       dockerfile: planner.Dockerfile
-    image: zimingwwu/planner:1.0
+    image: chtan.2022/planner:1.0
     restart: always
     depends_on:
       - generative_ai
@@ -69,7 +70,7 @@ services:
     build:
       context: ./LoginService/
       dockerfile: firebase.Dockerfile
-    image: zimingwwu/firebase:1.0
+    image: chtan.2022/firebase:1.0
     restart: always
     environment:
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/user_data
@@ -94,7 +95,7 @@ services:
     build:
       context: ./ShoppingComplex/
       dockerfile: notification.Dockerfile
-    image: zimingwwu/notification:1.0
+    image: chtan.2022/notification:1.0
     restart: always
     depends_on:
       - rabbitmq
@@ -108,7 +109,7 @@ services:
     build:
       context: ./ShoppingComplex/
       dockerfile: payment_handler.Dockerfile
-    image: zimingwwu/payment_handler:1.0
+    image: chtan.2022/payment_handler:1.0
     restart: always
     depends_on:
       - rabbitmq
@@ -131,7 +132,7 @@ services:
     build:
       context: ./ShoppingComplex/
       dockerfile: payment.Dockerfile
-    image: zimingwwu/payment:1.0
+    image: chtan.2022/payment:1.0
     restart: always
     environment:
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/cart
@@ -143,7 +144,7 @@ services:
     build:
       context: ./ShoppingComplex/
       dockerfile: shopItems.Dockerfile
-    image: zimingwwu/shopitems:1.0
+    image: chtan.2022/shopitems:1.0
     restart: always
     environment:
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/item
@@ -156,7 +157,7 @@ services:
     build:
       context: ./ShoppingComplex/
       dockerfile: shoppingcart.Dockerfile
-    image: zimingwwu/shoppingcart:1.0
+    image: chtan.2022/shoppingcart:1.0
     restart: always
     environment:
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/cart
@@ -168,18 +169,20 @@ services:
     build:
       context: ./TranslationComplex/
       dockerfile: detection.Dockerfile
-    image: zimingwwu/detection:1.0
+    image: chtan.2022/detection:1.0
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
     ports:
       - "5011:5011"
+    volumes:
+      - my_volume:/data
   
   error:
     build:
       context: ./TranslationComplex/
       dockerfile: error.Dockerfile
-    image: zimingwwu/error:1.0
+    image: chtan.2022/error:1.0
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
@@ -190,7 +193,7 @@ services:
     build:
       context: ./TranslationComplex/
       dockerfile: orchestrator.Dockerfile
-    image: zimingwwu/orchestrator:1.0
+    image: chtan.2022/orchestrator:1.0
     restart: always
     depends_on:
       - detection
@@ -206,25 +209,31 @@ services:
       PYTHONUNBUFFERED: 1
     ports:
       - "5100:5100"
+    volumes:
+      - my_volume:/data
 
   text_replacement:
     build:
       context: ./TranslationComplex/
       dockerfile: text_replacement.Dockerfile
-    image: zimingwwu/text_replacement:1.0
+    image: chtan.2022/text_replacement:1.0
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
     ports:
       - "5013:5013"
+    volumes:
+      - my_volume:/data
   
   translation:
     build:
       context: ./TranslationComplex/
       dockerfile: translation.Dockerfile
-    image: zimingwwu/translation:1.0
+    image: chtan.2022/translation:1.0
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
     ports:
       - "5012:5012"
+    volumes:
+      - my_volume:/data

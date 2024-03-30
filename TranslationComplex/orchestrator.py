@@ -2,8 +2,15 @@ from flask import Flask, render_template, request, send_file, jsonify, redirect,
 import requests
 import traceback
 from os import environ
+from PIL import Image
 
 app = Flask(__name__)
+
+# Define Docker volume name
+volume_name = 'my_volume'
+
+# Docker volume directory where images will be saved
+volume_directory = '/data'
 
 text_detection_service_url = environ.get('detect_url') or "http://localhost:5011/detect_text"
 translation_service_url = environ.get('translate_url') or "http://localhost:5012/get_languages"
@@ -13,8 +20,8 @@ error_microservice_url = environ.get('error_url') or "http://localhost:5014/log_
 
 def process_image(file, target_language):
     try:
-        # Save the image file
-        image_path = 'uploaded_image.jpg'
+        # Save the image file to Docker volume directory
+        image_path = f'{volume_directory}/uploaded_image.jpg'
         file.save(image_path)
 
         # Step 1: Text Detection
@@ -36,8 +43,10 @@ def process_image(file, target_language):
             print('Translated Text:', translated_text)
 
             # Step 3: Text Replacement
-            #new_image_path = os.path.join("../ocr_orchestrator", image_path)
-            replacement_payload = {'image_path': 'static/uploaded_image.png', 'translated_text': translated_text,
+            # new_image_path = os.path.join("../ocr_orchestrator", image_path)
+            # im= Image.open(image_path)
+            # im.save('static/uploaded_image.png')
+            replacement_payload = {'image_path': image_path, 'translated_text': translated_text,
                                    'bounding_boxes': bounding_boxes}
             response = requests.post(text_replacement_service_url, json=replacement_payload)
             print('Replacement Response:', response.content)
@@ -93,7 +102,7 @@ def upload():
 @app.route('/download')
 def download():
     # Path to the replaced image file
-    replaced_image_path = 'replaced_image.png'
+    replaced_image_path = f'{volume_directory}/replaced_image.png'
 
     # Send the file for download
     return send_file(replaced_image_path, as_attachment=True)
