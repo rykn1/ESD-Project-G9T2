@@ -67,7 +67,7 @@ def replace_text_endpoint():
         replaced_image = replace_text(image, bounding_boxes, translated_text)
         
         # Save replaced image
-        replaced_image_path = 'replaced_image.png'  # Change extension based on your preference
+        replaced_image_path = '/data/replaced_image.png'  # Change extension based on your preference
         replaced_image.save(replaced_image_path)
         print("Replaced image saved at:", replaced_image_path)
 
