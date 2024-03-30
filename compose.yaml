@@ -3,7 +3,12 @@ version: '3.8'
 volumes:
   rabbitmq_data:
   my_volume:
+  pgdata: 
 
+networks:
+  kong-net:
+    driver: bridge
+    name: kong-net
 
 services:
 
@@ -12,7 +17,7 @@ services:
     build: 
       context: ./PlannerComplex/
       dockerfile: generative_ai.Dockerfile
-    image: choxa1/ai:1.0
+    image: chtan.2022/ai:1.0
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
@@ -23,7 +28,7 @@ services:
     build: 
       context: ./PlannerComplex/
       dockerfile: currency_service.Dockerfile
-    image: choxa1/currency:1.0
+    image: chtan.2022/currency:1.0
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
@@ -34,7 +39,7 @@ services:
     build: 
       context: ./PlannerComplex/
       dockerfile: weather.Dockerfile
-    image: choxa1/weather:1.0
+    image: chtan.2022/weather:1.0
     restart: always
     environment:
       PYTHONUNBUFFERED: 1    
@@ -46,7 +51,7 @@ services:
     build: 
       context: ./PlannerComplex/
       dockerfile: planner.Dockerfile
-    image: choxa1/planner:1.0
+    image: chtan.2022/planner:1.0
     restart: always
     depends_on:
       - generative_ai
@@ -70,7 +75,7 @@ services:
     build:
       context: ./LoginService/
       dockerfile: firebase.Dockerfile
-    image: choxa1/firebase:1.0
+    image: chtan.2022/firebase:1.0
     restart: always
     environment:
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/user_data
@@ -95,7 +100,7 @@ services:
     build:
       context: ./ShoppingComplex/
       dockerfile: notification.Dockerfile
-    image: choxa1/notification:1.0
+    image: chtan.2022/notification:1.0
     restart: always
     depends_on:
       - rabbitmq
@@ -109,7 +114,7 @@ services:
     build:
       context: ./ShoppingComplex/
       dockerfile: payment_handler.Dockerfile
-    image: choxa1/payment_handler:1.0
+    image: chtan.2022/payment_handler:1.0
     restart: always
     depends_on:
       - rabbitmq
@@ -132,7 +137,7 @@ services:
     build:
       context: ./ShoppingComplex/
       dockerfile: payment.Dockerfile
-    image: choxa1/payment:1.0
+    image: chtan.2022/payment:1.0
     restart: always
     environment:
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/cart
@@ -144,7 +149,7 @@ services:
     build:
       context: ./ShoppingComplex/
       dockerfile: shopItems.Dockerfile
-    image: choxa1/shopitems:1.0
+    image: chtan.2022/shopitems:1.0
     restart: always
     environment:
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/item
@@ -157,7 +162,7 @@ services:
     build:
       context: ./ShoppingComplex/
       dockerfile: shoppingcart.Dockerfile
-    image: choxa1/shoppingcart:1.0
+    image: chtan.2022/shoppingcart:1.0
     restart: always
     environment:
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/cart
@@ -169,7 +174,7 @@ services:
     build:
       context: ./TranslationComplex/
       dockerfile: detection.Dockerfile
-    image: choxa1/detection:1.0
+    image: chtan.2022/detection:1.0
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
@@ -182,7 +187,7 @@ services:
     build:
       context: ./TranslationComplex/
       dockerfile: error.Dockerfile
-    image: choxa1/error:1.0
+    image: chtan.2022/error:1.0
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
@@ -193,7 +198,7 @@ services:
     build:
       context: ./TranslationComplex/
       dockerfile: orchestrator.Dockerfile
-    image: choxa1/orchestrator:1.0
+    image: chtan.2022/orchestrator:1.0
     restart: always
     depends_on:
       - detection
@@ -216,7 +221,7 @@ services:
     build:
       context: ./TranslationComplex/
       dockerfile: text_replacement.Dockerfile
-    image: choxa1/text_replacement:1.0
+    image: chtan.2022/text_replacement:1.0
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
@@ -229,7 +234,7 @@ services:
     build:
       context: ./TranslationComplex/
       dockerfile: translation.Dockerfile
-    image: choxa1/translation:1.0
+    image: chtan.2022/translation:1.0
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
@@ -237,3 +242,81 @@ services:
       - "5012:5012"
     volumes:
       - my_volume:/data
+
+  #######################################
+  # Postgres: The database used by Kong
+  #######################################
+  kong-database:
+    image: postgres:15 # tested 20231101; Ref: https://docs.konghq.com/gateway/latest/support/third-party/
+    platform: linux/amd64  # <- required for Mac M1 chip. Otherwise, can remove
+    restart: always
+    networks:
+      - kong-net
+    environment:
+      POSTGRES_DB: kong
+      POSTGRES_USER: kong
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "kong"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  #######################################
+  # Kong database migration
+  #######################################
+  kong-migration:
+    image: kong/kong-gateway:3.2.2.5 # tested 20231101
+    platform: linux/amd64  # <- required for Mac M1 chip. Otherwise, can remove
+    command: "kong migrations bootstrap"
+    restart: on-failure
+    networks:
+      - kong-net
+    environment:
+      KONG_DATABASE: postgres
+      KONG_PG_HOST: kong-database
+      KONG_PG_USER: kong
+      KONG_PG_PASSWORD: password
+    depends_on:
+      - kong-database
+
+  #######################################
+  # Kong: The API Gateway
+  #######################################
+  kong:
+    image: kong/kong-gateway:3.2.2.5 # tested 20231101
+    platform: linux/amd64  # <- required for Mac M1 chip. Otherwise, can remove
+    restart: always
+    networks:
+      - kong-net
+    environment:
+      KONG_DATABASE: postgres
+      KONG_PG_HOST: kong-database
+      KONG_PG_USER: kong
+      KONG_PG_PASSWORD: password
+      KONG_PROXY_ACCESS_LOG: /dev/stdout
+      KONG_ADMIN_ACCESS_LOG: /dev/stdout
+      KONG_PROXY_ERROR_LOG: /dev/stderr
+      KONG_ADMIN_ERROR_LOG: /dev/stderr
+      KONG_ADMIN_LISTEN: 0.0.0.0:8001
+      KONG_ADMIN_GUI_URL: http://localhost:8002
+      #KONG_PROXY_KEEPALIVE_TIMEOUT: 0
+    depends_on:
+      - kong-migration
+    ports: # https://docs.konghq.com/gateway/latest/production/networking/default-ports/
+      - "8000:8000" # Takes incoming HTTP traffic from Consumers, and forwards it to upstream Services.
+      - "8443:8443" # Takes incoming HTTPS traffic from Consumers, and forwards it to upstream Services.
+      - "8001:8001" # Admin API. Listens for calls from the command line over HTTP.
+      - "8444:8444" # Admin API. Listens for calls from the command line over HTTPS.
+      - "8002:8002" # Kong Manager (GUI). Listens for HTTP traffic.
+      - "8445:8445" # Kong Manager (GUI). Listens for HTTPS traffic.
+      - "8003:8003" # Dev Portal. Listens for HTTP traffic, assuming Dev Portal is enabled.
+      - "8446:8446" # Dev Portal. Listens for HTTP traffic, assuming Dev Portal is enabled.
+      - "8004:8004" # Dev Portal /files traffic over HTTPS, assuming the Dev Portal is enabled.
+      - "8447:8447" # Dev Portal /files traffic over HTTPS, assuming the Dev Portal is enabled.
+
+
