@@ -80,7 +80,7 @@ def detect_text():
 
     try:
         # Save the uploaded image
-        image_path = './static/uploaded_image.jpg'
+        image_path = "uploaded_image.jpg"
         file.save(image_path)
         print('Image path works')
 
@@ -88,7 +88,7 @@ def detect_text():
         extracted_text, img_with_text, box_coords, error_message = process_image(image_path)
 
         if extracted_text:
-            processed_image_path = './static/processed_image.jpg'
+            processed_image_path = 'processed_image.jpg'
             img_with_text.save(processed_image_path)  # Save the processed image with text overlay
             return jsonify({'extracted_text': extracted_text, 'processed_image_path': processed_image_path, 'box_coords': box_coords}), 200
         else:

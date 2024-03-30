@@ -14,7 +14,7 @@ error_microservice_url = environ.get('error_url') or "http://localhost:5014/log_
 def process_image(file, target_language):
     try:
         # Save the image file
-        image_path = 'static/uploaded_image.jpg'
+        image_path = 'uploaded_image.jpg'
         file.save(image_path)
 
         # Step 1: Text Detection
@@ -92,7 +92,7 @@ def upload():
 @app.route('/download')
 def download():
     # Path to the replaced image file
-    replaced_image_path = 'static/replaced_image.png'
+    replaced_image_path = 'replaced_image.png'
 
     # Send the file for download
     return send_file(replaced_image_path, as_attachment=True)
