@@ -5,5 +5,5 @@ USE user_data;
 CREATE TABLE IF NOT EXISTS users (
     id VARCHAR(64) PRIMARY KEY,
     email VARCHAR(64) NOT NULL,
-    body VARCHAR(1000)
+    body VARCHAR(10000)
 );

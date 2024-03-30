@@ -21,7 +21,7 @@ class User(db.Model):
 
     id = db.Column(db.String(64), primary_key=True)
     email = db.Column(db.String(64), nullable=False)
-    body = db.Column(db.String(1000), nullable=True)
+    body = db.Column(db.String(10000), nullable=True)
 
     def __init__(self,id,email):
         self.id = id
