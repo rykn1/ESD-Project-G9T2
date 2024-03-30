@@ -16,7 +16,7 @@ A 1 stop solution for all travellers. Travel with ease and like the breeze.
 Before you begin, ensure you have done up the following pre-requirements:
 
 ## Required software
-    - Pytesseract OCR
+# Pytesseract OCR
         - FULL VIDEO GUIDE: https://www.youtube.com/watch?v=Rb93uLXiTwA&ab_channel=AllroundZone 
 
         ## Step-by-Step Guide
