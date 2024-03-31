@@ -19,7 +19,11 @@ services:
     build: 
       context: ./PlannerComplex/
       dockerfile: generative_ai.Dockerfile
+<<<<<<< HEAD
     image: chtan.2022/ai:1.0
+=======
+    image: zimingwwu/ai:1.0
+>>>>>>> 19bf8eb22c0da11bfe027d61ea178c9fd1bbc347
     restart: always
     networks:
       - kong-net
@@ -32,7 +36,11 @@ services:
     build: 
       context: ./PlannerComplex/
       dockerfile: currency_service.Dockerfile
+<<<<<<< HEAD
     image: chtan.2022/currency:1.0
+=======
+    image: zimingwwu/currency:1.0
+>>>>>>> 19bf8eb22c0da11bfe027d61ea178c9fd1bbc347
     restart: always
     networks:
       - kong-net
@@ -45,7 +53,11 @@ services:
     build: 
       context: ./PlannerComplex/
       dockerfile: weather.Dockerfile
+<<<<<<< HEAD
     image: chtan.2022/weather:1.0
+=======
+    image: zimingwwu/weather:1.0
+>>>>>>> 19bf8eb22c0da11bfe027d61ea178c9fd1bbc347
     restart: always
     networks:
       - kong-net
@@ -59,7 +71,11 @@ services:
     build: 
       context: ./PlannerComplex/
       dockerfile: planner.Dockerfile
+<<<<<<< HEAD
     image: chtan.2022/planner:1.0
+=======
+    image: zimingwwu/planner:1.0
+>>>>>>> 19bf8eb22c0da11bfe027d61ea178c9fd1bbc347
     restart: always
     networks:
       - kong-net
@@ -85,7 +101,11 @@ services:
     build:
       context: ./LoginService/
       dockerfile: firebase.Dockerfile
+<<<<<<< HEAD
     image: chtan.2022/firebase:1.0
+=======
+    image: zimingwwu/firebase:1.0
+>>>>>>> 19bf8eb22c0da11bfe027d61ea178c9fd1bbc347
     restart: always
     networks:
       - kong-net
@@ -114,7 +134,11 @@ services:
     build:
       context: ./ShoppingComplex/
       dockerfile: notification.Dockerfile
+<<<<<<< HEAD
     image: chtan.2022/notification:1.0
+=======
+    image: zimingwwu/notification:1.0
+>>>>>>> 19bf8eb22c0da11bfe027d61ea178c9fd1bbc347
     restart: always
     networks:
       - kong-net
@@ -130,7 +154,11 @@ services:
     build:
       context: ./ShoppingComplex/
       dockerfile: payment_handler.Dockerfile
+<<<<<<< HEAD
     image: chtan.2022/payment_handler:1.0
+=======
+    image: zimingwwu/payment_handler:1.0
+>>>>>>> 19bf8eb22c0da11bfe027d61ea178c9fd1bbc347
     restart: always
     networks:
       - kong-net
@@ -155,7 +183,11 @@ services:
     build:
       context: ./ShoppingComplex/
       dockerfile: payment.Dockerfile
+<<<<<<< HEAD
     image: chtan.2022/payment:1.0
+=======
+    image: zimingwwu/payment:1.0
+>>>>>>> 19bf8eb22c0da11bfe027d61ea178c9fd1bbc347
     restart: always
     networks:
       - kong-net    
@@ -169,7 +201,11 @@ services:
     build:
       context: ./ShoppingComplex/
       dockerfile: shopItems.Dockerfile
+<<<<<<< HEAD
     image: chtan.2022/shopitems:1.0
+=======
+    image: zimingwwu/shopitems:1.0
+>>>>>>> 19bf8eb22c0da11bfe027d61ea178c9fd1bbc347
     restart: always
     networks:
       - kong-net
@@ -184,7 +220,11 @@ services:
     build:
       context: ./ShoppingComplex/
       dockerfile: shoppingcart.Dockerfile
+<<<<<<< HEAD
     image: chtan.2022/shoppingcart:1.0
+=======
+    image: zimingwwu/shoppingcart:1.0
+>>>>>>> 19bf8eb22c0da11bfe027d61ea178c9fd1bbc347
     restart: always
     networks:
       - kong-net
@@ -194,6 +234,7 @@ services:
     ports:
       - "5006:5006"
 
+<<<<<<< HEAD
   tesseract:
     build:
       context: ./TranslationComplex/
@@ -202,17 +243,31 @@ services:
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
+=======
+  # tesseract:
+  #   build:
+  #     context: ./TranslationComplex/
+  #     dockerfile: tesseract.Dockerfile
+  #   image: zimingwwu/detection:1.0
+  #   restart: always
+  #   environment:
+  #     PYTHONUNBUFFERED: 1
+  #   volumes:
+  #     - my_volume:/data
+>>>>>>> 19bf8eb22c0da11bfe027d61ea178c9fd1bbc347
 
   detection:
     build:
       context: ./TranslationComplex/
       dockerfile: detection.Dockerfile
+<<<<<<< HEAD
     image: chtan.2022/detection:1.0
+=======
+    image: zimingwwu/detection:1.0
+>>>>>>> 19bf8eb22c0da11bfe027d61ea178c9fd1bbc347
     restart: always
     networks:
       - kong-net
-    depends_on:
-      - tesseract
     environment:
       PYTHONUNBUFFERED: 1
     ports:
@@ -224,7 +279,11 @@ services:
     build:
       context: ./TranslationComplex/
       dockerfile: error.Dockerfile
+<<<<<<< HEAD
     image: chtan.2022/error:1.0
+=======
+    image: zimingwwu/error:1.0
+>>>>>>> 19bf8eb22c0da11bfe027d61ea178c9fd1bbc347
     restart: always
     networks:
       - kong-net
@@ -237,7 +296,11 @@ services:
     build:
       context: ./TranslationComplex/
       dockerfile: orchestrator.Dockerfile
+<<<<<<< HEAD
     image: chtan.2022/orchestrator:1.0
+=======
+    image: zimingwwu/orchestrator:1.0
+>>>>>>> 19bf8eb22c0da11bfe027d61ea178c9fd1bbc347
     restart: always
     networks:
       - kong-net
@@ -262,7 +325,11 @@ services:
     build:
       context: ./TranslationComplex/
       dockerfile: text_replacement.Dockerfile
+<<<<<<< HEAD
     image: chtan.2022/text_replacement:1.0
+=======
+    image: zimingwwu/text_replacement:1.0
+>>>>>>> 19bf8eb22c0da11bfe027d61ea178c9fd1bbc347
     restart: always
     networks:
       - kong-net
@@ -277,7 +344,11 @@ services:
     build:
       context: ./TranslationComplex/
       dockerfile: translation.Dockerfile
+<<<<<<< HEAD
     image: chtan.2022/translation:1.0
+=======
+    image: zimingwwu/translation:1.0
+>>>>>>> 19bf8eb22c0da11bfe027d61ea178c9fd1bbc347
     restart: always
     networks:
       - kong-net
