@@ -12,11 +12,11 @@ volume_name = 'my_volume'
 # Docker volume directory where images will be saved
 volume_directory = '/data'
 
-text_detection_service_url = environ.get('detect_url') or "http://localhost:5011/detect_text"
-translation_service_url = environ.get('translate_url') or "http://localhost:5012/get_languages"
-translation_decipher_url = environ.get('decipher_url') or "http://localhost:5012/translate_text"
-text_replacement_service_url = environ.get('replacement_url') or "http://localhost:5013/replace_text"
-error_microservice_url = environ.get('error_url') or "http://localhost:5014/log_error"
+text_detection_service_url = environ.get('detect_url') or "http://localhost:5011/detect_text" #or "http://localhost:8000/detect_text"
+translation_service_url = environ.get('translate_url') or "http://localhost:5012/get_languages" #or "http://localhost:8000/get_languages"
+translation_decipher_url = environ.get('decipher_url') or "http://localhost:5012/translate_text" #or "http://localhost:8000/translate_text"
+text_replacement_service_url = environ.get('replacement_url') or "http://localhost:5013/replace_text" #or "http://localhost:8000/replace_text"
+error_microservice_url = environ.get('error_url') or "http://localhost:5014/log_error" #or "http://localhost:8000/log_error"
 
 def process_image(file, target_language):
     try:
