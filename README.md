@@ -18,7 +18,7 @@ Before you begin, ensure you have done up the following pre-requirements:
 ## Download from google drive these additional files
 ### Link: 
 - Place all files in TranslationComplex folder (tessdata and Arial_Unicode_MS.TTF)
-- https://drive.google.com/drive/folders/1G1TBeM3uf6U4IRtG9B3iTb6MjZvb7ndI?usp=drive_link
+- https://drive.google.com/drive/folders/1G1TBeM3uf6U4IRtG9B3iTb6MjZvb7ndI?usp=sharing
 
 
 ## Required software
