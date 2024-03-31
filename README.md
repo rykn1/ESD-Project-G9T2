@@ -15,6 +15,10 @@ A 1 stop solution for all travellers. Travel with ease and like the breeze.
 # Prerequisites
 Before you begin, ensure you have done up the following pre-requirements:
 
+## Download from google drive these additional files
+### Link: 
+- Place all files in TranslationComplex folder
+
 ## Required software
 ### Pytesseract OCR
         - FULL VIDEO GUIDE: https://www.youtube.com/watch?v=Rb93uLXiTwA&ab_channel=AllroundZone 
