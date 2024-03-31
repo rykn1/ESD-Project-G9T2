@@ -19,7 +19,7 @@ services:
     build: 
       context: ./PlannerComplex/
       dockerfile: generative_ai.Dockerfile
-    image: chtan.2022/ai:1.0
+    image: milkbaum/ai:1.0
     restart: always
     networks:
       - kong-net
@@ -32,7 +32,7 @@ services:
     build: 
       context: ./PlannerComplex/
       dockerfile: currency_service.Dockerfile
-    image: chtan.2022/currency:1.0
+    image: milkbaum/currency:1.0
     restart: always
     networks:
       - kong-net
@@ -45,7 +45,7 @@ services:
     build: 
       context: ./PlannerComplex/
       dockerfile: weather.Dockerfile
-    image: chtan.2022/weather:1.0
+    image: milkbaum/weather:1.0
     restart: always
     networks:
       - kong-net
@@ -59,7 +59,7 @@ services:
     build: 
       context: ./PlannerComplex/
       dockerfile: planner.Dockerfile
-    image: chtan.2022/planner:1.0
+    image: milkbaum/planner:1.0
     restart: always
     networks:
       - kong-net
@@ -85,7 +85,7 @@ services:
     build:
       context: ./LoginService/
       dockerfile: firebase.Dockerfile
-    image: chtan.2022/firebase:1.0
+    image: milkbaum/firebase:1.0
     restart: always
     networks:
       - kong-net
@@ -114,7 +114,7 @@ services:
     build:
       context: ./ShoppingComplex/
       dockerfile: notification.Dockerfile
-    image: chtan.2022/notification:1.0
+    image: milkbaum/notification:1.0
     restart: always
     networks:
       - kong-net
@@ -130,7 +130,7 @@ services:
     build:
       context: ./ShoppingComplex/
       dockerfile: payment_handler.Dockerfile
-    image: chtan.2022/payment_handler:1.0
+    image: milkbaum/payment_handler:1.0
     restart: always
     networks:
       - kong-net
@@ -155,7 +155,7 @@ services:
     build:
       context: ./ShoppingComplex/
       dockerfile: payment.Dockerfile
-    image: chtan.2022/payment:1.0
+    image: milkbaum/payment:1.0
     restart: always
     networks:
       - kong-net    
@@ -169,7 +169,7 @@ services:
     build:
       context: ./ShoppingComplex/
       dockerfile: shopItems.Dockerfile
-    image: chtan.2022/shopitems:1.0
+    image: milkbaum/shopitems:1.0
     restart: always
     networks:
       - kong-net
@@ -184,7 +184,7 @@ services:
     build:
       context: ./ShoppingComplex/
       dockerfile: shoppingcart.Dockerfile
-    image: chtan.2022/shoppingcart:1.0
+    image: milkbaum/shoppingcart:1.0
     restart: always
     networks:
       - kong-net
@@ -198,7 +198,7 @@ services:
     build:
       context: ./TranslationComplex/
       dockerfile: detection.Dockerfile
-    image: chtan.2022/detection:1.0
+    image: milkbaum/detection:1.0
     restart: always
     networks:
       - kong-net
@@ -213,7 +213,7 @@ services:
     build:
       context: ./TranslationComplex/
       dockerfile: error.Dockerfile
-    image: chtan.2022/error:1.0
+    image: milkbaum/error:1.0
     restart: always
     networks:
       - kong-net
@@ -226,7 +226,7 @@ services:
     build:
       context: ./TranslationComplex/
       dockerfile: orchestrator.Dockerfile
-    image: chtan.2022/orchestrator:1.0
+    image: milkbaum/orchestrator:1.0
     restart: always
     networks:
       - kong-net
@@ -251,7 +251,7 @@ services:
     build:
       context: ./TranslationComplex/
       dockerfile: text_replacement.Dockerfile
-    image: chtan.2022/text_replacement:1.0
+    image: milkbaum/text_replacement:1.0
     restart: always
     networks:
       - kong-net
@@ -266,7 +266,7 @@ services:
     build:
       context: ./TranslationComplex/
       dockerfile: translation.Dockerfile
-    image: chtan.2022/translation:1.0
+    image: milkbaum/translation:1.0
     restart: always
     networks:
       - kong-net
@@ -384,7 +384,10 @@ services:
     build:
       context: ./TranslationComplex/
       dockerfile: tesseract.Dockerfile
-    image: zimingwwu/tesseract:1.0
+    image: milkbaum/tesseract:1.0
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
+
+    # volumes:
+    #   - my_volume:/data
