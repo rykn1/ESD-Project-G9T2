@@ -352,3 +352,11 @@ services:
       - "8447:8447" # Dev Portal /files traffic over HTTPS, assuming the Dev Portal is enabled.
 
 
+  tesseract:
+    build:
+      context: ./TranslationComplex/
+      dockerfile: tesseract.Dockerfile
+    image: zimingwwu/tesseract:1.0
+    restart: always
+    environment:
+      PYTHONUNBUFFERED: 1
