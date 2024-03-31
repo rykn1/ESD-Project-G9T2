@@ -18,7 +18,7 @@ Before you begin, ensure you have done up the following pre-requirements:
 ## Download from google drive these additional files
 ### Link: 
 - Place all files in TranslationComplex folder (tessdata and Arial_Unicode_MS.TTF)
-- https://drive.google.com/drive/folders/1G1TBeM3uf6U4IRtG9B3iTb6MjZvb7ndI?usp=drive_link
+- https://drive.google.com/drive/folders/1G1TBeM3uf6U4IRtG9B3iTb6MjZvb7ndI?usp=sharing
 
 
 ## Required software
@@ -84,6 +84,12 @@ To ensure the program runs, we have added the API keys in to the program for you
     - Once it has compose up successfully at least once, for future docker compose up, there is NO NEED to comment out 'networks: - kong-net'
 - 4. Set the viewport to IPhone 14 Pro Max
 - 5. sign up for an account via LoginService -> login.html -> Auto re-directs you to home page to access our services
+
+
+For Stripe Payment: 
+Card Information: 4242 4242 4242 4242
+MM/YY: 1/25
+CVC: 242
 
 ------------------------------------------------------------------------
 
