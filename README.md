@@ -69,7 +69,8 @@ To ensure the program runs, we have added the API keys in to the program for you
 # How to run 
 ## Steps to run TravelBuddy:
 - 1. docker compose up
-- 2. sign up for an account via LoginService -> login.html -> Auto re-directs you to home page to access our services
+- 2. Set the viewport to IPhone 14 Pro Max
+- 3. sign up for an account via LoginService -> login.html -> Auto re-directs you to home page to access our services
 
 ------------------------------------------------------------------------
 
