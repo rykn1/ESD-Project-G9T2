@@ -24,7 +24,6 @@ if not amqp_connection.check_exchange(channel, exchangename, exchangetype):
 
 @app.route('/publish', methods=['POST'])
 def publish():
-    print('testtesttest')
     itinerary = request.json
     print(itinerary)
     #itinerary['Days'] -- list of days with key "Activities" : [activity1,2,3]
@@ -37,7 +36,6 @@ def publish():
         if email.status_code not in range(200,300):
             print("email error")
             return "email error"
-        print('testasda')
         emailResult = email.text
         print(emailResult)
         itinerary_details = json.loads(itinerary['body'])
@@ -83,7 +81,6 @@ def publish():
 
 @app.route('/api/plan', methods=['POST'])
 def plan_itinerary():
-    print('testgh')
     data = request.json
     result = processPlanRequest(data)
     return result
@@ -100,7 +97,6 @@ def processPlanRequest(data):
         print("weather error")
         return "weather error"
     weatherResult = weatherResult.json()
-    print('wok')
     destCurr = geminiResult["CountryCurrency"]["CurrencySymbol"]
     currency_URLtemp = currency_URL + f"?from=SGD&to={destCurr}&amount=1"
     currencyResult = requests.get(currency_URLtemp)
@@ -108,7 +104,6 @@ def processPlanRequest(data):
         print("currency error")
         return "currency error"
     currencyResult = currencyResult.json()
-    print('cok')
     return {
         "code":201,
         "data": {
@@ -117,8 +112,6 @@ def processPlanRequest(data):
             "exchange":currencyResult
         }
     }
-
-    
 
     
     
