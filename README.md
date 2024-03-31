@@ -19,7 +19,7 @@ A 1 stop solution for all travellers. Travel with ease and like the breeze.
 ## Download from google drive all additional files
 ### Link: 
 - https://drive.google.com/drive/folders/1G1TBeM3uf6U4IRtG9B3iTb6MjZvb7ndI?usp=sharing
-- Files : tessdata Folder, Arial_Unicode_MS.TTF, Frontend Folder
+- Files : tessdata Folder, Arial_Unicode_MS.TTF
 
 ## Download ESD-PROJECT-G9T2 Zipfile from Github / Uploaded Zipfile / ELEARN 
 - Place it under 'www' in WAMP folder, login page url should appear like this filepath: http://localhost/ESD-PROJECT-G9T2/LoginService/login.html
@@ -60,13 +60,12 @@ To ensure the program runs, we have added the API keys in to the program for you
 ## Steps to run TravelBuddy:
 - 1. Download this repository & place it in WAMP, www folder
 - 2. Place tessdata Folder and Arial_Unicode_MS.TTF in TranslationComplex folder 
-- 3. Place Frontend Folder in the root of the ESD-PROJECT-G9T2 folder, at the same level as the Complex Folders
-- 4. Run WAMP
-- 5. In compose.yaml, change the username to your docker username
-- 6. docker compose up 
-- 7. Set the viewport to IPhone 14 Pro Max
-- 8. Run this URL -> http://localhost/ESD-PROJECT-G9T2/LoginService/login.html
-- 9. Sign up for an account, use an email that you can open to receive receipts. Afterwards, it will auto re-directs you to home page to access our services
+- 3. Run WAMP
+- 4. In compose.yaml, change the username to your docker username
+- 5. docker compose up 
+- 6. Set the viewport to IPhone 14 Pro Max
+- 7. Run this URL -> http://localhost/ESD-PROJECT-G9T2/LoginService/login.html
+- 8. Sign up for an account, use an email that you can open to receive receipts. Afterwards, it will auto re-directs you to home page to access our services
 
 ### NOTE FOR SHOP - YOU WILL BE REDIRECTED TO STRIPE API
 - Email: Use an email that you can receive emails in as the receipt will be sent to you there
