@@ -194,6 +194,15 @@ services:
     ports:
       - "5006:5006"
 
+  tesseract:
+    build:
+      context: ./TranslationComplex/
+      dockerfile: tesseract.Dockerfile
+    image: zimingwwu/tesseract:1.0
+    restart: always
+    environment:
+      PYTHONUNBUFFERED: 1
+
   detection:
     build:
       context: ./TranslationComplex/
@@ -202,6 +211,8 @@ services:
     restart: always
     networks:
       - kong-net
+    depends_on:
+      - tesseract
     environment:
       PYTHONUNBUFFERED: 1
     ports:
@@ -380,14 +391,3 @@ services:
       - grafanadata:/var/lib/grafana
 
 
-  tesseract:
-    build:
-      context: ./TranslationComplex/
-      dockerfile: tesseract.Dockerfile
-    image: milkbaum/tesseract:1.0
-    restart: always
-    environment:
-      PYTHONUNBUFFERED: 1
-
-    # volumes:
-    #   - my_volume:/data
