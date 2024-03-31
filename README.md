@@ -72,7 +72,8 @@ To ensure the program runs, we have added the API keys in to the program for you
 ## Steps to run TravelBuddy:
 - 1. docker compose up 
     - There may be instances where the translator fails to compose up, due to interference with KongAPI during installation
-    - Quick Fix: In the compose.yaml file, under 'detection' service, comment out 'networks: - kong-net' , un-comment it after docker compose up
+    - Quick Fix: In the compose.yaml file, under 'detection' service, comment out 'networks: - kong-net' , un-comment it after docker compose up successfully the first time.
+    - Once it has compose up successfully at least once, for future docker compose up, there is NO NEED to comment out 'networks: - kong-net'
 - 2. Set the viewport to IPhone 14 Pro Max
 - 3. sign up for an account via LoginService -> login.html -> Auto re-directs you to home page to access our services
 
