@@ -70,13 +70,14 @@ To ensure the program runs, we have added the API keys in to the program for you
 
 # How to run 
 ## Steps to run TravelBuddy:
-- 1. Run WAMP
-- 2. docker compose up 
+- 1. Download this repository & place it in WAMP, www folder
+- 2. Run WAMP
+- 3. docker compose up 
     - There may be instances where the translator fails to compose up, due to interference with KongAPI during installation
     - Quick Fix: In the compose.yaml file, under 'detection' service, comment out 'networks: - kong-net' , un-comment it after docker compose up successfully the first time.
     - Once it has compose up successfully at least once, for future docker compose up, there is NO NEED to comment out 'networks: - kong-net'
-- 3. Set the viewport to IPhone 14 Pro Max
-- 4. sign up for an account via LoginService -> login.html -> Auto re-directs you to home page to access our services
+- 4. Set the viewport to IPhone 14 Pro Max
+- 5. sign up for an account via LoginService -> login.html -> Auto re-directs you to home page to access our services
 
 ------------------------------------------------------------------------
 
