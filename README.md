@@ -19,16 +19,18 @@ Before you begin, ensure you have done up the following pre-requirements:
 ### Pytesseract OCR
         - FULL VIDEO GUIDE: https://www.youtube.com/watch?v=Rb93uLXiTwA&ab_channel=AllroundZone 
 
-        ## Step-by-Step Guide
+        ### Step-by-Step Guide
         - Install Tesseract OCR:
             - For Windows users, download Tesseract installer from [here](https://github.com/UB-Mannheim/tesseract/wiki).
             - Follow the installation steps until you reach 'Select components to install'. Make sure to select all options, including 'Additional language data (download)'.
             - Keep the Destination Folder as default and proceed with the installation.
 
         - Configure Environment Variables:
-            - After installation, search for 'environment variables' and click on it.
-            - In the Environment Variables window, select 'Path' and click Edit.
-            - Click New and paste 'C:\Program Files\Tesseract-OCR' (assuming you chose the default installation path). Then click OK.
+            - 1. Search for "Edit the system environment variables" in the windows search and click on it
+            - 2. Press "Environment Variables"
+            - 3. Select System Variables
+            - 4. Double click the 'Path' variable, and press "New".
+                 Click New and paste 'C:\Program Files\Tesseract-OCR' (assuming you chose the default installation path). Then click OK.
 
 ## Download Zipfile from Github / Uploaded Zipfile
 - Place it under www in WAMP folder, login page url should appear like: http://localhost/ESD-PROJECT-G9T2/LoginService/login.html
@@ -68,7 +70,10 @@ To ensure the program runs, we have added the API keys in to the program for you
 
 # How to run 
 ## Steps to run TravelBuddy:
-- 1. docker compose up
+- 1. docker compose up 
+    - There may be instances where the translator fails to compose up, due to interference with KongAPI during installation
+    - Quick Fix: In the compose.yaml file, under 'detection' service, comment out 'networks: - kong-net' , un-comment it after docker compose up successfully the first time.
+    - Once it has compose up successfully at least once, for future docker compose up, there is NO NEED to comment out 'networks: - kong-net'
 - 2. Set the viewport to IPhone 14 Pro Max
 - 3. sign up for an account via LoginService -> login.html -> Auto re-directs you to home page to access our services
 

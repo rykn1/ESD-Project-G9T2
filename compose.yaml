@@ -380,3 +380,11 @@ services:
       - grafanadata:/var/lib/grafana
 
 
+  tesseract:
+    build:
+      context: ./TranslationComplex/
+      dockerfile: tesseract.Dockerfile
+    image: zimingwwu/tesseract:1.0
+    restart: always
+    environment:
+      PYTHONUNBUFFERED: 1
