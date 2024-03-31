@@ -85,6 +85,12 @@ To ensure the program runs, we have added the API keys in to the program for you
 - 4. Set the viewport to IPhone 14 Pro Max
 - 5. sign up for an account via LoginService -> login.html -> Auto re-directs you to home page to access our services
 
+
+For Stripe Payment: 
+Card Information: 4242 4242 4242 4242
+MM/YY: 1/25
+CVC: 242
+
 ------------------------------------------------------------------------
 
 # Service Explanations
