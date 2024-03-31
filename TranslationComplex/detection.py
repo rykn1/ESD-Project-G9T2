@@ -4,62 +4,51 @@ from PIL import Image, ImageDraw, ImageFont
 import pytesseract
 app = Flask(__name__)
 
-# Set the path to Tesseract language data directory
 os.environ['TESSDATA_PREFIX'] = './tessdata'
 
-# Function to perform text detection
 def process_image(image_path):
     try:
-        # Read image
         img = Image.open(image_path)
-        img_with_text = img.copy()  # Create a copy to overlay text with background
+        img_with_text = img.copy() 
         draw = ImageDraw.Draw(img_with_text)
-        # Define a threshold for confidence score
         threshold = 0.15
 
-        # Perform text detection using Pytesseract
         detections = pytesseract.image_to_data(img, lang='eng+ara+mal+spa+fra+ita+tur+de', output_type=pytesseract.Output.DICT)
         print('test3')
-        # Check if detections dictionary is empty or does not contain necessary keys
         if not detections or 'text' not in detections or 'conf' not in detections:
             error_message = "No text detected or unexpected format in detections dictionary."
             print(error_message)
             return "", None, None, error_message
         print('test3.5')
-        # Initialize empty string for extracted text
         extracted_text = ""
 
-        # Initialize empty list for bounding box coordinates
         box_coords = []
 
-        # Load a font that supports Arabic characters
-        arabic_font_path = "Arial_Unicode_MS.TTF"  # Replace with the path to your Arabic font file
+        arabic_font_path = "Arial_Unicode_MS.TTF"  
         print('test3.6')
-        arabic_font = ImageFont.truetype(arabic_font_path, size=14)  # Adjust the size as needed
-        print('test4')
-        # Iterate over the detected text regions
+        arabic_font = ImageFont.truetype(arabic_font_path, size=14) 
+
         for i in range(len(detections['text'])):
             text = detections['text'][i].strip()
             confidence = int(detections['conf'][i])
 
-            # Filter out text regions below the confidence threshold and ensure text is not empty
+          
             if confidence > threshold and text:
                 x, y, w, h = detections['left'][i], detections['top'][i], detections['width'][i], detections['height'][i]
 
-                # Append the coordinates to the list
+                
                 box_coords.append((x, y, x + w, y + h))
 
-                # Print the coordinates to the console
+                
                 print("Bounding box coordinates:", (x, y, x + w, y + h))
 
-                # Draw green box
+               
                 draw.rectangle([(x, y), (x + w, y + h)], outline="green")
 
-                # Draw text in red inside the green box
-                # Specify the font parameter with the Arabic font
+   
                 draw.text((x, y - 10), text, fill="red", font=arabic_font)
 
-                extracted_text += text + "\n"  # Append extracted text
+                extracted_text += text + "\n"
 
         return extracted_text, img_with_text, box_coords, None
     except Exception as e:
@@ -76,17 +65,17 @@ def detect_text():
     if file.filename == '':
         return jsonify({'error': 'No selected file'}), 400
     try:
-        # Save the uploaded image
+        
         image_path = "uploaded_image.jpg"
         file.save(image_path)
         print('Image path works')
 
-        # Process the uploaded image
+        
         extracted_text, img_with_text, box_coords, error_message = process_image(image_path)
 
         if extracted_text:
             processed_image_path = 'processed_image.jpg'
-            img_with_text.save(processed_image_path)  # Save the processed image with text overlay
+            img_with_text.save(processed_image_path)  
             return jsonify({'extracted_text': extracted_text, 'processed_image_path': processed_image_path, 'box_coords': box_coords}), 200
         else:
             return jsonify({'error': 'Failed to detect text'}), 500

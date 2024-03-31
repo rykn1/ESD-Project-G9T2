@@ -18,10 +18,8 @@ def get_languages():
 @app.route('/translate_text', methods=['POST'])
 def translate_text():
     data = request.json
-    #return data
     text = data.get('text')
     target_language = data.get('target_language')
-    #return target_language
 
     if not text or not target_language:
         return jsonify({'error': 'Missing text or target language'}), 400
@@ -39,9 +37,7 @@ def translate_text():
     response = requests.post(url, json=payload, headers=headers)
 
     if response.status_code == 200:
-        #return response.json()
         translations = response.json().get('data', {}).get('translations', [])
-        #return translations
         if translations:
             translated_text = translations.get('translatedText')
             if translated_text:

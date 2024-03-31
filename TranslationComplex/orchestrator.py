@@ -6,10 +6,10 @@ from PIL import Image
 
 app = Flask(__name__)
 
-# Define Docker volume name
+
 volume_name = 'my_volume'
 
-# Docker volume directory where images will be saved
+
 volume_directory = '/data'
 
 text_detection_service_url = environ.get('detect_url') or "http://localhost:5011/detect_text" #or "http://localhost:8000/detect_text"
@@ -20,11 +20,11 @@ error_microservice_url = environ.get('error_url') or "http://localhost:5014/log_
 
 def process_image(file, target_language):
     try:
-        # Save the image file to Docker volume directory
+       
         image_path = f'{volume_directory}/uploaded_image.jpg'
         file.save(image_path)
 
-        # Step 1: Text Detection
+        
         files = {'file': open(image_path, 'rb')}
         response = requests.post(text_detection_service_url, files=files)
         detection_result = response.json() if response.ok else None
@@ -33,19 +33,14 @@ def process_image(file, target_language):
 
         if detection_result:
             extracted_text = detection_result.get('extracted_text', '')
-            bounding_boxes = detection_result.get('box_coords', [])  # Update to 'box_coords'
-            print('Bounding Boxes:', bounding_boxes)  # Print bounding box coordinates
+            bounding_boxes = detection_result.get('box_coords', [])  
+            print('Bounding Boxes:', bounding_boxes) 
 
-            # Step 2: Translation
             translation_payload = {'text': extracted_text, 'target_language': target_language}
             response = requests.post(translation_decipher_url, json=translation_payload)
             translated_text = response.json().get('translated_text', '') if response.ok else ''
             print('Translated Text:', translated_text)
 
-            # Step 3: Text Replacement
-            # new_image_path = os.path.join("../ocr_orchestrator", image_path)
-            # im= Image.open(image_path)
-            # im.save('static/uploaded_image.png')
             replacement_payload = {'image_path': image_path, 'translated_text': translated_text,
                                    'bounding_boxes': bounding_boxes}
             response = requests.post(text_replacement_service_url, json=replacement_payload)
@@ -60,7 +55,7 @@ def process_image(file, target_language):
 
     except Exception as e:
         error_message = str(e)
-        traceback.print_exc()  # Print traceback for debugging
+        traceback.print_exc()
         log_error(error_message)
         return None, error_message
 
@@ -75,7 +70,7 @@ def log_error(error_message):
 @app.route('/')
 def index():
     try:
-        # Fetch language data
+        
         response = requests.get(translation_service_url)
         language_data = response.json() if response.ok else {'languages': []}
 
@@ -101,10 +96,8 @@ def upload():
 
 @app.route('/download')
 def download():
-    # Path to the replaced image file
     replaced_image_path = f'{volume_directory}/replaced_image.png'
 
-    # Send the file for download
     return send_file(replaced_image_path, as_attachment=True)
 
 @app.route('/error')

@@ -7,7 +7,6 @@ import json
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL')
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/cart'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_recycle": 299}
 
@@ -78,14 +77,14 @@ def add_items():
             }
         ), 500
     
-    if new_item:  # Check if new_item is defined
-        print(json.dumps(new_item.json(), default=str)) # convert a JSON object to a string and print
+    if new_item:  
+        print(json.dumps(new_item.json(), default=str)) 
         print()
 
     return jsonify(
         {
             "code": 201,
-            "data": new_item.json() if new_item else None  # Return new_item.json() if new_item is defined, otherwise return None
+            "data": new_item.json() if new_item else None  
         }
     ), 201
 

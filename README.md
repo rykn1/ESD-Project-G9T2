@@ -13,35 +13,18 @@ A 1 stop solution for all travellers. Travel with ease and like the breeze.
 - Login Account to store your information such as saved itineraries
 
 # Prerequisites
-Before you begin, ensure you have done up the following pre-requirements:
+- This Application is built for WINDOWS, NOT configured for MACS
+- Before you begin, ensure you have done up the following pre-requirements:
 
 ## Download from google drive these additional files
 ### Link: 
 - Place all files in TranslationComplex folder (tessdata and Arial_Unicode_MS.TTF)
 - https://drive.google.com/drive/folders/1G1TBeM3uf6U4IRtG9B3iTb6MjZvb7ndI?usp=sharing
 
+## Download ESD-PROJECT-G9T2 Zipfile from Github / Uploaded Zipfile / ELEARN 
+- Place it under 'www' in WAMP folder, login page url should appear like this filepath: http://localhost/ESD-PROJECT-G9T2/LoginService/login.html
 
-## Required software
-### Pytesseract OCR
-        - FULL VIDEO GUIDE: https://www.youtube.com/watch?v=Rb93uLXiTwA&ab_channel=AllroundZone 
-
-        ### Step-by-Step Guide
-        - Install Tesseract OCR:
-            - For Windows users, download Tesseract installer from [here](https://github.com/UB-Mannheim/tesseract/wiki).
-            - Follow the installation steps until you reach 'Select components to install'. Make sure to select all options, including 'Additional language data (download)'.
-            - Keep the Destination Folder as default and proceed with the installation.
-
-        - Configure Environment Variables:
-            - 1. Search for "Edit the system environment variables" in the windows search and click on it
-            - 2. Press "Environment Variables"
-            - 3. Select System Variables
-            - 4. Double click the 'Path' variable, and press "New".
-                 Click New and paste 'C:\Program Files\Tesseract-OCR' (assuming you chose the default installation path). Then click OK.
-
-## Download Zipfile from Github / Uploaded Zipfile
-- Place it under www in WAMP folder, login page url should appear like: http://localhost/ESD-PROJECT-G9T2/LoginService/login.html
-
-## Run following SQL code in phpmyadmin
+## !!! Run following SQL code in phpmyadmin
 - PlannerComplex -> users.sql
 - Shopping Complex -> cart.sql
 - Shopping Complex -> shopping.sql
@@ -73,23 +56,22 @@ To ensure the program runs, we have added the API keys in to the program for you
         appId: "1:477463865668:web:ffcd62197c671fc679cf11"
     };
 
-
 # How to run 
 ## Steps to run TravelBuddy:
 - 1. Download this repository & place it in WAMP, www folder
-- 2. Run WAMP
-- 3. docker compose up 
-    - There may be instances where the translator fails to compose up, due to interference with KongAPI during installation
-    - Quick Fix: In the compose.yaml file, under 'detection' service, comment out 'networks: - kong-net' , un-comment it after docker compose up successfully the first time.
-    - Once it has compose up successfully at least once, for future docker compose up, there is NO NEED to comment out 'networks: - kong-net'
-- 4. Set the viewport to IPhone 14 Pro Max
-- 5. sign up for an account via LoginService -> login.html -> Auto re-directs you to home page to access our services
+- 2. Place all the downloaded google drive files in TranslationComplex folder (tessdata folder and Arial_Unicode_MS.TTF) after unzipping them
+- 3. Run WAMP
+- 4. docker compose up 
+- 5. Set the viewport to IPhone 14 Pro Max
+- 6. Run this URL -> http://localhost/ESD-PROJECT-G9T2/LoginService/login.html
+- 7. Sign up for an account, use an email that you can open to receive receipts. Afterwards, it will auto re-directs you to home page to access our services
 
-
-For Stripe Payment: 
-Card Information: 4242 4242 4242 4242
-MM/YY: 1/25
-CVC: 242
+### NOTE FOR SHOP - YOU WILL BE REDIRECTED TO STRIPE API
+- Email: Use an email that you can receive emails in as the receipt will be sent to you there
+- For Stripe Payment: 
+- Card Information: 4242 4242 4242 4242
+- MM/YY: 1/25
+- CVC: 242
 
 ------------------------------------------------------------------------
 
@@ -134,5 +116,6 @@ CVC: 242
 ### 5. error.py
 - Displays error messages.
 
-
+## BTL - Kong API - Grafana & Prometheus
+- For microservice status tracking 
 

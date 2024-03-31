@@ -6,12 +6,10 @@ from flask_cors import CORS
 import json
 import logging
 import stripe
-# import amqp_connection
 import os, sys
 from os import environ
 
 app = Flask(__name__, static_url_path="",static_folder="templates")
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:@localhost:3306/cart'
 app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_recycle": 299}
@@ -23,16 +21,6 @@ db = SQLAlchemy(app)
 
 CORS(app)
 
-# # AMQP connection
-# exchangename = "payment_handler"
-# exchangetype = "topic"
-# connection = amqp_connection.create_connection() 
-# channel = connection.channel()
-# #if the exchange is not yet created, exit the program
-# if not amqp_connection.check_exchange(channel, exchangename, exchangetype):
-#     print("\nCreate the 'Exchange' before running this microservice. \nExiting the program.")
-#     sys.exit(0)  
-#     # Exit with a success status
     
 
 class Cart(db.Model):
@@ -68,12 +56,9 @@ def create_checkout_session():
         checkout_session=stripe.checkout.Session.create(
             line_items=line_items,
             mode='payment',
-            # success_url=url_for('thanks', _external=True) + '?session_id={CHECKOUT_SESSION_ID}',
             success_url="http://localhost/ESD-PROJECT-G9T2/ShoppingComplex/templates/thanks.html",
             cancel_url="http://localhost/ESD-PROJECT-G9T2/ShoppingComplex/templates/cancel.html",
         )
-        # print (checkout_session)
-        # print ("test")
     except Exception as e:
         return jsonify({'error': str(e)}), 500
     
@@ -86,7 +71,6 @@ def cancel():
 
 @app.route('/thanks')
 def thanks():
-    # print("testest")
     return render_template('thanks.html')
 
 
@@ -94,18 +78,14 @@ def thanks():
 def get_emails():
     customer_emails=[]
     try:
-    # Retrieve list of charges from Stripe
-        charge_list = stripe.Charge.list(limit=10)  # Limit to 10 charges for example
+        charge_list = stripe.Charge.list(limit=10)  
 
-        # Extract customer email from each charge
         for charge in charge_list.auto_paging_iter():
             if charge.billing_details and charge.billing_details.email:
                 customer_emails.append(charge.billing_details.email)
     
     except stripe.error.StripeError as e:
-        # Handle any errors
         print(f"Error retrieving customer emails: {e}")
-    # print (customer_emails)
     return customer_emails
 
 

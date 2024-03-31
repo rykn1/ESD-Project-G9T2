@@ -9,15 +9,10 @@ import json
 import amqp_connection
 from os import environ
 
-# from payment import get_emails
-
-# from os import environ
 
 app = Flask(__name__)
 
-# Connecting to 'Cart' Database
 app = Flask(__name__)
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/cart'
 app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_recycle": 299}
@@ -47,16 +42,13 @@ class Cart(db.Model):
         return {"id": self.id, "name": self.name, "price": self.price, "quantity": self.quantity}
 
 
-# AMQP connection
 exchangename = "payment_handler"
 exchangetype = "topic"
 connection = amqp_connection.create_connection() 
 channel = connection.channel()
-#if the exchange is not yet created, exit the program
 if not amqp_connection.check_exchange(channel, exchangename, exchangetype):
     print("\nCreate the 'Exchange' before running this microservice. \nExiting the program.")
     sys.exit(0)
-    # Exit with a success status
     
 @app.route('/publish')
 def publish():
@@ -106,7 +98,6 @@ def paymentProcess():
             
             return redirect(response['url'])
         else:
-            # Handle error or unexpected response
             return jsonify({'error': 'Failed to create checkout session'}), 500
          
     except Exception as e:
@@ -115,11 +106,7 @@ def paymentProcess():
     
      
 def retrieve_recipient():
-    # email_receipient = get_emails()
-    # receipient = email_receipient[0]
-    # return receipient
     recipient = requests.get('http://payment:5007/get_emails')
-    print(recipient.json())
     return recipient.json()[0]
     
 
