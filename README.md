@@ -61,10 +61,11 @@ To ensure the program runs, we have added the API keys in to the program for you
 - 1. Download this repository & place it in WAMP, www folder
 - 2. Place all the downloaded google drive files in TranslationComplex folder (tessdata folder and Arial_Unicode_MS.TTF) after unzipping them
 - 3. Run WAMP
-- 4. docker compose up 
-- 5. Set the viewport to IPhone 14 Pro Max
-- 6. Run this URL -> http://localhost/ESD-PROJECT-G9T2/LoginService/login.html
-- 7. Sign up for an account, use an email that you can open to receive receipts. Afterwards, it will auto re-directs you to home page to access our services
+- 4. In compose.yaml, change the username to your docker username
+- 5. docker compose up 
+- 6. Set the viewport to IPhone 14 Pro Max
+- 7. Run this URL -> http://localhost/ESD-PROJECT-G9T2/LoginService/login.html
+- 8. Sign up for an account, use an email that you can open to receive receipts. Afterwards, it will auto re-directs you to home page to access our services
 
 ### NOTE FOR SHOP - YOU WILL BE REDIRECTED TO STRIPE API
 - Email: Use an email that you can receive emails in as the receipt will be sent to you there
