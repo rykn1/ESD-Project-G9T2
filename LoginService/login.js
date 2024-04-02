@@ -3,12 +3,12 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebas
 import {getAuth, createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCM4fJjQqUmMt8BmQ3Qi7hKVkhRSmzdDkQ",
-  authDomain: "esdproj-c3b1c.firebaseapp.com",
-  projectId: "esdproj-c3b1c",
-  storageBucket: "esdproj-c3b1c.appspot.com",
-  messagingSenderId: "477463865668",
-  appId: "1:477463865668:web:ffcd62197c671fc679cf11"
+  apiKey: "",
+  authDomain: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: "",
+  appId: ""
 };
 
 // Initialize Firebase

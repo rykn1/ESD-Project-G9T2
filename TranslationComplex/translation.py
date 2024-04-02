@@ -8,7 +8,7 @@ app = Flask(__name__)
 def get_languages():
     url = "https://deep-translate1.p.rapidapi.com/language/translate/v2/languages"
     headers = {
-        "X-RapidAPI-Key": "342731d95amsh83e40184d15719ep11f5ffjsna8e3ab0bffc3",
+        "X-RapidAPI-Key": "",
         "X-RapidAPI-Host": "deep-translate1.p.rapidapi.com"
     }
     response = requests.get(url, headers=headers)
@@ -31,7 +31,7 @@ def translate_text():
     }
     headers = {
         "content-type": "application/json",
-        "X-RapidAPI-Key": "342731d95amsh83e40184d15719ep11f5ffjsna8e3ab0bffc3",
+        "X-RapidAPI-Key": "",
         "X-RapidAPI-Host": "deep-translate1.p.rapidapi.com"
     }
     response = requests.post(url, json=payload, headers=headers)

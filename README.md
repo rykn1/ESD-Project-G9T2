@@ -30,30 +30,30 @@ A 1 stop solution for all travellers. Travel with ease and like the breeze.
 - Shopping Complex -> shopping.sql
 
 ## API Keys Required
-To ensure the program runs, we have added the API keys in to the program for you. 
+To ensure the program runs, insert your own API keys that can be made for free. 
 
 ### PlannerComplex
-- **generative_ai.py gemeniai**: AIzaSyAZGQei2hEWa3YBQtHuO6TBuYK6Si6ZFC4
-- **currency_service.py exchangerateio**: b03e781c96bd6d8f723f9845a764a569
-- **weather.py openweather**: 87b8df22e7c24f9de25392d2d0c519b7
+- **generative_ai.py gemeniai**: 
+- **currency_service.py exchangerateio**: 
+- **weather.py openweather**: 
 
 ### ShoppingComplex
-- **payment.py stripe public key**: pk_test_51OrELHATlCeKbEIxdOhbVW5Vii3DbYkWUtdqLtf88Mg4ATq96PtsfQRqbwbJbNikvmwedig7BQtED7vDb9zvQlKQ00FD5yU6c0
-- **payment.py stripe secret key**: rk_test_51OrELHATlCeKbEIxLxwiyGHRkrXW3Di18YfJdrzOxGvI9mjz8QfGMR07VLy3FXsMiuRDrfNTbps32m5HBpV0ComF006WAL1TfX
+- **payment.py stripe public key**: 
+- **payment.py stripe secret key**: 
 
 ### TranslationComplex
-- **translation.py**: 342731d95amsh83e40184d15719ep11f5ffjsna8e3ab0bffc3
-- **translation.py (alternative key)**: 6f0e682c93msh5bcf8629d32f86bp1a79dbjsn822131d7d32d 
+- **translation.py**: 
+- **translation.py (alternative key)**:  
 
 ### LoginService
 - **login.js firebase keys**: 
     const firebaseConfig = {
-        apiKey: "AIzaSyCM4fJjQqUmMt8BmQ3Qi7hKVkhRSmzdDkQ",
-        authDomain: "esdproj-c3b1c.firebaseapp.com",
-        projectId: "esdproj-c3b1c",
-        storageBucket: "esdproj-c3b1c.appspot.com",
-        messagingSenderId: "477463865668",
-        appId: "1:477463865668:web:ffcd62197c671fc679cf11"
+        apiKey: "",
+        authDomain: "",
+        projectId: "",
+        storageBucket: "",
+        messagingSenderId: "",
+        appId: ""
     };
 
 # How to run 

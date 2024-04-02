@@ -6,7 +6,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Make your openweather API key
-OPENWEATHERMAP_API_KEY = "87b8df22e7c24f9de25392d2d0c519b7"
+OPENWEATHERMAP_API_KEY = ""
 
 @app.route('/weather', methods=['POST'])
 def get_weather():

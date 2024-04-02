@@ -13,8 +13,8 @@ app = Flask(__name__, static_url_path="",static_folder="templates")
 app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_recycle": 299}
-app.config['STRIPE_PUBLIC_KEY'] = 'pk_test_51OrELHATlCeKbEIxdOhbVW5Vii3DbYkWUtdqLtf88Mg4ATq96PtsfQRqbwbJbNikvmwedig7BQtED7vDb9zvQlKQ00FD5yU6c0'
-app.config['STRIPE_SECRET_KEY'] = 'rk_test_51OrELHATlCeKbEIxLxwiyGHRkrXW3Di18YfJdrzOxGvI9mjz8QfGMR07VLy3FXsMiuRDrfNTbps32m5HBpV0ComF006WAL1TfX'
+app.config['STRIPE_PUBLIC_KEY'] = ''
+app.config['STRIPE_SECRET_KEY'] = ''
 
 
 db = SQLAlchemy(app)
